@@ -1,0 +1,61 @@
+* {
+    color: white;
+}
+.wrapper {
+    background: url('../../../assets/images/defka.jpg') no-repeat;
+    height: 100vh;
+    width: 100vw;
+    background-size: 100% auto;
+    background-position-y: center;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+}
+
+h1 {
+    font-size: 2.2rem;
+    letter-spacing: 0.3rem;
+    font-family: 'Travels ExtraBold';
+}
+
+header {
+    width: 85%;
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    position: relative;
+
+    .header-action {
+        display: block;
+        width: 150px;
+
+        &:last-child {
+            width: auto;
+        }
+    }
+}
+nav{
+    width: 85%;
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    
+    a {
+        display: block;
+
+        :nth-child(2) {
+            position: absolute;
+            margin-left: calc(50% - 42px);
+        }
+    }
+}
+.gradient-element::after {
+    height: 0.6rem;
+    width: 10rem;
+    margin-top: 9px;
+    margin-left: calc(100% - 155px);
+}

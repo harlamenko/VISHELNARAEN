@@ -1,0 +1,23 @@
+<div class="wrapper">
+  <header class="header">
+    <h1 class="header__logo gradient-element">
+      ВЫШЕЛНАРАЁН
+    </h1>
+  
+    <app-search class="header__search"></app-search>
+  
+    <span class='header__decor two-strings'></span>
+  
+    <app-cart class="header__cart"></app-cart>
+  </header>
+  
+  <aside class="filter-container">
+    <app-filter></app-filter>
+  </aside>
+
+  <section class="clothes-container">
+    <main class="clothes-container__clothes">
+      <app-clothes *ngFor="let el of clothes"></app-clothes>
+    </main>
+  </section>
+</div>
