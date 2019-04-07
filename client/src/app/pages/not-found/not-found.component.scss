@@ -1,0 +1,77 @@
+.not-found {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+    &__code {
+        font-size: 288px;
+        font-family: 'Travels ExtraBold';
+        letter-spacing: 43.2px;
+        z-index: 2;
+    }
+
+    &__message {
+        font-size: 1.8rem;;
+        letter-spacing: 0.3rem;
+        font-family: 'Travels ExtraBold';
+    }
+
+    &__return-button {
+        margin-top: 10vh;
+    }
+}
+
+.decor {
+
+    &__1.gradient-element::after {
+        position: absolute;
+        height: 20px;
+        width: 335px;
+        margin-left: 0;
+        left: 15vw;
+        top: 25vh;
+        z-index: 3;
+    }
+
+    &__2.gradient-element::after {
+        position: absolute;
+        height: 20px;
+        width: 190px;
+        margin-left: 0;
+        left: 47vw;
+        top: 20vh;
+        z-index: 3;
+    }
+
+    &__3.gradient-element::after {
+        position: absolute;
+        height: 20px;
+        width: 190px;
+        margin-left: 0;
+        left: 68vw;
+        top: 30.5vh;
+        z-index: 1;
+    }
+
+    &__4.gradient-element::after {
+        position: absolute;
+        height: 20px;
+        width: 190px;
+        margin-left: 0;
+        left: 39vw;
+        top: 39.6vh;
+        z-index: 1;
+    }
+
+    &__5.gradient-element::after {
+        position: absolute;
+        height: 20px;
+        width: 230px;
+        margin-left: 0;
+        left: 58vw;
+        top: 48vh;
+        z-index: 1;
+    }
+}

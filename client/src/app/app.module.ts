@@ -9,6 +9,7 @@ import { FilterComponent } from './components/filter/filter.component';
 import { SearchComponent } from './components/search/search.component';
 import { CartComponent } from './components/cart/cart.component';
 import { ClothesComponent } from './components/clothes/clothes.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 const appRoutes: Routes = [
   {path: '', component: WelcomePageComponent},
@@ -20,8 +21,7 @@ const appRoutes: Routes = [
     }},
   {
     path: '**',
-    redirectTo: '', //TODO: (Харламенко А.В.) перенаправить на страницу 404, как будет
-    pathMatch: 'full'
+    component: NotFoundComponent
   } 
 ]
 
@@ -33,7 +33,8 @@ const appRoutes: Routes = [
     FilterComponent,
     SearchComponent,
     CartComponent,
-    ClothesComponent
+    ClothesComponent,
+    NotFoundComponent
   ],
   imports: [
     RouterModule.forRoot(

@@ -1,7 +1,22 @@
 .filter {
     padding-top: 50px;
+    
     &__category {
         line-height: 1.5rem;
+        position: relative;
+        width: fit-content;
+        cursor: pointer;
+
+
+        &:hover.gradient-element::after {
+            margin-left: 0px;
+            height: 10px;
+            position: absolute;
+            top: 14px;
+            z-index: -1;
+            width: calc(100% + 10px);
+            max-width: 150px;
+        }
 
         &__sub {
             margin-bottom: 30px;
@@ -10,15 +25,34 @@
                 line-height: 1rem;
                 font-size: 0.8rem;
                 font-family: 'Travels Medium';
+                
+                &:hover.gradient-element::after {
+                    top: 10px;
+                }
             }
         }
     }
 
     &__sort {
         &__method {
-            line-height: 1rem;
-            font-size: 0.8rem;
-            font-family: 'Travels Medium';
+        line-height: 1rem;
+        font-size: 0.8rem;
+        font-family: 'Travels Medium';
+        cursor: pointer;
+        position: relative;
+        width: fit-content;
+
+        
+            &:hover.gradient-element::after {
+                margin-left: 0px;
+                height: 10px;
+                position: absolute;
+                top: 10px;
+                z-index: -1;
+                width: calc(100% + 10px);
+                max-width: 150px;
+            }
+
         }
     }
 }

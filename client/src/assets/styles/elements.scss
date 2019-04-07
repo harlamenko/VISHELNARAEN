@@ -22,3 +22,54 @@
     top: -15px;
     left: 25%; 
 }
+
+.gradient-border {
+  position: relative;
+}
+
+.gradient-border::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(69deg, #a7e9f6, #f8eb9f, #ed96b0);
+  background-size: 300% 300%;
+  clip-path: polygon(0% 100%, 5px 100%, 5px 5px, calc(100% - 5px) 5px, calc(100% - 5px) calc(100% - 5px), 5px calc(100% - 5px), 5px 100%, 100% 100%, 100% 0%, 0% 0%);
+}
+
+.gradient-border:hover::after {
+    content: "";
+}
+  
+.gradient-border.in::after {
+    animation: frame-enter 1s forwards ease-in-out reverse, gradient-animation 1.5s ease-in-out infinite;
+}
+
+@keyframes gradient-animation {
+    0% {
+    background-position: 15% 0%;
+    }
+    50% {
+    background-position: 85% 100%;
+    }
+    100% {
+    background-position: 15% 0%;
+    }
+}
+@keyframes frame-enter {
+    0% {
+    }
+    25% {
+    clip-path: polygon(0% 100%, 5px 100%, 5px 5px, calc(100% - 5px) 5px, calc(100% - 5px) calc(100% - 5px), calc(100% - 5px) calc(100% - 5px), calc(100% - 5px) 100%, 100% 100%, 100% 0%, 0% 0%);
+    }
+    50% {
+    clip-path: polygon(0% 100%, 5px 100%, 5px 5px, calc(100% - 5px) 5px, calc(100% - 5px) 5px, calc(100% - 5px) 5px, calc(100% - 5px) 5px, calc(100% - 5px) 5px, 100% 0%, 0% 0%);
+    }
+    75% {
+    -webkit-clip-path: polygon(0% 100%, 5px 100%, 5px 5px, 5px 5px, 5px 5px, 5px 5px, 5px 5px, 5px 5px, 5px 0%, 0% 0%);
+    }
+    100% {
+    -webkit-clip-path: polygon(0% 100%, 5px 100%, 5px 100%, 5px 100%, 5px 100%, 5px 100%, 5px 100%, 5px 100%, 5px 100%, 0% 100%);
+    }
+}
