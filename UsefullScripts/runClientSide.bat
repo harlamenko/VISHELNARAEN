@@ -1,2 +1,2 @@
 cd ../client
-ng serve --port 8080
+ ng serve -o --port 8080
