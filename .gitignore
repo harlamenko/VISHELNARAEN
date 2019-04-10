@@ -43,3 +43,4 @@ client/.vscode/*
 # System Files
 /client/.DS_Store
 /client/Thumbs.db
+/server/config/Database.php
