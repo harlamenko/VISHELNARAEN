@@ -55,6 +55,13 @@ return [
             'visibility' => 'public',
         ],
 
+        'product_images' => [ //(post_images) // $imagePath = Storage::disk('post_images')->put('', $request->image);
+            'driver' => 'local',
+            'root' => storage_path('product_images'),
+            'url' => env('APP_URL') . '/product_images',
+            'visibility' => 'public'
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

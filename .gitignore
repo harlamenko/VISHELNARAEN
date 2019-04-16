@@ -23,6 +23,11 @@ client/.editorconfig
 .settings/
 *.sublime-workspace
 
+# IDE helper meta-files
+/_ide_helper.php
+/.phpstorm.meta.php
+/_ide_helper_models.php
+
 # IDE - VSCode
 client/.vscode/*
 !client/.vscode/settings.json
@@ -43,4 +48,4 @@ client/.vscode/*
 # System Files
 /client/.DS_Store
 /client/Thumbs.db
-/server/config/Database.php
+/server/.env
