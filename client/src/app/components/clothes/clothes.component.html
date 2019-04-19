@@ -1,7 +1,7 @@
-<figure class="clothes gradient-border in">
-  <img class="clothes__photo" src="assets/images/смт.jpg" alt="Свитшот">
+<figure class="clothes gradient-border in" *ngIf="product" routerLink="./{{product.id}}">
+  <img class="clothes__photo" src="assets/images/смт.jpg" [alt]="product.rus_name">
   <figcaption class="clothes__info">
-    <p class="clothes__info__name gradient-element">Свитшок</p>
-    <p class="clothes__info__price">4000₽</p>
+    <p class="clothes__info__name gradient-element">{{product.rus_name}}</p>
+    <p class="clothes__info__price">{{product.price}}₽</p>
   </figcaption>
 </figure>

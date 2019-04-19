@@ -15,9 +15,9 @@
     <app-filter></app-filter>
   </aside>
 
-  <section class="clothes-container">
+  <section class="clothes-container" *ngIf="products">
     <main class="clothes-container__clothes">
-      <app-clothes *ngFor="let el of clothes"></app-clothes>
+      <app-clothes *ngFor="let product of (products | productSort: productService.sortType)" [product]='product'></app-clothes>
     </main>
   </section>
 </div>

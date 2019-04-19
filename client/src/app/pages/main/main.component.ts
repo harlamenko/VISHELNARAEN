@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ProductService } from 'src/app/services/product.service';
+import { Product } from 'src/app/models/Product';
 
 @Component({
   selector: 'app-main',
@@ -6,11 +8,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit {
-  public clothes;
-  constructor() { }
+  public products: Product[];
+  constructor(public productService: ProductService) { }
 
   ngOnInit() {
-    this.clothes = [1, 2, 3, 4, 1];
+    this.productService.getAllProducts().subscribe(products => {
+      this.products = products;
+    });
   }
 
 }

@@ -3,13 +3,16 @@
     
     &__photo {
         width: 100%;
+        &:hover {
+            cursor: pointer;
+        }
     }
 
     &__info {
         &__name {
             font-family: 'Travels Bold';
             display: inline-block;
-            width: auto;
+            max-width: 90%;
         }
         
         &__price{

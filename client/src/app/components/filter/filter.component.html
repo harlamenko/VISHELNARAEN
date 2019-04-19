@@ -1,5 +1,4 @@
 <menu class="filter">
-  <!-- TODO:(Харламенко А.В.) Перемаппить на динамику как будет API -->
   <li class='filter__category'>Одежда
     <ul class='filter__category__sub'>
       <li class='filter__category gradient-element'>Мужская</li>
@@ -19,7 +18,7 @@
   <li class='filter__category gradient-element'>Платья</li>
     <details style='margin-top: 65px; cursor: pointer;'>
     <summary сlass="filter__sort" style='outline: none;'>Сортировка</summary>
-    <li class="filter__sort__method gradient-element">По цене</li>
-    <li class="filter__sort__method gradient-element">По популярности</li>
+    <li class="filter__sort__method gradient-element" (click)="productService.changeSortType('price')">По цене</li>
+    <li class="filter__sort__method gradient-element" (click)="productService.changeSortType('popularity')">По популярности</li>
   </details>
 </menu>
