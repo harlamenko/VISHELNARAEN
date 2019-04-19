@@ -1,9 +1,3 @@
-# scripts
-UsefullScripts/InstallAllPackages.bat
-UsefullScripts/RunAllSides.bat
-UsefullScripts/installServerPackages.bat
-UsefullScripts/runServerSide.bat
-
 # compiled output
 /client/dist
 /client/tmp

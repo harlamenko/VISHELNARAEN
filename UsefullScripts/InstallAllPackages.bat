@@ -1,0 +1,2 @@
+START installClientPackages.bat
+START installServerPackages.bat
