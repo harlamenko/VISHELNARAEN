@@ -17,20 +17,23 @@ class CreateProductsColorsSizesTable extends Migration
             $table->integer('id_product')
                 ->unsigned()
                 ->index();
+            $table->integer('id_color')
+                ->unsigned()
+                ->index();
+            $table->integer('id_size')
+                ->unsigned()
+                ->index();
+        });
+
+        Schema::table('products_colors_sizes', function (Blueprint $table) {
             $table->foreign('id_product')
                 ->references('id')
                 ->on('products')
                 ->onDelete('cascade');
-            $table->integer('id_color')
-                ->unsigned()
-                ->index();
             $table->foreign('id_color')
                 ->references('id')
                 ->on('colors')
                 ->onDelete('cascade');
-            $table->integer('id_size')
-                ->unsigned()
-                ->index();
             $table->foreign('id_size')
                 ->references('id')
                 ->on('sizes')

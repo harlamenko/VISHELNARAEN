@@ -41,7 +41,7 @@ class Product extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function cats()
+    public function cat()
     {
         return $this->belongsTo(Cat::class);
     }
@@ -49,7 +49,7 @@ class Product extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function colors()
+    public function color()
     {
         return $this->belongsToMany(Color::class);
     }
@@ -57,7 +57,7 @@ class Product extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function sizes()
+    public function size()
     {
         return $this->belongsToMany(Size::class);
     }
@@ -65,7 +65,7 @@ class Product extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function types()
+    public function type()
     {
         return $this->belongsTo(Type::class);
     }

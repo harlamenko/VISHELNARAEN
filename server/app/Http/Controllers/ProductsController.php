@@ -6,6 +6,7 @@ use App\Http\Middleware\CheckAdmin;
 use Illuminate\Http\Request; //PostRequest
 use Illuminate\Support\Facades\Storage;
 use App\Models\Product;
+use App\Models\Cat;
 use Validator;
 
 class ProductsController extends Controller
@@ -16,16 +17,22 @@ class ProductsController extends Controller
      * @return Product[]|\Illuminate\Database\Eloquent\Collection
      */
     public function index() {
-//        $products = Product::all();
-//
-//        foreach($products as $product) {
-//            $product->cats = explode(',',$product->cats);
-//        }
-//
-//        return $this->jsonResponse($product, 200, "Список одежды");
-        return Product::select()->get();
+        return $this->jsonResponse(Product::select()->get(), 200, "Список одежды");
     }
-//
+
+    public function showProductsWithParams(Request $request) {
+        $sex= '';
+        switch ($request->sex) {
+            case 'men':
+                $sex = 'for_men';
+                break;
+            case 'women':
+                $sex = 'for_women';
+                break;
+        }
+        return Product::where('cat_id', $sex)->where('type', $request->type)->get();
+    }
+
 //    /**
 //     * Store a newly created resource in storage.
 //     *
@@ -54,26 +61,26 @@ class ProductsController extends Controller
 //        return $this->jsonResponse(["status" => true, "product_id" => $newProduct->id], 201, "Successful creation");
 //    }
 //
-//    /**
-//     * Display the specified resource.
-//     *
-//     * @param  int $id
-//     * @return \Illuminate\Http\Response
-//     */
-//
-//    public function show($id)
-//    {
-//        $product = Product::with('cats')->find($id);
-//        if (!$product)
-//        {
-//            return $this->jsonResponse([
-//                "message" => "Product not found"
-//            ], 404, "Product not found");
-//        }
-//        $product->cats = explode(',',$product->cats);
-//        return $this->jsonResponse($product, 200, "View product");
-//
-//    }
+    /**
+     * Display the specified resource.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+
+    public function show($id)
+    {
+        $product = Product::with('cats')->find($id);
+        if (!$product)
+        {
+            return $this->jsonResponse([
+                "message" => "Product not found"
+            ], 404, "Product not found");
+        }
+        $product->cat = explode(',',$product->cat);
+        return $this->jsonResponse($product, 200, "View product");
+
+    }
 //
 //    /**
 //     * Update the specified resource in storage.
