@@ -39,35 +39,35 @@ class Product extends Model
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function cat()
     {
-        return $this->belongsTo(Cat::class);
+        return $this->hasOne(Cat::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function color()
     {
-        return $this->belongsToMany(Color::class);
+        return $this->hasMany(Color::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function size()
     {
-        return $this->belongsToMany(Size::class);
+        return $this->hasMany(Size::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function type()
     {
-        return $this->belongsTo(Type::class);
+        return $this->hasOne(Type::class);
     }
 
     /**
@@ -77,14 +77,4 @@ class Product extends Model
     {
         $query->where('publish', 1);
     }
-
-    /**
-     * @param $value
-     * @return string
-     */
-    public function getImageAttribute($value)
-    {
-        return $value ?: \Storage::url($value);
-    }
-
 }

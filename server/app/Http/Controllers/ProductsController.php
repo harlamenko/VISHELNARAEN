@@ -22,6 +22,7 @@ class ProductsController extends Controller
 
     public function showProductsWithParams(Request $request) {
         $sex= '';
+
         switch ($request->sex) {
             case 'men':
                 $sex = 'for_men';
@@ -30,16 +31,30 @@ class ProductsController extends Controller
                 $sex = 'for_women';
                 break;
         }
-        return Product::where('cat_id', $sex)->where('type', $request->type)->get();
+
+        if ($request->sex && $request->type) {
+            return Product::where('cat_id', $sex)->where('type', $request->type)->get();
+        } else if ($request->sex && !$request->type) {
+            return Product::where('cat_id', $sex)->get();
+        } else if (!$request->sex && $request->type) {
+            return Product::where('type', $request->type)->get();
+        }
     }
 
-//    /**
-//     * Store a newly created resource in storage.
-//     *
-//     * @param  \Illuminate\Http\Request $request
-//     * @return \Illuminate\Http\Response
-//     */
-//
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+
+    public function getAssortment(Request $request) {
+        $products = Product::select()->where('id', $request->id)->get();
+        return $products;
+
+        //return Product::get();
+    }
+
 //    public function store (Request $request) {
 //        $response = [];
 //
@@ -70,14 +85,13 @@ class ProductsController extends Controller
 
     public function show($id)
     {
-        $product = Product::with('cats')->find($id);
+        $product = Product::find($id);
         if (!$product)
         {
             return $this->jsonResponse([
                 "message" => "Product not found"
             ], 404, "Product not found");
         }
-        $product->cat = explode(',',$product->cat);
         return $this->jsonResponse($product, 200, "View product");
 
     }
@@ -147,40 +161,40 @@ class ProductsController extends Controller
 //        return $this->jsonResponse(["body" => $products], 200, "Found Products");
 //    }
 //
-//    /**
-//     * @param Request $request
-//     * @param $newProduct
-//     * @return bool
-//     */
-//
-//    private function createOrUpdateProduct(Request $request, $newProduct): bool {
-//        $newProduct->rus_name = $request->rus_name;
-//        $newProduct->cat = $request->cat;
-//        $newProduct->type = $request->type;
-//        $newProduct->price = $request->price;
-//        $newProduct->img = $this->saveImageAndGetPath($request);
-//
-//        return $newProduct->save();
-//    }
-//
-//    /**
-//     * @param Request $request
-//     * @return mixed
-//     */
-//
-//    private function createValidator(Request $request) {
-//        $bytesInMegabyte = 1000000; //КАВОО
-//        $fileLimit = 2 * $bytesInMegabyte;
-//
-//        $validator = Validator::make($request->all(), [
-//            'rus_name' => 'required|unique:products',
-//            'cat' => 'required',
-//            'type' => 'required',
-//            'price' => 'required',
-//            'img' => "required|mimes:jpg,png|max:{$fileLimit}",
-//        ]);
-//        return $validator;
-//    }
+    /**
+     * @param Request $request
+     * @param $newProduct
+     * @return bool
+     */
+
+    private function createOrUpdateProduct(Request $request, $newProduct): bool {
+        $newProduct->rus_name = $request->rus_name;
+        $newProduct->cat = $request->cat;
+        $newProduct->type = $request->type;
+        $newProduct->price = $request->price;
+        //$newProduct->img = $this->saveImageAndGetPath($request);
+
+        return $newProduct->save();
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+
+    private function createValidator(Request $request) {
+        $bytesInMegabyte = 1000000; //КАВОО
+        $fileLimit = 2 * $bytesInMegabyte;
+
+        $validator = Validator::make($request->all(), [
+            'rus_name' => 'required|unique:products',
+            'cat' => 'required',
+            'type' => 'required',
+            'price' => 'required',
+            //'img' => "required|mimes:jpg,png|max:{$fileLimit}",
+        ]);
+        return $validator;
+    }
 //
 //    /**
 //     * @param Request $request
