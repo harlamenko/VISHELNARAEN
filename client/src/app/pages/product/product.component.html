@@ -4,14 +4,14 @@
       ВЫШЕЛНАРАЁН
     </h1>
   
-    <div class="header__breadcrumbs">
+    <div class="header__breadcrumbs" *ngIf="mainProduct">
       <span class="header__breadcrumbs__crumb">Одежда</span>
       <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
       <span class="header__breadcrumbs__crumb">Мужская</span>
       <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
       <span class="header__breadcrumbs__crumb">Толстовки</span>
       <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
-      <span class="header__breadcrumbs__crumb">Raglan crew sweatshir</span>
+      <span class="header__breadcrumbs__crumb">{{ mainProduct.rus_name }}</span>
     </div>
   
     <app-cart class="header__cart"></app-cart>
@@ -23,16 +23,17 @@
     </a>
   </nav>
   <section class="main-section">
-    <aside class="main-section__side-product main-section__side-product--prev main-section__side-product--semitransparent">
-      <img src="../../../assets/images/смт.jpg" alt="kofta">
+    <aside 
+      class="main-section__side-product main-section__side-product--prev main-section__side-product--semitransparent">
+      <img src="../../../assets/images/смт.jpg" routerLink="/clothes/{{prevId}}" alt="{{ prevProduct.rus_name }}" *ngIf="prevProduct">
     </aside>
     <main class="main-section__current-product">
-      <figure class="main-section__current-product__card">
-        <img class="main-section__current-product__card__photo" src="../../../assets/images/смт.jpg" alt="Raglan crew sweatshirt">
+      <figure class="main-section__current-product__card" *ngIf="mainProduct">
+        <img class="main-section__current-product__card__photo" src="../../../assets/images/смт.jpg" alt="{{ mainProduct.rus_name }}">
         <figcaption class="main-section__current-product__card__info">
-          <p class="main-section__current-product__card__info__name">Raglan crew sweatshirt</p>
-          <p class="main-section__current-product__card__info__title">Мужская толстовка</p>
-          <p class="main-section__current-product__card__info__price">2 200₽</p>
+          <p class="main-section__current-product__card__info__name">{{ mainProduct.rus_name }}</p>
+          <p class="main-section__current-product__card__info__title">{{ mainProduct.title }}</p>
+          <p class="main-section__current-product__card__info__price">{{ mainProduct.price }}₽</p>
         </figcaption>
       </figure>
       <section class="main-section__current-product__description description">
@@ -66,8 +67,9 @@
         <a class="btn gradient-border in">В корзину</a>
       </section>
     </main>
-    <aside class="main-section__side-product main-section__side-product--next main-section__side-product--semitransparent">
-      <img src="../../../assets/images/смт.jpg" alt="kofta">
+    <aside 
+      class="main-section__side-product main-section__side-product--next main-section__side-product--semitransparent">
+      <img src="../../../assets/images/смт.jpg" routerLink="/clothes/{{nextId}}" alt="{{ nextProduct.rus_name }}" *ngIf="nextProduct">
     </aside>
   </section>
   </div>

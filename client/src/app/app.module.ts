@@ -17,7 +17,8 @@ const appRoutes: Routes = [
   {path: '', component: WelcomePageComponent},
   {path: 'clothes', component: MainComponent, data: {title: 'Одежда'}},
   {path: 'clothes/:id', component: ProductComponent},
-  {path: '**', component: NotFoundComponent} 
+  {path: 'clothes/:sex/:type', component: MainComponent, pathMatch: 'full'},
+  {path: '**', component: NotFoundComponent}
 ]
 
 @NgModule({

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
 import { Product } from 'src/app/models/Product';
+import { ProductParams } from 'src/app/models/ProductParams';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-main',
@@ -9,12 +11,24 @@ import { Product } from 'src/app/models/Product';
 })
 export class MainComponent implements OnInit {
   public products: Product[];
-  constructor(public productService: ProductService) { }
+  private _params: ProductParams;
+  constructor(
+    public productService: ProductService,
+    private _activatedRouter: ActivatedRoute,
+    ) { }
 
   ngOnInit() {
-    this.productService.getAllProducts().subscribe(products => {
-      this.products = products;
+    this._activatedRouter.paramMap.subscribe(params => {
+      this._params = new ProductParams();
+      if (params.get('sex') !== 'all') {
+        this._params.sex = params.get('sex');
+      }
+      if (params.get('type') !== 'all') {
+        this._params.type = params.get('type');
+      }
+      this.productService.getProducts(this._params).subscribe(products => {
+        this.products = products;
+      });
     });
   }
-
 }
