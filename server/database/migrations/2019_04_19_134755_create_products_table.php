@@ -17,19 +17,18 @@ class CreateProductsTable extends Migration
             $table->increments('id')
                 ->unique();
             $table->string('title',50);
-            $table->string('cat_id', 50)
+            $table->string('cat', 50)
                 ->index();
             $table->string('type', 50)
                 ->index();
             $table->integer('price');
             $table->string('rus_name', 50);
-            $table->longText('img');
-            $table->integer('rating');
             $table->string('brief', 50);
+            $table->longText('img');
         });
 
         Schema::table('products', function (Blueprint $table) {
-            $table->foreign('cat_idg')
+            $table->foreign('cat')
                 ->references('name')
                 ->on('cats')
                 ->onDelete('cascade');

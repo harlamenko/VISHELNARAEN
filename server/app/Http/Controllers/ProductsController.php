@@ -33,13 +33,13 @@ class ProductsController extends Controller
         }
 
         if ($request->sex && $request->type) {
-            return Product::where('cat', $sex)->where('type', $request->type)->get();
+            return Product::where('cat', $sex)->where('type', $request->type)->get(['id','cat','type','price','rus_name','rating','img']);
         } else if ($request->sex && !$request->type) {
-            return Product::where('cat', $sex)->get();
+            return Product::where('cat', $sex)->get(['id','cat','type','price','rus_name','rating','img']);
         } else if (!$request->sex && $request->type) {
-            return Product::where('type', $request->type)->get();
+            return Product::where('type', $request->type)->get(['id','cat','type','price','rus_name','rating','img']);
         } else {
-            return Product::all();
+            return Product::all(['id','cat','type','price','rus_name','rating','img']);
         }
     }
 
