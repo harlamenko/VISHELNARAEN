@@ -1,6 +1,4 @@
-.filter {
-    padding-top: 50px;
-    
+.filter {    
     &__category {
         line-height: 1.5rem;
         position: relative;
@@ -34,6 +32,10 @@
     }
 
     &__sort {
+        &__wrapper {
+            margin-top: 40px; 
+            cursor: pointer;
+        }
         &__method {
         line-height: 1rem;
         font-size: 0.8rem;

@@ -1,62 +1,3 @@
-.wrapper {
-    width: 1270px;
-    padding: 0 10px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 50px 80px auto;
-    grid-template-areas: 
-        "header header header"
-        "nav . ."
-        "main main main";
-}
-.header {
-    grid-area: header;
-    display: grid;
-    column-gap: 40px;
-    grid-template-columns: 1fr 3fr 1fr;
-    align-items: end;
-    grid-template-areas:
-    "header_logo header_bcrumbs header_cart";
-
-    &__logo {
-        font-family: 'Travels ExtraBold';
-        font-size: 1.3rem;
-        letter-spacing: 2px;
-        grid-area: header_logo;
-    }
-
-    &__breadcrumbs {
-        grid-area: header_bcrumbs;
-        &__arrow {
-            margin: 0 8px -8px;
-        }
-        &__crumb{
-            white-space: pre;
-            &:last-child {
-                border-bottom: 2px solid #000;
-                display: inline-block;
-                margin-bottom: -6px;
-                max-width: 265px;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                overflow: hidden;
-            }
-        }
-    }
-
-    &__cart {
-        grid-area: header_cart;
-        text-align: right;
-    }
-}
-.gradient-element::after {
-    height: 10px;
-    margin-left: 0;
-    margin-top: -10px;
-    width: 270px;
-}
-
 .navigation {
     grid-area: nav;
     position: relative;
@@ -64,7 +5,7 @@
     &__link{
         display: block;
         position: absolute;
-        right: 18px;
+        left: 25%;
         bottom: 0;
 
         &__arrow{

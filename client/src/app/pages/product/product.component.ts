@@ -29,16 +29,19 @@ export class ProductComponent implements OnInit {
         this.nextId = this.mainId + 1;
         this.prevId = this.mainId - 1;
         this._productService.getProductById(this.mainId).subscribe(
-          product => this.mainProduct = product,
-          errors => console.error(errors)
+          product => this.mainProduct = product
         );
         this._productService.getProductById(this.nextId).subscribe(
           product => this.nextProduct = product,
-          errors => console.error(errors)
+          errors => {
+            this.nextProduct = null;
+          }
         );
         this._productService.getProductById(this.prevId).subscribe(
           product => this.prevProduct = product,
-          errors => console.error(errors)
+          errors => {
+            this.prevProduct = null;
+          }
         );
       },
       errors => console.error(errors)

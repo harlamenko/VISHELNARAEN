@@ -1,75 +1,56 @@
-<div class="wrapper">
-  <header class="header">
-    <h1 class="header__logo gradient-element">
-      ВЫШЕЛНАРАЁН
-    </h1>
-  
-    <div class="header__breadcrumbs" *ngIf="mainProduct">
-      <span class="header__breadcrumbs__crumb">Одежда</span>
-      <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
-      <span class="header__breadcrumbs__crumb">Мужская</span>
-      <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
-      <span class="header__breadcrumbs__crumb">Толстовки</span>
-      <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
-      <span class="header__breadcrumbs__crumb">{{ mainProduct.rus_name }}</span>
-    </div>
-  
-    <app-cart class="header__cart"></app-cart>
-  </header>
-  <nav class="navigation">
-    <a routerLink="/clothes" class="navigation__link">
-      <img class="navigation__link__arrow" src="../../../assets/icons/triangle.png" alt="<">
-      Назад
-    </a>
-  </nav>
-  <section class="main-section">
-    <aside 
-      class="main-section__side-product main-section__side-product--prev main-section__side-product--semitransparent">
-      <img src="../../../assets/images/смт.jpg" routerLink="/clothes/{{prevId}}" alt="{{ prevProduct.rus_name }}" *ngIf="prevProduct">
-    </aside>
-    <main class="main-section__current-product">
-      <figure class="main-section__current-product__card" *ngIf="mainProduct">
-        <img class="main-section__current-product__card__photo" src="../../../assets/images/смт.jpg" alt="{{ mainProduct.rus_name }}">
-        <figcaption class="main-section__current-product__card__info">
-          <p class="main-section__current-product__card__info__name">{{ mainProduct.rus_name }}</p>
-          <p class="main-section__current-product__card__info__title">{{ mainProduct.title }}</p>
-          <p class="main-section__current-product__card__info__price">{{ mainProduct.price }}₽</p>
-        </figcaption>
-      </figure>
-      <section class="main-section__current-product__description description">
-        <li class='description__category'>Цвет:
-          <ul class='description__category__sub'>
-            <li class='description__category description__category--inline color-rect' style="background-color: black"></li>
-            <li class='description__category description__category--inline color-rect' style="background-color: #ae811a"></li>
-            <li class='description__category description__category--inline color-rect color-rect--none' style="background-color: #ebce8d"></li>
-          </ul>
-        </li>
-        <li class='description__category'>Размер:
-          <ul class='description__category__sub'>
-            <li class='description__category description__category--inline'>XS</li>
-            <li class='description__category description__category--inline'>S</li>
-            <li class='description__category description__category--inline'>M</li>
-            <li class='description__category description__category--inline'>L</li>
-          </ul>
-        </li>
-        <li class='description__category'>Описание:
-          <ul class='description__category__sub'>
-            <li class='description__category'>Мягкая хлопковая ткань с петелькой внутри</li>
-            <li class='description__category'>Анатомический крой</li>
-            <li class='description__category'>Приталенный силуэт</li>
-            <li class='description__category'>Рукав реглан</li>
-            <li class='description__category'>Отделочные строчки по швам</li>
-            <li class='description__category'>Круглый ворот</li>
-            <li class='description__category'>Сделано в Севастополе</li>
-            <li class='description__category'>80% хлопка, 20% полиэстера</li>
-          </ul>
-        </li>
-        <a class="btn gradient-border in">В корзину</a>
-      </section>
-    </main>
-    <aside 
-      class="main-section__side-product main-section__side-product--next main-section__side-product--semitransparent">
-      <img src="../../../assets/images/смт.jpg" routerLink="/clothes/{{nextId}}" alt="{{ nextProduct.rus_name }}" *ngIf="nextProduct">
-    </aside>
-  </section>
-  </div>
+<nav class="navigation">
+  <a routerLink="/clothes" class="navigation__link">
+    <img class="navigation__link__arrow" src="../../../assets/icons/triangle.png" alt="<">
+    Назад
+  </a>
+</nav>
+<section class="main-section">
+  <aside 
+    class="main-section__side-product main-section__side-product--prev main-section__side-product--semitransparent">
+    <img [src]="prevProduct.img" routerLink="/clothes/{{prevId}}" [alt]="prevProduct.rus_name" *ngIf="prevProduct">
+  </aside>
+  <main class="main-section__current-product">
+    <figure class="main-section__current-product__card" *ngIf="mainProduct">
+      <img class="main-section__current-product__card__photo" [src]="mainProduct.img" [alt]="mainProduct.rus_name">
+      <figcaption class="main-section__current-product__card__info">
+        <p class="main-section__current-product__card__info__name">{{ mainProduct.rus_name }}</p>
+        <p class="main-section__current-product__card__info__title">{{ mainProduct.title }}</p>
+        <p class="main-section__current-product__card__info__price">{{ mainProduct.price }}₽</p>
+      </figcaption>
+    </figure>
+    <section class="main-section__current-product__description description">
+      <li class='description__category'>Цвет:
+        <ul class='description__category__sub'>
+          <li class='description__category description__category--inline color-rect' style="background-color: black"></li>
+          <li class='description__category description__category--inline color-rect' style="background-color: #ae811a"></li>
+          <li class='description__category description__category--inline color-rect color-rect--none' style="background-color: #ebce8d"></li>
+        </ul>
+      </li>
+      <li class='description__category'>Размер:
+        <ul class='description__category__sub'>
+          <li class='description__category description__category--inline'>XS</li>
+          <li class='description__category description__category--inline'>S</li>
+          <li class='description__category description__category--inline'>M</li>
+          <li class='description__category description__category--inline'>L</li>
+        </ul>
+      </li>
+      <li class='description__category'>Описание:
+        <ul class='description__category__sub'>
+          <li class='description__category'>Мягкая хлопковая ткань с петелькой внутри</li>
+          <li class='description__category'>Анатомический крой</li>
+          <li class='description__category'>Приталенный силуэт</li>
+          <li class='description__category'>Рукав реглан</li>
+          <li class='description__category'>Отделочные строчки по швам</li>
+          <li class='description__category'>Круглый ворот</li>
+          <li class='description__category'>Сделано в Севастополе</li>
+          <li class='description__category'>80% хлопка, 20% полиэстера</li>
+        </ul>
+      </li>
+      <a class="btn gradient-border in">В корзину</a>
+    </section>
+  </main>
+  <aside 
+    class="main-section__side-product main-section__side-product--next main-section__side-product--semitransparent">
+    <img [src]="nextProduct.img" routerLink="/clothes/{{nextId}}" [alt]="nextProduct.rus_name" *ngIf="nextProduct">
+  </aside>
+</section>

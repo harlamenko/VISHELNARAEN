@@ -1,1 +1,35 @@
-<router-outlet></router-outlet>
+<div class="wrapper" [ngClass]="{'wrapper--without-filter': !needFilter, 'wrapper--with-filter': needFilter}" *ngIf="needLayout; else withoutLayout">
+    <header class="header">
+      <h1 class="header__logo gradient-element" routerLink="/">
+        ВЫШЕЛНАРАЁН
+      </h1>
+      
+      <section class="header__main">
+        <app-search class="header__search" *ngIf="!needBreadCrumbs"></app-search>
+        <span class='header__decor two-strings' *ngIf="!needBreadCrumbs"></span>
+        <!-- <div class="header__breadcrumbs" *ngIf="needBreadCrumbs">
+          <span class="header__breadcrumbs__crumb">Одежда</span>
+          <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
+          <span class="header__breadcrumbs__crumb">Мужская</span>
+          <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
+          <span class="header__breadcrumbs__crumb">Толстовки</span>
+          <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
+          <span class="header__breadcrumbs__crumb">{{ mainProduct.rus_name }}</span>
+        </div> -->
+      </section>
+      
+      <div class="header__cart" routerLink="/cart">Корзина<sup class="header__cart__count">0</sup></div>
+  
+    </header>
+    
+    <aside class="filter-container" *ngIf="needFilter">
+      <app-filter></app-filter>
+    </aside>
+
+    <section class="outlet">
+        <router-outlet></router-outlet>
+    </section>
+</div>
+<ng-template #withoutLayout>
+    <router-outlet></router-outlet>
+</ng-template>

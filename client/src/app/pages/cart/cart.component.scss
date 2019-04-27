@@ -1,0 +1,25 @@
+.gradient-element::after {
+    height: 10px;
+    margin-left: 0;
+    margin-top: -10px;
+    width: 170px;
+}
+.cart {
+    &__btn {
+        text-transform: uppercase;
+        margin-left: auto;
+        width: 300px;
+        text-align: center;
+        padding: 25px;
+        margin-top: 10px;
+        font-size: 1rem;
+        font-family: 'Travels DemiBold'
+    }
+    &__price {
+        text-align: right;
+    }
+    &__clotheses {
+    min-height: 320px;
+
+    }
+}

@@ -5,7 +5,10 @@ interface IProduct {
     type: string;
     price: number;
     rus_name: string;
+    rating: number;
     img: string;
+    color: string[];
+    size: string[];
 }
 export class Product implements IProduct {
     id: number;
@@ -15,4 +18,7 @@ export class Product implements IProduct {
     price: number;
     rus_name: string;
     img: string;
+    rating: number;
+    color: string[];
+    size: string[];
 }

@@ -1,0 +1,73 @@
+.about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+
+    &__us {
+        &__shop {
+            font-family: 'Travels Medium';
+
+            & > p{
+                &:not(:last-child):not(:first-child) {
+                    margin-top: 5px;
+                }
+                &:last-child {
+                    margin-top: 20px;
+                }
+            }
+
+            &__city {
+                margin-top: 40px;
+            }
+            
+            &__place {
+                font-size: 0.8rem;
+            }
+            &__address {
+                font-size: 0.6rem;
+                color: gray;
+            }
+            &__time {
+                font-size: 0.8rem;
+            }
+        }
+    }
+    &__contacts {
+        &__contact {
+            font-family: 'Travels Medium';
+
+            & > p{
+                &:not(:first-child) {
+                    margin-top: 5px;
+                }
+            }
+
+            &__type {
+                margin-top: 40px;
+            }
+            
+            &__value {
+                font-size: 0.8rem;
+            }
+            &__external-info {
+                font-size: 0.6rem;
+                color: gray;
+            }
+        }
+    }
+}
+.gradient-element{
+    display: inline-block;
+
+    &::after {
+        height: 10px;
+        margin-left: 0;
+        margin-top: -10px;
+        width: calc(100% + 15px);
+    }
+}
+.social-icons {
+    width: 30px;
+    height: 30px;
+    margin-right: 15px;
+}

@@ -1,3 +1,6 @@
+.gradient-element {
+    display: block;
+}
 .gradient-element::after {
     display: block;
     margin-left: 100%;
@@ -6,6 +9,7 @@
 }
 
 .two-strings {
+    display: block;
     position: absolute;
     margin: 0 calc(50% - 46px);
 }

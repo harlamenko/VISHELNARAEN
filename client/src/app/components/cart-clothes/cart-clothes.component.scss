@@ -1,0 +1,78 @@
+.cart-clothes {
+    height: 65px;
+    width: 400px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    border: 3px solid;
+    margin-top: 20px;
+
+    &__photo {
+        height: 100%;
+    }
+
+    &__description {
+        flex-grow: 1;
+        font-family: 'Travels Medium';
+        padding: 5px;
+        
+        &__elem {
+            &:not(:last-child) {
+                margin-bottom: 5px;
+            }
+        }
+
+        &__name {
+            font-family: 'Travels DemiBold';
+        }
+
+        &__price {
+            font-family: 'Travels DemiBold';
+        }
+
+        &__category {
+            display: inline-block;
+
+            &:first-child {
+                padding-right: 5px;
+                margin-right: 5px;
+                border-right: 1px solid;
+            }
+
+            &__sub {
+                display: inline-block;
+            }
+        }
+    }
+    &__btn {
+        background: none;
+        border: none;
+        border-left: 3px solid;
+        padding: 0;
+        width: 59px;
+        position: relative;
+
+        &::after {
+            content: '';
+            display: block;
+            width: 3px;
+            position: absolute;
+            left: 27px;
+            top: -2px;
+            height: 63px;
+            background: black;
+            transform: rotate(43deg);
+        }
+        &::before {
+            content: '';
+            display: block;
+            width: 3px;
+            position: absolute;
+            left: 27px;
+            top: -2px;
+            height: 63px;
+            background: black;
+            transform: rotate(-43deg);
+        }
+    }
+}
