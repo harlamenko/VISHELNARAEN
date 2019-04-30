@@ -6,7 +6,7 @@ use App\Http\Middleware\CheckAdmin;
 use Illuminate\Http\Request; //PostRequest
 use Illuminate\Support\Facades\Storage;
 use App\Models\Product;
-use App\Models\Cat;
+use App\Models\Product_Color_Size;
 use Validator;
 
 class ProductsController extends Controller
@@ -44,18 +44,89 @@ class ProductsController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+
+    public function show($id)
+    {
+        $product = Product::find($id);
+
+        if (!$product)
+        {
+            return $this->jsonResponse([
+                "message" => "Product not found"
+            ], 404, "Product not found");
+        }
+
+        $colors = Product_Color_Size::select('colors.name')
+           ->join('colors', 'product__color__sizes.id_color', '=', 'colors.id')
+            ->where('product__color__sizes.id','=', $id)
+            ->get();
+
+        if (!$colors)
+        {
+            return $this->jsonResponse([
+                "message" => "Color not found"
+            ], 404, "Color not found");
+        }
+
+        $sizes = Product_Color_Size::select('sizes.name')
+            ->join('sizes', 'product__color__sizes.id_size', '=', 'sizes.id')
+            ->where('product__color__sizes.id','=', $id)
+            ->get();
+
+        if (!$sizes)
+        {
+            return $this->jsonResponse([
+                "message" => "Size not found"
+            ], 404, "Size not found");
+        }
+
+        $imgs = Product_Color_Size::select('img')
+            ->where('product__color__sizes.id','=', $id)
+            ->get();
+
+        if (!$imgs)
+        {
+            return $this->jsonResponse([
+                "message" => "Image not found"
+            ], 404, "Image not found");
+        }
+
+        $descr = explode('; ', $product->descr);
+
+        $resultColors = [];
+        foreach($colors as $color) {
+            $resultColors[] = $color->name;
+        }
+
+        $resultSizes = [];
+        foreach($sizes as $size) {
+            $resultSizes[] = $size->name;
+        }
+
+        $resultImgs = [];
+        foreach($imgs as $img) {
+            $resultImgs[] = $img->img;
+        }
+
+        $product->descr = $descr;
+        $product->sizes = $resultSizes;
+        $product->colors = $resultColors;
+        $product->imgs = $resultImgs;
+
+        return $this->jsonResponse($product, 200, "View product");
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-
-    public function getAssortment(Request $request) {
-        $products = Product::select()->where('id', $request->id)->get();
-        return $products;
-
-        //return Product::get();
-    }
 
 //    public function store (Request $request) {
 //        $response = [];
@@ -78,25 +149,6 @@ class ProductsController extends Controller
 //        return $this->jsonResponse(["status" => true, "product_id" => $newProduct->id], 201, "Successful creation");
 //    }
 //
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-
-    public function show($id)
-    {
-        $product = Product::find($id);
-        if (!$product)
-        {
-            return $this->jsonResponse([
-                "message" => "Product not found"
-            ], 404, "Product not found");
-        }
-        return $this->jsonResponse($product, 200, "View product");
-
-    }
 //
 //    /**
 //     * Update the specified resource in storage.

@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: apricarto
- * Date: 2019-04-15
- * Time: 16:02
+ * Date: 2019-04-29
+ * Time: 18:26
  */
 
 namespace App\Models;
@@ -14,20 +14,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 /**
- * Class Color
+ * Class Product_Color_Size
  * @package App\Models
  *
- * @property-read int $id
- * @property string $name
- * @property string $rus_name
+ * @property int $id_product
+ * @property string $id_color
+ * @property string $id_size
  *
- * @property array|Collection|Product[]
+ * @property array|Collection|Product_Color_size[]
  */
 
-class Color extends Model
+class Product_Color_Size extends Model
 {
     protected $fillable = [
-        'name', 'rus_name'
+        'id_product', 'id_color', 'id_size'
     ];
 
     /**
@@ -35,6 +35,7 @@ class Color extends Model
      */
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'products_colors_sizes', 'id', 'id_color');
+        return $this->belongsToMany(Product::class, 'products_colors_sizes', 'id_product', 'id');
     }
 }
+

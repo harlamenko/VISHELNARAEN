@@ -18,7 +18,6 @@ class CreateColorsTable extends Migration
                 ->unique();
             $table->string('name',50)
                 ->index();
-            $table->string('rus_name', 50);
         });
     }
 

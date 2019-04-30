@@ -13,8 +13,8 @@ class CreateProductsColorsSizesTable extends Migration
      */
     public function up()
     {
-        Schema::create('products_colors_sizes', function (Blueprint $table) {
-            $table->integer('id_product')
+        Schema::create('product__color__sizes', function (Blueprint $table) {
+            $table->integer('id')
                 ->unsigned()
                 ->index();
             $table->integer('id_color')
@@ -23,9 +23,10 @@ class CreateProductsColorsSizesTable extends Migration
             $table->integer('id_size')
                 ->unsigned()
                 ->index();
+            $table->longText('img');
         });
 
-        Schema::table('products_colors_sizes', function (Blueprint $table) {
+        Schema::table('product__color__sizes', function (Blueprint $table) {
             $table->foreign('id_product')
                 ->references('id')
                 ->on('products')
@@ -48,6 +49,6 @@ class CreateProductsColorsSizesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('products_colors_sizes');
+        Schema::dropIfExists('product__color__sizes');
     }
 }

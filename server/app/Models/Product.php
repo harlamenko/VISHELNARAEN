@@ -54,6 +54,11 @@ class Product extends Model
         return $this->hasMany(Color::class);
     }
 
+    public function product_color_size()
+    {
+        return $this->hasMany(Product_Color_Size::class);
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -77,4 +82,5 @@ class Product extends Model
     {
         $query->where('publish', 1);
     }
+
 }
