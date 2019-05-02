@@ -14,20 +14,21 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 /**
- * Class Product_Color_Size
+ * Class ProductColorSize
  * @package App\Models
  *
- * @property int $id_product
- * @property string $id_color
- * @property string $id_size
+ * @property int $id
+ * @property int $id_color
+ * @property string $sizes
+ * @property string $id_photo
  *
- * @property array|Collection|Product_Color_size[]
+ * @property array|Collection|ProductColorSizePhoto[]
  */
 
-class Product_Color_Size extends Model
+class ProductColorSizePhoto extends Model
 {
     protected $fillable = [
-        'id_product', 'id_color', 'id_size'
+        'id', 'id_color', 'sizes', 'id_photo'
     ];
 
     /**
@@ -35,7 +36,7 @@ class Product_Color_Size extends Model
      */
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'products_colors_sizes', 'id_product', 'id');
+        return $this->belongsToMany(Product::class, 'product_color_size_photos', 'id', 'id');
     }
 }
 

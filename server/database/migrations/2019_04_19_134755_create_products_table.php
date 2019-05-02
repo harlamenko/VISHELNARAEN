@@ -23,11 +23,8 @@ class CreateProductsTable extends Migration
                 ->index();
             $table->integer('price');
             $table->string('rus_name', 50);
-            $table->string('sizes', 255);
-            $table->string('colors', 255);
             $table->integer('rating', 11);
             $table->text('descr');
-            $table->longText('imgs');
         });
 
         Schema::table('products', function (Blueprint $table) {

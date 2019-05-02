@@ -19,7 +19,6 @@ use Illuminate\Support\Collection;
  *
  * @property-read int $id
  * @property string $name
- * @property string $rus_name
  *
  * @property array|Collection|Product[]
  */
@@ -27,7 +26,7 @@ use Illuminate\Support\Collection;
 class Color extends Model
 {
     protected $fillable = [
-        'name', 'rus_name'
+        'name'
     ];
 
     /**

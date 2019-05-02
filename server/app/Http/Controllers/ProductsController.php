@@ -6,7 +6,7 @@ use App\Http\Middleware\CheckAdmin;
 use Illuminate\Http\Request; //PostRequest
 use Illuminate\Support\Facades\Storage;
 use App\Models\Product;
-use App\Models\Product_Color_Size;
+use App\Models\ProductColorSizePhoto;
 use Validator;
 
 class ProductsController extends Controller
@@ -52,8 +52,8 @@ class ProductsController extends Controller
 
     public function show($id)
     {
+        //Получение объекта товара
         $product = Product::find($id);
-
         if (!$product)
         {
             return $this->jsonResponse([
@@ -61,9 +61,28 @@ class ProductsController extends Controller
             ], 404, "Product not found");
         }
 
-        $colors = Product_Color_Size::select('colors.name')
-           ->join('colors', 'product__color__sizes.id_color', '=', 'colors.id')
-            ->where('product__color__sizes.id','=', $id)
+        //Получение объекта параметров товара
+        $product_color_size_photos = ProductColorSizePhoto::where('id','=',$id)->get();
+        if (!$product_color_size_photos)
+        {
+            return $this->jsonResponse([
+                "message" => "Product params not found"
+            ], 404, "Product params not found");
+        }
+
+        //Получение размеров товара
+        $sizes = ProductColorSizePhoto::select('sizes')->where('id','=',$id)->get();
+        if (!$sizes)
+        {
+            return $this->jsonResponse([
+                "message" => "Sizes not found"
+            ], 404, "Sizes not found");
+        }
+
+        //Получение цветов товара
+        $colors = ProductColorSizePhoto::select('colors.name')
+            ->join('colors', 'product_color_size_photos.id_color', '=', 'colors.id')
+            ->where('product_color_size_photos.id','=', $id)
             ->get();
 
         if (!$colors)
@@ -73,51 +92,43 @@ class ProductsController extends Controller
             ], 404, "Color not found");
         }
 
-        $sizes = Product_Color_Size::select('sizes.name')
-            ->join('sizes', 'product__color__sizes.id_size', '=', 'sizes.id')
-            ->where('product__color__sizes.id','=', $id)
+        //Получение фотограий товара
+        $photos = ProductColorSizePhoto::select('photo')
+            ->where('product_color_size_photos.id','=', $id)
             ->get();
 
-        if (!$sizes)
+        if (!$photos)
         {
             return $this->jsonResponse([
-                "message" => "Size not found"
-            ], 404, "Size not found");
+                "message" => "Photo not found"
+            ], 404, "Photo not found");
         }
 
-        $imgs = Product_Color_Size::select('img')
-            ->where('product__color__sizes.id','=', $id)
-            ->get();
+        //Приведение параметров в требуемый вид
+        $resultDescr = explode('; ', $product->descr);
+        $product->descr = $resultDescr;
 
-        if (!$imgs)
-        {
-            return $this->jsonResponse([
-                "message" => "Image not found"
-            ], 404, "Image not found");
+        $resultSizes = [];
+        foreach ($sizes as $size) {
+            $resultSizes[] = explode(',', $size->sizes);
         }
-
-        $descr = explode('; ', $product->descr);
 
         $resultColors = [];
         foreach($colors as $color) {
             $resultColors[] = $color->name;
         }
 
-        $resultSizes = [];
-        foreach($sizes as $size) {
-            $resultSizes[] = $size->name;
+        $resultPhotos = [];
+        foreach($photos as $photo) {
+            $resultPhotos[] = $photo->photo;
         }
 
-        $resultImgs = [];
-        foreach($imgs as $img) {
-            $resultImgs[] = $img->img;
+        //Объединение параметров в вид variant
+        foreach ($colors as $index => $color) {
+            $variants[] = ['color'=>$resultColors[$index],'sizes'=>$resultSizes[$index],'photo'=>$resultPhotos[$index]];
         }
 
-        $product->descr = $descr;
-        $product->sizes = $resultSizes;
-        $product->colors = $resultColors;
-        $product->imgs = $resultImgs;
-
+        $product->variants = $variants;
         return $this->jsonResponse($product, 200, "View product");
     }
 

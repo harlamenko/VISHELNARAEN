@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProductsColorsSizesTable extends Migration
+class CreateProductColorSizePhotosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,20 @@ class CreateProductsColorsSizesTable extends Migration
      */
     public function up()
     {
-        Schema::create('product__color__sizes', function (Blueprint $table) {
+        Schema::create('product_color_size_photos', function (Blueprint $table) {
             $table->integer('id')
                 ->unsigned()
                 ->index();
             $table->integer('id_color')
                 ->unsigned()
                 ->index();
-            $table->integer('id_size')
+            $table->string('sizes')
                 ->unsigned()
                 ->index();
-            $table->longText('img');
+            $table->longText('photo');
         });
 
-        Schema::table('product__color__sizes', function (Blueprint $table) {
+        Schema::table('product_color_size_photos', function (Blueprint $table) {
             $table->foreign('id_product')
                 ->references('id')
                 ->on('products')
@@ -34,10 +34,6 @@ class CreateProductsColorsSizesTable extends Migration
             $table->foreign('id_color')
                 ->references('id')
                 ->on('colors')
-                ->onDelete('cascade');
-            $table->foreign('id_size')
-                ->references('id')
-                ->on('sizes')
                 ->onDelete('cascade');
         });
     }
@@ -49,6 +45,6 @@ class CreateProductsColorsSizesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product__color__sizes');
+        Schema::dropIfExists('product_color_sizes_photos');
     }
 }
