@@ -42,20 +42,21 @@ class ProductsController extends Controller
         }
 
         if ($request->sex && $request->type) {
-            $products = Product::where('cat', $sex)->where('type', $request->type);//->get(['id','cat','type','price','rus_name','rating']);
-            
-            foreach ($products as $product) {
-                $productsPhotos = ProductColorSizePhoto::where('id', $product->id)->get()->first();
-            }
-            return $productsPhotos;
-            return Product::where('cat', $sex)->where('type', $request->type)->get(['id', 'cat', 'type', 'price', 'rus_name', 'rating']);
+            $products = Product::where('cat', $sex)->where('type', $request->type)->get(['id','cat','type','price','rus_name','rating']);
         } else if ($request->sex && !$request->type) {
-            return Product::where('cat', $sex)->get(['id','cat','type','price','rus_name','rating']);
+            $products = Product::where('cat', $sex)->get(['id','cat','type','price','rus_name','rating']);
         } else if (!$request->sex && $request->type) {
-            return Product::where('type', $request->type)->get(['id','cat','type','price','rus_name','rating']);
+            $products = Product::where('type', $request->type)->get(['id','cat','type','price','rus_name','rating']);
         } else {
-            return Product::all(['id','cat','type','price','rus_name','rating']);
+            $products = Product::all(['id','cat','type','price','rus_name','rating']);
         }
+        $fullProducts = [];
+        foreach ($products as $key=>$product) {
+            $productsPhotos[$key] = ProductColorSizePhoto::where('id', $product->id)->get('photo')->first();
+            $fullProducts[] = ['id'=>$product->id, 'cat'=>$product->cat, 'type'=>$product->type, 'price'=>$product->price,
+                'rus_name'=>$product->rus_name, 'rating'=>$product->rating, 'photo'=>$productsPhotos[$key]->photo];
+        }
+        return $fullProducts;
     }
 
     /**
@@ -326,21 +327,24 @@ class ProductsController extends Controller
         }
         $request->descr = implode("; ",$request->descr);
 
+
 //        TODO:: изменить метод createOrUpdateProduct так, чтобы происходила перезапись, а не добавление
         if (!$this->createOrUpdateProduct($request, $product)) {
             return response("Error while saving product in db", 500);
         }
 
         foreach ($id_colors as $key=>$id_color) {
-            $newProductColorSizePhoto = ProductColorSizePhoto::where('id','=',$id)->where('id_color','=',$id_color);
-            if (!$this->createOrUpdateProductColorSizePhoto($id, $id_color, $sizes[$key], $photos[$key], $newProductColorSizePhoto))
-            {
-                return response("Error while saving id->color->size->photo in db", 500);
-            }
+            ProductColorSizePhoto::where('id','=',$id)->where('id_color','=',$id_color)
+                ->update(['sizes'=> $sizes[$key], 'photo' => $photos[$key]]);
+//            if (!$this->UpdateProductColorSizePhoto($id, $id_color, $sizes[$key], $photos[$key], $newProductColorSizePhoto))
+//            {
+//                return response("Error while saving id->color->size->photo in db", 500);
+//            }
+
         }
-
-        $product->cats = explode(',', $product->cats);
-
+//
+//        $product->cats = explode(',', $product->cats);
+//
         return $this->jsonResponse(["status"=> true, "product_id" => $product->id], 201, "Successful creation");
     }
 
