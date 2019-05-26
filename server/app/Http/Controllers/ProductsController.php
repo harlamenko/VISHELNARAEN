@@ -23,6 +23,13 @@ class ProductsController extends Controller
         return $this->jsonResponse(Product::select()->get(), 200, "Список одежды");
     }
 
+    public function getSexAndTypes () {
+        $sex = Cat::get(['name','rus_name']);
+        $type = Type::get(['name','rus_name']);
+        $sexType = ['sex'=>$sex,'types'=>$type];
+        return $sexType;
+    }
+
     public function showProductsWithParams(Request $request) {
 
         switch ($request->sex) {
@@ -35,7 +42,13 @@ class ProductsController extends Controller
         }
 
         if ($request->sex && $request->type) {
-            return Product::where('cat', $sex)->where('type', $request->type)->get(['id','cat','type','price','rus_name','rating']);
+            $products = Product::where('cat', $sex)->where('type', $request->type);//->get(['id','cat','type','price','rus_name','rating']);
+            
+            foreach ($products as $product) {
+                $productsPhotos = ProductColorSizePhoto::where('id', $product->id)->get()->first();
+            }
+            return $productsPhotos;
+            return Product::where('cat', $sex)->where('type', $request->type)->get(['id', 'cat', 'type', 'price', 'rus_name', 'rating']);
         } else if ($request->sex && !$request->type) {
             return Product::where('cat', $sex)->get(['id','cat','type','price','rus_name','rating']);
         } else if (!$request->sex && $request->type) {
@@ -319,7 +332,7 @@ class ProductsController extends Controller
         }
 
         foreach ($id_colors as $key=>$id_color) {
-            $newProductColorSizePhoto = ProductColorSizePhoto::find($id);
+            $newProductColorSizePhoto = ProductColorSizePhoto::where('id','=',$id)->where('id_color','=',$id_color);
             if (!$this->createOrUpdateProductColorSizePhoto($id, $id_color, $sizes[$key], $photos[$key], $newProductColorSizePhoto))
             {
                 return response("Error while saving id->color->size->photo in db", 500);
