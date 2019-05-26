@@ -234,23 +234,26 @@ class ProductsController extends Controller
         $variants = $request->variants;
 
         foreach($variants as $variant) {
-            $colors[] = Color::where('name', $variant['color'])->get();
+            $colorArr = Color::where('name', $variant['color'])->get();
+            if (count($colorArr) > 0){
+                $colors[] = Color::where('name', $variant['color'])->get()->first();
+            } else {
+                $colors[] = 'empty';
+            }
             $sizes[] = implode(",",$variant['sizes']);
             $photos[] = $variant['photo'];
         }
 
         //Проверка, существует ли цвет
-        foreach($colors as $color) {
-            if (!$color) {
-//                TODO:: сделать как в update
-//                $newColor[] = new Color();
-//                if (!$this->createColor($request, $newColor)) {
-//                    return response("Error while saving color in db", 500);
-//                }
-//                $id_colors[] = $color->first()->id;
+        for($i=0;$i<count($colors);$i++) {
+            $color = $colors[$i];
+            if ($color == 'empty') {
+                if (!$this->createColor($variants[$i]['color'])) {
+                    return response("Error while saving color in db", 500);
+                }
+                $id_colors[] = Color::where('name', $variants[$i]['color'])->get()->first()->id;
             } else {
-                $newColor[] = $color;
-                $id_colors[] = $color->first()->id;
+                $id_colors[] = Color::where('name', $variants[$i]['color'])->get()->first()->id;
             }
         }
 
@@ -265,7 +268,7 @@ class ProductsController extends Controller
 
         foreach ($id_colors as $key=>$id_color) {
             $newProductColorSizePhoto = new ProductColorSizePhoto();
-            if (!$this->createOrUpdateProductColorSizePhoto($id, $id_color, $sizes[$key], $photos[$key], $newProductColorSizePhoto))
+            if (!$this->createProductColorSizePhoto($id, $id_color, $sizes[$key], $photos[$key], $newProductColorSizePhoto))
             {
                 return response("Error while saving id->color->size->photo in db", 500);
             }
@@ -307,7 +310,7 @@ class ProductsController extends Controller
             if (count($colorArr) > 0){
                 $colors[] = Color::where('name', $variant['color'])->get()->first();
             } else {
-                $colors[] = 'pupa';
+                $colors[] = 'empty';
             }
             $sizes[] = implode(",",$variant['sizes']);
             $photos[] = $variant['photo'];
@@ -316,7 +319,7 @@ class ProductsController extends Controller
         //Проверка, существует ли цвет
         for($i=0;$i<count($colors);$i++) {
             $color = $colors[$i];
-            if ($color == 'pupa') {
+            if ($color == 'empty') {
                 if (!$this->createColor($variants[$i]['color'])) {
                     return response("Error while saving color in db", 500);
                 }
@@ -327,8 +330,6 @@ class ProductsController extends Controller
         }
         $request->descr = implode("; ",$request->descr);
 
-
-//        TODO:: изменить метод createOrUpdateProduct так, чтобы происходила перезапись, а не добавление
         if (!$this->createOrUpdateProduct($request, $product)) {
             return response("Error while saving product in db", 500);
         }
@@ -336,16 +337,9 @@ class ProductsController extends Controller
         foreach ($id_colors as $key=>$id_color) {
             ProductColorSizePhoto::where('id','=',$id)->where('id_color','=',$id_color)
                 ->update(['sizes'=> $sizes[$key], 'photo' => $photos[$key]]);
-//            if (!$this->UpdateProductColorSizePhoto($id, $id_color, $sizes[$key], $photos[$key], $newProductColorSizePhoto))
-//            {
-//                return response("Error while saving id->color->size->photo in db", 500);
-//            }
-
         }
-//
-//        $product->cats = explode(',', $product->cats);
-//
-        return $this->jsonResponse(["status"=> true, "product_id" => $product->id], 201, "Successful creation");
+
+        return $this->jsonResponse(["status"=> true, "product_id" => $product->id], 201, "Successful updating");
     }
 
     /**
@@ -404,7 +398,7 @@ class ProductsController extends Controller
         return $newProduct->save();
     }
 
-    private function createOrUpdateProductColorSizePhoto($id, $id_color, $sizes, $photos, $newProductColorSizePhoto): bool {
+    private function createProductColorSizePhoto($id, $id_color, $sizes, $photos, $newProductColorSizePhoto): bool {
         $newProductColorSizePhoto->id = $id;
         $newProductColorSizePhoto->id_color = $id_color;
         $newProductColorSizePhoto->sizes = $sizes;
@@ -419,8 +413,6 @@ class ProductsController extends Controller
      */
 
     private function createValidator(Request $request) {
-        $bytesInMegabyte = 1000000; //КАВОО
-        $fileLimit = 2 * $bytesInMegabyte;
 
         $validator = Validator::make($request->all(), [
             'rus_name' => 'required',
@@ -434,19 +426,7 @@ class ProductsController extends Controller
             'variants.*.color' => 'required',
             'variants.*.sizes' => 'required',
             'variants.*.photo' => 'required'
-            //'img' => "required|mimes:jpg,png|max:{$fileLimit}",
         ]);
         return $validator;
     }
-//
-//    /**
-//     * @param Request $request
-//     * @return string
-//     */
-//
-//    private function saveImageAndGetPath(Request $request): string {
-//        $imagePath = Storage::disk('product_images')->put('', $request->image);
-//
-//        return "product_images/" . $imagePath;
-//    }
 }
