@@ -297,7 +297,7 @@ class ProductsController extends Controller
         $validator = $this->createValidator($request);
 
         if ($validator->fails()) {
-            $response["status"] = false;
+            $response["status"] = 'error';
             $response["message"] = $validator->errors();
 
             return $this->jsonResponse($response, 400, "Editing error");
@@ -339,7 +339,7 @@ class ProductsController extends Controller
                 ->update(['sizes'=> $sizes[$key], 'photo' => $photos[$key]]);
         }
 
-        return $this->jsonResponse(["status"=> true, "product_id" => $product->id], 201, "Successful updating");
+        return $this->jsonResponse(["status"=> 'ok', "product_id" => $product->id], 201, "Successful updating");
     }
 
     /**
