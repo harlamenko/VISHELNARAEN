@@ -14,27 +14,36 @@ class LoginController extends Controller
         $validator = $this->createValidator($request);
         if (!$validator->fails())
         {
-            $user = User::where("login", "=", $request->login)
+            $user = User::where("name", "=", $request->name)
                 ->first();
             if($user)
             {
                 if (!Hash::check($request->password, $user->password))
                 {
                     return $this->jsonResponse([
-                        "status" => false,
+                        "status" => 'error',
                         "message" => "Invalid authorization data"
                     ], 401, "Invalid authorization data");
                 }
+                $isAdmin = User::where('name','=', $request->name)->first()->isAdmin;
+                if (!$isAdmin) {
+                    $isAdmin = false;
+                }
+                else {
+                    $isAdmin = true;
+                }
                 return $this->jsonResponse(
                     [
-                        "status" => true,
-                        "token" => $user->token
+
+                        "status" => 'ok',
+                        "isAdmin" => $isAdmin,
+                        "message" => "Success authorization"
                     ]
                     , 200, "Successful authorization");
             }
         }
         return $this->jsonResponse([
-            "status" => false,
+            "status" => 'error',
             "message" => "Invalid authorization data"
         ], 401, "Invalid authorization data");
     }
@@ -45,7 +54,7 @@ class LoginController extends Controller
     private function createValidator(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'login' => 'required',
+            'name' => 'required',
             'password' => 'required',
         ]);
         return $validator;

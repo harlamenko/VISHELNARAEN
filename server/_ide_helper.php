@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.8.11 on 2019-04-15 08:14:44.
+ * Generated for Laravel 5.8.11 on 2019-05-26 12:22:17.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -14485,6 +14485,118 @@ namespace Illuminate\Support {
  
 }
 
+namespace Laratrust { 
+
+    /**
+     * This file is part of Laratrust,
+     * a role & permission management solution for Laravel.
+     *
+     * @license MIT
+     * @package Laratrust
+     */ 
+    class LaratrustFacade {
+        
+        /**
+         * Checks if the current user has a role by its name.
+         *
+         * @param string $role Role name.
+         * @return bool 
+         * @static 
+         */ 
+        public static function hasRole($role, $team = null, $requireAll = false)
+        {
+                        /** @var \Laratrust\Laratrust $instance */
+                        return $instance->hasRole($role, $team, $requireAll);
+        }
+        
+        /**
+         * Check if the current user has a permission by its name.
+         *
+         * @param string $permission Permission string.
+         * @return bool 
+         * @static 
+         */ 
+        public static function can($permission, $team = null, $requireAll = false)
+        {
+                        /** @var \Laratrust\Laratrust $instance */
+                        return $instance->can($permission, $team, $requireAll);
+        }
+        
+        /**
+         * Check if the current user has a role or permission by its name.
+         *
+         * @param array|string $roles The role(s) needed.
+         * @param array|string $permissions The permission(s) needed.
+         * @param array $options The Options.
+         * @return bool 
+         * @static 
+         */ 
+        public static function ability($roles, $permissions, $team = null, $options = array())
+        {
+                        /** @var \Laratrust\Laratrust $instance */
+                        return $instance->ability($roles, $permissions, $team, $options);
+        }
+        
+        /**
+         * Checks if the user owns the thing.
+         *
+         * @param Object $thing
+         * @param string $foreignKeyName
+         * @return boolean 
+         * @static 
+         */ 
+        public static function owns($thing, $foreignKeyName = null)
+        {
+                        /** @var \Laratrust\Laratrust $instance */
+                        return $instance->owns($thing, $foreignKeyName);
+        }
+        
+        /**
+         * Checks if the user has some role and if he owns the thing.
+         *
+         * @param string|array $role
+         * @param Object $thing
+         * @param array $options
+         * @return boolean 
+         * @static 
+         */ 
+        public static function hasRoleAndOwns($role, $thing, $options = array())
+        {
+                        /** @var \Laratrust\Laratrust $instance */
+                        return $instance->hasRoleAndOwns($role, $thing, $options);
+        }
+        
+        /**
+         * Checks if the user can do something and if he owns the thing.
+         *
+         * @param string|array $permission
+         * @param Object $thing
+         * @param array $options
+         * @return boolean 
+         * @static 
+         */ 
+        public static function canAndOwns($permission, $thing, $options = array())
+        {
+                        /** @var \Laratrust\Laratrust $instance */
+                        return $instance->canAndOwns($permission, $thing, $options);
+        }
+        
+        /**
+         * Get the currently authenticated user or null.
+         *
+         * @return \Illuminate\Auth\UserInterface|null 
+         * @static 
+         */ 
+        public static function user()
+        {
+                        /** @var \Laratrust\Laratrust $instance */
+                        return $instance->user();
+        }
+         
+    }
+ 
+}
+
 namespace Barryvdh\Debugbar { 
 
     /**
@@ -17719,6 +17831,8 @@ namespace  {
     class Validator extends \Illuminate\Support\Facades\Validator {}
 
     class View extends \Illuminate\Support\Facades\View {}
+
+    class Laratrust extends \Laratrust\LaratrustFacade {}
 
     class Debugbar extends \Barryvdh\Debugbar\Facade {}
  

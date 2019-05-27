@@ -1571,6 +1571,53 @@
         ]
     },
     {
+        "name": "kkszymanowski/traitor",
+        "version": "0.2.5",
+        "version_normalized": "0.2.5.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/KKSzymanowski/Traitor.git",
+            "reference": "9770fc7de72ff585601dc9c42b31715d9fc40a24"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/KKSzymanowski/Traitor/zipball/9770fc7de72ff585601dc9c42b31715d9fc40a24",
+            "reference": "9770fc7de72ff585601dc9c42b31715d9fc40a24",
+            "shasum": ""
+        },
+        "require": {
+            "nikic/php-parser": "^1.0|^2.0|^3.0|^4.0",
+            "php": ">=5.4"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.1"
+        },
+        "time": "2018-04-19T12:24:36+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Traitor\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Kuba Szymanowski",
+                "email": "kuba.szymanowski@inf24.pl"
+            }
+        ],
+        "description": "Add a trait use statement to existing PHP class",
+        "keywords": [
+            "add",
+            "php",
+            "trait"
+        ]
+    },
+    {
         "name": "laravel/framework",
         "version": "v5.8.11",
         "version_normalized": "5.8.11.0",
@@ -3458,6 +3505,73 @@
             "guid",
             "identifier",
             "uuid"
+        ]
+    },
+    {
+        "name": "santigarcor/laratrust",
+        "version": "5.2.2",
+        "version_normalized": "5.2.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/santigarcor/laratrust.git",
+            "reference": "f9a703639cdde914bdb99499ce2d3bef5070812f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/santigarcor/laratrust/zipball/f9a703639cdde914bdb99499ce2d3bef5070812f",
+            "reference": "f9a703639cdde914bdb99499ce2d3bef5070812f",
+            "shasum": ""
+        },
+        "require": {
+            "kkszymanowski/traitor": "^0.2.0",
+            "laravel/framework": "~5.6.0|~5.7.0|~5.8.0",
+            "php": "^7.1"
+        },
+        "require-dev": {
+            "mockery/mockery": ">=0.9.9",
+            "orchestra/testbench": "~3.6.0|~3.7.0|~3.8.0",
+            "phpunit/phpunit": ">=4.1"
+        },
+        "time": "2019-05-15T18:20:11+00:00",
+        "type": "library",
+        "extra": {
+            "laravel": {
+                "providers": [
+                    "Laratrust\\LaratrustServiceProvider"
+                ],
+                "aliases": {
+                    "Laratrust": "Laratrust\\LaratrustFacade"
+                }
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Laratrust\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Santiago Garcia",
+                "homepage": "http://santigarcor.me"
+            }
+        ],
+        "description": "This package provides a flexible way to add Role-based Permissions to Laravel",
+        "keywords": [
+            "Teams",
+            "acl",
+            "authorization",
+            "laratrust",
+            "laravel",
+            "multiusers",
+            "permissions",
+            "php",
+            "rbac",
+            "roles"
         ]
     },
     {
