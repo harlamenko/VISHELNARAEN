@@ -14,12 +14,8 @@
     }
 }
 .main-section {
-    grid-area: main;
-    display: grid;
     height: calc(100vh - 140px);
     min-height: 516px;
-    align-items: center;
-    grid-template-columns: 1fr 3fr 1fr;
 
     &__side-product{
         width: 141px;
@@ -37,9 +33,10 @@
         }
     }
     &__current-product {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
+        display: flex;
+        justify-content: center;
+        height: 62vh;
+        padding: 100px 0;
 
         &__category-sex-controls{
             display: flex;
@@ -56,11 +53,15 @@
         &__card {
             position: relative;
             width: 300px;
-            justify-self: end;
-
+            display: flex;
+            flex-flow: column;
+            margin: 0 15px;
+            
             &__photo {
                 width: 100%;
-                height: 79%;
+                width: 100%;
+                height: 300px;
+                margin-bottom: 10px;
             }
 
             &__info {
@@ -295,7 +296,7 @@
         width: 49%;
     }
     &--admin:last-of-type {
-        margin-left: 7px;
+        margin-left: 6px;
     }
 
 }

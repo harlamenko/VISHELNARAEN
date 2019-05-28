@@ -1,70 +1,46 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
-import { ActivatedRoute } from '@angular/router';
-import { Product } from 'src/app/models/Product';
 import { WebStorageService } from 'src/app/services/web-storage.service';
 import { Variant } from 'src/app/models/Product';
 import { BaseService } from 'src/app/services/base.service';
 
 @Component({
-  selector: 'app-product',
-  templateUrl: './product.component.html',
-  styleUrls: ['./product.component.scss']
+  selector: 'app-create',
+  templateUrl: './create.component.html',
+  styleUrls: ['./create.component.scss']
 })
-export class ProductComponent implements OnInit {
-  public mainProduct: Product;
-  public nextProduct: Product;
-  public prevProduct: Product;
-
-  public mainId: number;
-  public nextId: number;
-  public prevId: number;
+export class CreateComponent implements OnInit {
+  public mainProduct;
 
   public variantAdded = false;
   public sexesTypes: any;
 
   public currentVariant = 0;
   public choosedSizeId = 0;
-  public allColors: string[];
+  public allColors: string[] = [];
   public allSizes: string[] = ['XS', 'S', 'M', 'L', 'XL'];
   @ViewChild('canvasForPhoto') canvasForPhoto: ElementRef;
 
   constructor(
     private _productService: ProductService,
-    private _route: ActivatedRoute,
     public webStorageService: WebStorageService,
     public baseService: BaseService
   ) { }
 
   ngOnInit() {
-    if (this.webStorageService.isAdmin) {
-      this._productService.getSexType().subscribe(sexesTypes => {
-        this.sexesTypes = sexesTypes;
-      });
-    }
-    this._route.paramMap.subscribe(
-      params => {
-        this.mainId = +params.get('id');
-        this.nextId = this.mainId + 1;
-        this.prevId = this.mainId - 1;
-        this._productService.getProductById(this.mainId).subscribe(
-          product => {
-            this.mainProduct = product;
-            this.webStorageService.productName.next(product.rus_name);
-            this.getAllColorsAndSizes();
-          }
-        );
-        this._productService.getProductById(this.nextId).subscribe(
-          product => this.nextProduct = product,
-          errors => this.nextProduct = null
-        );
-        this._productService.getProductById(this.prevId).subscribe(
-          product => this.prevProduct = product,
-          errors => this.prevProduct = null
-        );
-      },
-      errors => console.error(errors)
-    );
+    this.mainProduct = {
+      title: '',
+      cat: 'for_men',
+      type: 'jackets',
+      price: 0,
+      rus_name: '',
+      rating: 0,
+      descr: [],
+      variants: []
+    };
+    this._productService.getSexType().subscribe(sexesTypes => {
+      this.sexesTypes = sexesTypes;
+    });
   }
 
   chooseSizeId(i, findExisted = false) {
@@ -81,27 +57,15 @@ export class ProductComponent implements OnInit {
   }
 
   isExistedSize(i){
-    const sizes = this.mainProduct.variants[this.currentVariant].sizes;
+    const sizes = this.mainProduct.variants[this.currentVariant] ? this.mainProduct.variants[this.currentVariant].sizes : [];
     return sizes.indexOf(this.allSizes[i]) !== -1;
   }
 
-  getAllColorsAndSizes() {
+  countColors() {
     this.allColors = [];
     this.mainProduct.variants.forEach(variant => {
       this.allColors.push(variant.color);
-    });
-  }
-
-  addToCart() {
-    const obj = {
-      id: this.mainProduct.id,
-      name: this.mainProduct.rus_name,
-      price: this.mainProduct.price,
-      photo: this.mainProduct.variants[this.currentVariant].photo,
-      size: this.mainProduct.variants[this.currentVariant].sizes[this.choosedSizeId],
-      color: this.mainProduct.variants[this.currentVariant].color
-    };
-    this.webStorageService.storeToLocal('cart', obj);
+    })
   }
 
   back() {
@@ -131,19 +95,20 @@ export class ProductComponent implements OnInit {
       const base64Img = event.target.result;
       const newVar = new Variant();
       newVar.photo = base64Img;
-      this.addNewVariant(newVar);
+      this.mainProduct.variants.push(newVar);
+      this.addNewVariant();
     });
 
     reader.readAsDataURL(file);
   }
 
-  addNewVariant(newVar) {
+  addNewVariant() {
     this.variantAdded = true;
+    this.currentVariant = this.mainProduct.variants.length - 1;
+    const newVar = this.mainProduct.variants[this.currentVariant];
     newVar.color = 'none';
     newVar.sizes = [];
-    this.mainProduct.variants.push(newVar);
-    this.getAllColorsAndSizes();
-    this.currentVariant = this.allColors.length - 1;
+    this.countColors();
     this.getPipette(newVar.photo);
   }
 
@@ -211,8 +176,8 @@ export class ProductComponent implements OnInit {
       const y = e.pageY - position.y;
       const p = ctx.getImageData(x, y, 1, 1).data;
       const hex = '#' + ('000000' + self.rgbToHex(p[0], p[1], p[2])).slice(-6);
-      self.mainProduct.variants[self.mainProduct.variants.length - 1].color = hex;
-      self.getAllColorsAndSizes();
+      self.mainProduct.variants[self.currentVariant].color = hex;
+      self.countColors();
     };
   }
 
@@ -308,7 +273,7 @@ export class ProductComponent implements OnInit {
     }
   }
 
-  updateProduct() {
+  addProduct() {
     if (this.variantAdded) {
       this.baseService.popup.open('Редактирование не окончено!', null, null, true);
       return;
@@ -320,12 +285,13 @@ export class ProductComponent implements OnInit {
       this.baseService.popup.open(validateResult.messages, null, null, true);
       return;
     } else {
-      this._productService.updateProduct(this.mainProduct).subscribe(
+      this._productService.addProduct(this.mainProduct).subscribe(
         res => {
-          if (res.status === 'ok') {
-            this.baseService.popup.open('Информация о продукте успешно обновлена.', null, null, true);
+          if (res.status === 'ok' || res.status) {
+            this.baseService.popup.open('Новый продукт успешно добавлен.', null, null, true);
+            this.clearProduct();
           } else {
-            this.baseService.popup.open('Ошибка! Информация о продукте не обновлена.', null, null, true);
+            this.baseService.popup.open('Ошибка! продукт успешно не добавлен.', null, null, true);
           }
         },
         err => {
@@ -335,19 +301,17 @@ export class ProductComponent implements OnInit {
     }
   }
 
-  deleteProduct() {
-    this._productService.deleteProductById(this.mainId).subscribe(
-      res => {
-        if (res.status === true) {
-          this.baseService.popup.open('Продукт успешно удален.', null, null, true);
-        } else {
-          this.baseService.popup.open('Ошибка! Продукт не был удален.', null, null, true);
-        }
-      },
-      err => {
-        this.baseService.popup.open('Приносим извенения, серверная ошибка.', null, null, true);
-      }
-    );
+  clearProduct() {
+    this.mainProduct = {
+      title: '',
+      cat: 'for_men',
+      type: 'jackets',
+      price: 0,
+      rus_name: '',
+      rating: 0,
+      descr: [],
+      variants: []
+    };
   }
 
 }

@@ -19,7 +19,11 @@
         text-align: right;
     }
     &__clotheses {
-    min-height: 320px;
-
+        display: flex;
+        flex-flow: column;
+        flex-wrap: wrap;
+        height: 50vh;
+        overflow: auto;
+        margin: 30px 0 50px;
     }
 }

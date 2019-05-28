@@ -6,10 +6,22 @@ interface IProduct {
     price: number;
     rus_name: string;
     rating: number;
-    img: string;
-    color: string[];
-    size: string[];
+    descr: string[];
+    variants: Variant[];
 }
+
+export class Variant {
+    color: string;
+    sizes: string[];
+    photo: string;
+
+    constructor() {
+        this.color = null;
+        this.sizes = null;
+        this.photo = null;
+    }
+}
+
 export class Product implements IProduct {
     id: number;
     title: string;
@@ -17,8 +29,7 @@ export class Product implements IProduct {
     type: string;
     price: number;
     rus_name: string;
-    img: string;
     rating: number;
-    color: string[];
-    size: string[];
+    descr: string[];
+    variants: Variant[];
 }

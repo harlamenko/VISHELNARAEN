@@ -7,18 +7,18 @@
       <section class="header__main">
         <app-search class="header__search" *ngIf="!needBreadCrumbs"></app-search>
         <span class='header__decor two-strings' *ngIf="!needBreadCrumbs"></span>
-        <!-- <div class="header__breadcrumbs" *ngIf="needBreadCrumbs">
-          <span class="header__breadcrumbs__crumb">Одежда</span>
+        <div class="header__breadcrumbs" *ngIf="needBreadCrumbs">
+          <span class="header__breadcrumbs__crumb" routerLink="/clothes">Одежда</span>
           <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
-          <span class="header__breadcrumbs__crumb">Мужская</span>
+          <span class="header__breadcrumbs__crumb" routerLink="/clothes/men">Мужская</span>
           <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
-          <span class="header__breadcrumbs__crumb">Толстовки</span>
+          <span class="header__breadcrumbs__crumb" routerLink="/clothes/men/hoodies">Толстовки</span>
           <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
-          <span class="header__breadcrumbs__crumb">{{ mainProduct.rus_name }}</span>
-        </div> -->
+          <span class="header__breadcrumbs__crumb">{{ productName }}</span>
+        </div>
       </section>
       
-      <div class="header__cart" routerLink="/cart">Корзина<sup class="header__cart__count">0</sup></div>
+      <div class="header__cart" routerLink="/cart">Корзина<sup class="header__cart__count">{{cartLength}}</sup></div>
   
     </header>
     
@@ -30,6 +30,9 @@
         <router-outlet></router-outlet>
     </section>
 </div>
+
 <ng-template #withoutLayout>
-    <router-outlet></router-outlet>
+  <app-welcome-page></app-welcome-page>
 </ng-template>
+
+<app-popup [popup]="baseService.popup"></app-popup>

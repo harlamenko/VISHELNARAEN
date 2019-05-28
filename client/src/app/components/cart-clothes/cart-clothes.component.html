@@ -1,21 +1,21 @@
-<figure class="cart-clothes">
-  <img src="../../../assets/images/смт.jpg"class="cart-clothes__photo" alt="smt">
+<figure *ngIf="product" class="cart-clothes">
+  <img [src]="product.photo" class="cart-clothes__photo" routerLink="/clothes/{{product.id}}" [alt]="product.name">
 
-  <figcaption class="cart-clothes__description">
-    <p class="cart-clothes__description__elem cart-clothes__description__name">AW-18 C</p>
+  <figcaption class="cart-clothes__description" routerLink="/clothes/{{product.id}}">
+    <p class="cart-clothes__description__elem cart-clothes__description__name">{{product.name}}</p>
 
     <li class='cart-clothes__description__elem cart-clothes__description__category'>Размер:
       <ul class='cart-clothes__description__category__sub'>
-        <li class='cart-clothes__description__category'>S</li>
+        <li class='cart-clothes__description__category'>{{product.size}}</li>
       </ul>
     </li>
     <li class='cart-clothes__description__elem cart-clothes__description__category'>Цвет:
       <ul class='cart-clothes__description__category__sub'>
-        <li class='cart-clothes__description__category' style="background-color: black"></li>
+        <li class='cart-clothes__description__category color' [style.background-color]="product.color"></li>
       </ul>
     </li>
 
-    <p class="cart-clothes__description__elem cart-clothes__description__price">3000 ₽</p>
+    <p class="cart-clothes__description__elem cart-clothes__description__price">{{product.price}}</p>
   </figcaption>
-  <button class="cart-clothes__btn"></button>
+  <button class="cart-clothes__btn" (click)="removeFromCart(product.id)"></button>
 </figure>

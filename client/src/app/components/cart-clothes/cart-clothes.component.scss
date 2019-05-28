@@ -5,7 +5,10 @@
     justify-content: space-between;
     font-size: 0.7rem;
     border: 3px solid;
-    margin-top: 20px;
+    margin: 15px;
+    &:hover, & button:hover {
+        cursor: pointer;
+    }
 
     &__photo {
         height: 100%;
@@ -41,6 +44,11 @@
 
             &__sub {
                 display: inline-block;
+            }
+
+            .color {
+                width: 11px;
+                height: 11px;
             }
         }
     }

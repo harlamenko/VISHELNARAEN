@@ -1,0 +1,16 @@
+<div class="popup__backdrop" *ngIf="popup.isOpen">
+    <dialog class="popup">
+      <button class="popup__btn popup__btn--close" (click)="popup.close()"></button>
+      <p class="popup__message">{{ popup.message }}</p>
+      <div class="popup__actions" *ngIf="!popup.warning; else warn">
+          <button class="popup__actions__btn popup__btn" (click)="popup.confirmAction()">да</button>
+          <button class="popup__actions__btn popup__btn" (click)="popup.close()">нет</button>
+      </div>
+      
+      <ng-template #warn>
+        <div class="popup__actions">
+          <button class="popup__actions__btn popup__btn" (click)="popup.close()">ок</button>
+        </div>
+      </ng-template>
+    </dialog>
+  </div>

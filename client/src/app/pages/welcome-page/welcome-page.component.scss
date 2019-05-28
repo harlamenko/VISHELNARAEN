@@ -29,8 +29,32 @@ header {
     position: relative;
 
     .header-action {
-        display: block;
         width: 150px;
+        display: flex;
+        flex-flow: column;
+        justify-content: space-between;
+
+        &__btns {
+            display: flex;
+            justify-content: space-around;
+            padding-top: 20px;
+            min-width: 250px;
+        }
+
+        &__control {
+            background: none;
+            border: 0;
+            border-bottom: 2px solid;
+            margin: 5px;
+            width: 45%;
+            font-size: 0.8em;
+
+            &s__wrapper{
+                width: 290px;
+                display: flex;
+                justify-content: space-between;
+            }
+         }
 
         &:last-child {
             width: auto;
@@ -58,4 +82,12 @@ nav{
     width: 10rem;
     margin-top: 9px;
     margin-left: calc(100% - 155px);
+}
+
+.mb-35 {
+    margin-bottom: -35px;
+}
+
+.not-active {
+    color: gray;
 }

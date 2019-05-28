@@ -3,6 +3,7 @@ import { ProductService } from 'src/app/services/product.service';
 import { Product } from 'src/app/models/Product';
 import { ProductParams } from 'src/app/models/ProductParams';
 import { ActivatedRoute } from '@angular/router';
+import { WebStorageService } from 'src/app/services/web-storage.service';
 
 @Component({
   selector: 'app-main',
@@ -15,6 +16,7 @@ export class MainComponent implements OnInit {
   constructor(
     public productService: ProductService,
     private _activatedRouter: ActivatedRoute,
+    public webStorageService: WebStorageService
     ) { }
 
   ngOnInit() {

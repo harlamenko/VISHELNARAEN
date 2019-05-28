@@ -2,7 +2,31 @@
   <header>    
     <a href="#" class='header-action' routerLink="about">О нас</a> 
     <span class='two-strings'></span>
-    <span class='header-action'><a href="">Вход</a> / <a href="">Регистрация</a></span>
+    <span class='header-action' *ngIf="!webStorageService?.username?.length; else in" [ngClass]="{'mb-35': auth || reg}">
+      <div class="header-action__controls__wrapper" *ngIf="auth || reg">
+        <input placeholder="Логин" [(ngModel)]="login" class="header-action__control" type="text">
+        <input placeholder="Пароль" [(ngModel)]="pwd" class="header-action__control" type="password">
+      </div>
+      <div class="header-action__controls__wrapper" *ngIf="reg">
+        <input placeholder="Почта" [(ngModel)]="mail" class="header-action__control" type="mail">
+        <input placeholder="Повтор пароля" [(ngModel)]="repeatpwd" class="header-action__control" type="password">
+      </div>
+      <div class='header-action__btns'>
+        <a href="#" *ngIf="!auth" [ngClass]="{'not-active': reg}" (click)="changeActions('auth')">Вход</a> 
+        <a href="#" *ngIf="auth" (click)="logIn()">Войти</a> 
+        /
+        <a href="#" *ngIf="!reg" [ngClass]="{'not-active': auth}" (click)="changeActions('reg')">Регистрация</a>
+        <a href="#" *ngIf="reg" (click)="signin()">Зарегаться</a>
+      </div>      
+    </span>
+    <ng-template #in>
+      <span class='header-action'>
+        <div class='header-action__btns'>
+            {{webStorageService.username}}
+            <a href="#" (click)="logout()">Выйти</a> 
+        </div>
+      </span>
+    </ng-template>
   </header>
   <h1 class="gradient-element">
     ВЫШЕЛНАРАЁН

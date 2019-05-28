@@ -1,7 +1,15 @@
-<figure class="clothes gradient-border in" *ngIf="product" routerLink="/clothes/{{product.id}}">
-  <img class="clothes__photo" [src]="product.img" [alt]="product.rus_name">
+<figure class="clothes gradient-border in" *ngIf="product && product !== 'adminControl'; else adminControl" routerLink="/clothes/{{product.id}}">
+  <img class="clothes__photo" [src]="product.photo" [alt]="product.rus_name">
   <figcaption class="clothes__info">
     <p class="clothes__info__name gradient-element">{{product.rus_name}}</p>
     <p class="clothes__info__price">{{product.price}}₽</p>
   </figcaption>
 </figure>
+<ng-template #adminControl>
+    <figure class="clothes gradient-border in" routerLink="/admin/create">
+      <button class="adminControlBtn"></button>
+      <figcaption class="clothes__info">
+        <p class="clothes__info__name gradient-element">Добавить новый продукт</p>
+      </figcaption>
+    </figure>
+</ng-template>

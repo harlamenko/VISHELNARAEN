@@ -14,12 +14,16 @@ import { ProductComponent } from './pages/product/product.component';
 import { ProductSortPipe } from './pipes/product-sort.pipe';
 import { CartClothesComponent } from './components/cart-clothes/cart-clothes.component';
 import { AboutComponent } from './pages/about/about.component';
+import { FormsModule } from '@angular/forms';
+import { PopupComponent } from './components/popup/popup.component';
+import { CreateComponent } from './pages/admin/create/create.component';
 
 const appRoutes: Routes = [
   {path: '', component: WelcomePageComponent},
   {path: 'cart', component: CartComponent},
   {path: 'about', component: AboutComponent},
   {path: 'clothes', component: MainComponent},
+  {path: 'admin/create', component: CreateComponent, pathMatch: 'full'},
   {path: 'clothes/:id', component: ProductComponent},
   {path: 'clothes/:sex/:type', component: MainComponent, pathMatch: 'full'},
   {path: '**', component: NotFoundComponent}
@@ -39,13 +43,16 @@ const appRoutes: Routes = [
     ProductSortPipe,
     CartClothesComponent,
     AboutComponent,
+    PopupComponent,
+    CreateComponent,
   ],
   imports: [
     RouterModule.forRoot(
       appRoutes
     ),
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

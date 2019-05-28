@@ -6,4 +6,9 @@
 
 * {
     font-family: 'Travels DemiBold';
+    outline: none;
+}
+
+button:hover, input[type=file]:hover, a:hover {
+    cursor: pointer;
 }

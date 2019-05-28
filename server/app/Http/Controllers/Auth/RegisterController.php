@@ -67,19 +67,20 @@ class RegisterController extends Controller
     {
 
         $validator = $this->Validator($request);
+        $isUserCreated = count(User::where('name','=', $request->name)->get()) > 0;
 
-        if ($validator->fails()) {
-            $response["status"] = false;
+        if ($validator->fails() || $isUserCreated) {
+            $response["status"] = 'error';
+            $response["ok"] = false;
             $response["message"] = $validator->errors();
 
             return $this->jsonResponse($response, 400, "Editing error");
         }
-
         return User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'api_token' => Str::random(60),
+            'api_token' => Str::random(60)
         ]);
     }
 }

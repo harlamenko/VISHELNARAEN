@@ -1,0 +1,75 @@
+.popup{
+    min-width: 350px;
+    max-width: 400px;
+    height: 250px;
+    z-index: 100;
+    position: fixed;
+    top: calc(100vh/2 - 150px);
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+
+    &__backdrop {
+        z-index: 99;
+        display: block;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        background: rgba(0,0,0,0.7);
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: center;
+        margin-top: 30px;
+    }
+    
+    &__message {
+        text-align: center;
+        white-space: pre-line;
+        max-height: 60%;
+        line-height: 25px;
+        overflow: auto;
+    }
+
+    &__btn {
+        background: white;
+        height: 30px;
+        width: 100px;
+        margin: 0 5px;
+        border: 2px solid;
+
+        &--close {
+            position: absolute;
+            margin: 0;
+            top: 0;
+            right: 0;
+            border-top: 0;
+            border-right: 0;
+            width: 30px;
+            
+            &::after {
+                display: block;
+                content: '';
+                border-left: 2px solid;
+                width: 0px;
+                height: 50%;
+                transform: rotate(-45deg);
+                margin: 0 auto;
+                cursor: pointer;
+            }
+            &::before {
+                display: block;
+                content: '';
+                border-left: 2px solid;
+                transform: rotate(45deg);
+                width: 0px;
+                height: 50%;
+                margin: 0 auto;
+                margin-bottom: -13px;
+                cursor: pointer;
+            }
+        }
+    }
+}

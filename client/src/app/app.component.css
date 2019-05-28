@@ -28,10 +28,10 @@
 .header {
     grid-area: header;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(8, 1fr);
     align-items: end;
     grid-template-areas:
-    "header_logo header_main header_main header_cart";
+    "header_logo header_logo header_main header_main header_main header_main header_main header_cart";
 }
 .header__main {
     grid-area: header_main;
@@ -64,6 +64,10 @@
 .header__cart__count {
     font-size: 10px;
     vertical-align: super;
+    display: inline-block;
+    width: 20px;
+    height: 11px;
+    text-align: left;
 }
 .header__breadcrumbs {
     grid-area: header_bcrumbs;
