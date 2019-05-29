@@ -1,9 +1,14 @@
 <h2 class="gradient-element">Ваша корзина:</h2>
 <section class="cart__clotheses">
-    <app-cart-clothes 
-        *ngFor="let product of products" 
-        [product]="product">
-    </app-cart-clothes>
+    <div *ngIf="products.length; else empty">
+        <app-cart-clothes 
+            *ngFor="let product of products" 
+            [product]="product">
+        </app-cart-clothes>
+    </div>
+    <ng-template #empty>
+        Пустота
+    </ng-template>
 </section>
 <p class="cart__price">Итого: {{sum}} ₽</p>
 <button class="btn gradient-border in cart__btn">Заказать</button>

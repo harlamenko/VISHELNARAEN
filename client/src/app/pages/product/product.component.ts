@@ -50,8 +50,33 @@ export class ProductComponent implements OnInit {
         this._productService.getProductById(this.mainId).subscribe(
           product => {
             this.mainProduct = product;
-            this.webStorageService.productName.next(product.rus_name);
+            this._productService.product.next(this.mainProduct);
             this.getAllColorsAndSizes();
+
+            this._productService.getSexType().subscribe(res => {
+              res.sex.forEach(sex => {
+                if (sex.name === this.mainProduct.cat) {
+                  const p = this._productService.product.getValue();
+                  p.sex = sex;
+
+                  switch(sex.name) {
+                    case "for_men":
+                      p.sex.name = 'men';
+                      break;
+                    case "for_women":
+                      p.sex.name = 'women';
+                      break;
+                  this._productService.product.next(p);
+                }
+              });
+              res.types.forEach(type => {
+                if (type.name === this.mainProduct.type) {
+                  const p = this._productService.product.getValue();
+                  p.type = type;
+                  this._productService.product.next(p);
+                }
+              });
+            });
           }
         );
         this._productService.getProductById(this.nextId).subscribe(
@@ -338,7 +363,7 @@ export class ProductComponent implements OnInit {
   deleteProduct() {
     this._productService.deleteProductById(this.mainId).subscribe(
       res => {
-        if (res.status === true) {
+        if (res[status] === true || res[status] === 'ok') {
           this.baseService.popup.open('Продукт успешно удален.', null, null, true);
         } else {
           this.baseService.popup.open('Ошибка! Продукт не был удален.', null, null, true);

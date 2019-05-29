@@ -1,7 +1,11 @@
 <main class="wrapper">
   <header>    
     <a href="#" class='header-action' routerLink="about">О нас</a> 
-    <span class='two-strings'></span>
+    
+    <span class='two-strings'(click)="showAdditionalInfo = true"></span>
+
+    <app-additional-info [showAdditionalInfo]="showAdditionalInfo" (close)="showAdditionalInfo = false"></app-additional-info>
+    
     <span class='header-action' *ngIf="!webStorageService?.username?.length; else in" [ngClass]="{'mb-35': auth || reg}">
       <div class="header-action__controls__wrapper" *ngIf="auth || reg">
         <input placeholder="Логин" [(ngModel)]="login" class="header-action__control" type="text">
@@ -32,8 +36,8 @@
     ВЫШЕЛНАРАЁН
   </h1>
   <nav>
-    <a routerLink="clothes/woman/all">Для женщин</a>
+    <a routerLink="clothes/women/all">Для женщин</a>
     <a routerLink="clothes">Одежда</a>
-    <a routerLink="clothes/man/all">Для мужчин</a>
+    <a routerLink="clothes/men/all">Для мужчин</a>
   </nav>
 </main>

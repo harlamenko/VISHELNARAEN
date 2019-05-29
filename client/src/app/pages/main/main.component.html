@@ -1,6 +1,12 @@
-<section class="clothes-container" *ngIf="products">
+<section class="clothes-container" *ngIf="products?.length; else empty">
   <main class="clothes-container__clothes">
     <app-clothes *ngIf="webStorageService.isAdmin" [product]='"adminControl"'></app-clothes>
     <app-clothes *ngFor="let product of (products | productSort: productService.sortType)" [product]='product'></app-clothes>
   </main>
 </section>
+
+<ng-template #empty>
+  <p *ngIf="products">
+    Сорри, товаров по такому фильтру нет...
+  </p>
+</ng-template>

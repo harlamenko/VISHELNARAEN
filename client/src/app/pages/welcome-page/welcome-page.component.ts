@@ -130,6 +130,9 @@ export class WelcomePageComponent implements OnInit {
   logout() {
     this.webStorageService.isAdmin = false;
     this.webStorageService.removeFromLocalStorage('username');
+
+    window.localStorage.setItem('cart', '[]');
+    this.webStorageService.cartLength.next(0);
   }
 
 }

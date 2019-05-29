@@ -17,6 +17,7 @@ import { AboutComponent } from './pages/about/about.component';
 import { FormsModule } from '@angular/forms';
 import { PopupComponent } from './components/popup/popup.component';
 import { CreateComponent } from './pages/admin/create/create.component';
+import { AdditionalInfoComponent } from './components/additional-info/additional-info.component';
 
 const appRoutes: Routes = [
   {path: '', component: WelcomePageComponent},
@@ -45,6 +46,7 @@ const appRoutes: Routes = [
     AboutComponent,
     PopupComponent,
     CreateComponent,
+    AdditionalInfoComponent,
   ],
   imports: [
     RouterModule.forRoot(

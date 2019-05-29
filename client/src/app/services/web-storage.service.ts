@@ -7,7 +7,6 @@ import { BehaviorSubject, of } from 'rxjs';
 })
 export class WebStorageService {
   public cartLength: BehaviorSubject<number> = new BehaviorSubject(this.getFromLocalStorage('cart').length);
-  public productName: BehaviorSubject<string> = new BehaviorSubject('');
 
   constructor() { }
 

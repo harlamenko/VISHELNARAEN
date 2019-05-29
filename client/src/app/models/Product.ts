@@ -8,6 +8,7 @@ interface IProduct {
     rating: number;
     descr: string[];
     variants: Variant[];
+    sex?: any;
 }
 
 export class Variant {
@@ -32,4 +33,5 @@ export class Product implements IProduct {
     rating: number;
     descr: string[];
     variants: Variant[];
+    sex?: string;
 }

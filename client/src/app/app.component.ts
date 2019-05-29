@@ -2,6 +2,7 @@ import { Component, DoCheck, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { WebStorageService } from './services/web-storage.service';
 import { BaseService } from './services/base.service';
+import { ProductService } from './services/product.service';
 
 @Component({
   selector: 'app-root',
@@ -14,11 +15,13 @@ export class AppComponent implements DoCheck, OnInit{
   public needBreadCrumbs: boolean;
   private clothesUrlRegexp = /\/clothes\/\d/;
   public cartLength;
-  public productName;
+  public product;
+  public showAdditionalInfo = false;
 
   constructor(
     private _router: Router,
     private _webStorageService: WebStorageService,
+    private _productService: ProductService,
     public baseService: BaseService
     ) {}
 
@@ -29,6 +32,6 @@ export class AppComponent implements DoCheck, OnInit{
   }
   ngOnInit() {
     this._webStorageService.cartLength.subscribe(len => this.cartLength = len)
-    this._webStorageService.productName.subscribe(newName => this.productName = newName);
+    this._productService.product.subscribe(product => this.product = product);
   }
 }

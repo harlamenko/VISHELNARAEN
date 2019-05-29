@@ -6,15 +6,19 @@
       
       <section class="header__main">
         <app-search class="header__search" *ngIf="!needBreadCrumbs"></app-search>
-        <span class='header__decor two-strings' *ngIf="!needBreadCrumbs"></span>
-        <div class="header__breadcrumbs" *ngIf="needBreadCrumbs">
+
+        <span class='header__decor two-strings' *ngIf="!needBreadCrumbs" (click)="showAdditionalInfo = true"></span>
+        
+        <app-additional-info [showAdditionalInfo]="showAdditionalInfo" (close)="showAdditionalInfo = false"></app-additional-info>
+
+        <div class="header__breadcrumbs" *ngIf="needBreadCrumbs && product.rus_name && product.type && product.sex">
           <span class="header__breadcrumbs__crumb" routerLink="/clothes">Одежда</span>
           <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
-          <span class="header__breadcrumbs__crumb" routerLink="/clothes/men">Мужская</span>
+          <span class="header__breadcrumbs__crumb" routerLink="/clothes/product.sex.name">{{product.sex.rus_name}}</span>
           <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
-          <span class="header__breadcrumbs__crumb" routerLink="/clothes/men/hoodies">Толстовки</span>
+          <span class="header__breadcrumbs__crumb" routerLink="/clothes/product.type.name/product.sex.name">{{ product.type.rus_name }}</span>
           <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
-          <span class="header__breadcrumbs__crumb">{{ productName }}</span>
+          <span class="header__breadcrumbs__crumb">{{ product.rus_name }}</span>
         </div>
       </section>
       

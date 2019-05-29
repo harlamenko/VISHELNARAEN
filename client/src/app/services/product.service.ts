@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from './base.service';
 import { Product } from '../models/Product';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  public sortType: string;
+  public sortType = 'popularity';
+  public product: BehaviorSubject<Product> = new BehaviorSubject(new Product());
 
   constructor(private _baseService: BaseService) { }
 

@@ -291,7 +291,7 @@ export class CreateComponent implements OnInit {
             this.baseService.popup.open('Новый продукт успешно добавлен.', null, null, true);
             this.clearProduct();
           } else {
-            this.baseService.popup.open('Ошибка! продукт успешно не добавлен.', null, null, true);
+            this.baseService.popup.open('Ошибка! продукт не добавлен.', null, null, true);
           }
         },
         err => {
