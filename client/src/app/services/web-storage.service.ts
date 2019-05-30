@@ -43,6 +43,15 @@ export class WebStorageService {
     this.setToLocaleStorage('username', val);
   }
 
+  get lang() {
+    return  window.localStorage.getItem('lang') === null ? window.navigator.language.split('-')[0] : window.localStorage.getItem('lang');
+  }
+
+  set lang(val) {
+    window.localStorage.setItem('lang', val);
+    document.title = this.lang === 'ru' ? 'ВЫШЕЛНАРАЁН' : 'VISHELNARAEN';
+  }
+
   getFromLocalStorageForSub(k) {
     return of(this.getFromLocalStorage(k));
   }

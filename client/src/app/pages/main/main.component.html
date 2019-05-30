@@ -7,6 +7,6 @@
 
 <ng-template #empty>
   <p *ngIf="products">
-    Сорри, товаров по такому фильтру нет...
+    {{ webStorageService.lang === 'ru' ? 'Сорри, товаров по такому фильтру нет...' : 'Sorry, there are no products for this filter...' }}
   </p>
 </ng-template>

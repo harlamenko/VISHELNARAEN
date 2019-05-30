@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProductParams } from 'src/app/models/ProductParams';
+import { WebStorageService } from 'src/app/services/web-storage.service';
 
 @Component({
   selector: 'app-filter',
@@ -16,7 +17,8 @@ export class FilterComponent implements OnInit {
   constructor(
     public productService: ProductService,
     private _router: Router,
-    private _activatedRouter: ActivatedRoute
+    private _activatedRouter: ActivatedRoute,
+    public webStorageService: WebStorageService
     ) { }
 
   ngOnInit() {
@@ -37,10 +39,10 @@ export class FilterComponent implements OnInit {
   public changeSexParam(value: string, e) {
     e.stopPropagation();
     switch(value) {
-      case "for_men":
+      case "For men":
         this.params.sex = 'men';
         break;
-      case "for_women":
+      case "For women":
         this.params.sex = 'women';
         break;
     }

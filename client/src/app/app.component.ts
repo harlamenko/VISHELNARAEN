@@ -20,7 +20,7 @@ export class AppComponent implements DoCheck, OnInit{
 
   constructor(
     private _router: Router,
-    private _webStorageService: WebStorageService,
+    public webStorageService: WebStorageService,
     private _productService: ProductService,
     public baseService: BaseService
     ) {}
@@ -31,7 +31,7 @@ export class AppComponent implements DoCheck, OnInit{
     this.needBreadCrumbs = this.clothesUrlRegexp.test(this._router.url);
   }
   ngOnInit() {
-    this._webStorageService.cartLength.subscribe(len => this.cartLength = len)
+    this.webStorageService.cartLength.subscribe(len => this.cartLength = len)
     this._productService.product.subscribe(product => this.product = product);
   }
 }

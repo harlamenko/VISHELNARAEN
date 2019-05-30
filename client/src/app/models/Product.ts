@@ -6,9 +6,11 @@ interface IProduct {
     price: number;
     rus_name: string;
     rating: number;
-    descr: string[];
+    rus_descr: string[];
+    en_descr: string[];
     variants: Variant[];
     sex?: any;
+    en_name: string;
 }
 
 export class Variant {
@@ -31,7 +33,9 @@ export class Product implements IProduct {
     price: number;
     rus_name: string;
     rating: number;
-    descr: string[];
+    rus_descr: string[];
+    en_descr: string[];
     variants: Variant[];
-    sex?: string;
+    sex?: any;
+    en_name: string;
 }

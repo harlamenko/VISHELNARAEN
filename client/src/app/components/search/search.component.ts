@@ -35,4 +35,4 @@ export class SearchComponent implements OnInit {
 
     return n_str.join('');
   }
-}
+  }

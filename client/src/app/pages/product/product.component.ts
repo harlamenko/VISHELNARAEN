@@ -26,7 +26,7 @@ export class ProductComponent implements OnInit {
   public currentVariant = 0;
   public choosedSizeId = 0;
   public allColors: string[];
-  public allSizes: string[] = ['XS', 'S', 'M', 'L', 'XL'];
+  public allSizes: string[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
   @ViewChild('canvasForPhoto') canvasForPhoto: ElementRef;
 
   constructor(
@@ -55,22 +55,14 @@ export class ProductComponent implements OnInit {
 
             this._productService.getSexType().subscribe(res => {
               res.sex.forEach(sex => {
-                if (sex.name === this.mainProduct.cat) {
+                if (sex.en_name === this.mainProduct.cat) {
                   const p = this._productService.product.getValue();
                   p.sex = sex;
-
-                  switch(sex.name) {
-                    case "for_men":
-                      p.sex.name = 'men';
-                      break;
-                    case "for_women":
-                      p.sex.name = 'women';
-                      break;
                   this._productService.product.next(p);
                 }
               });
               res.types.forEach(type => {
-                if (type.name === this.mainProduct.type) {
+                if (type.en_name === this.mainProduct.type) {
                   const p = this._productService.product.getValue();
                   p.type = type;
                   this._productService.product.next(p);
@@ -120,7 +112,8 @@ export class ProductComponent implements OnInit {
   addToCart() {
     const obj = {
       id: this.mainProduct.id,
-      name: this.mainProduct.rus_name,
+      rus_name: this.mainProduct.rus_name,
+      en_name: this.mainProduct.en_name,
       price: this.mainProduct.price,
       photo: this.mainProduct.variants[this.currentVariant].photo,
       size: this.mainProduct.variants[this.currentVariant].sizes[this.choosedSizeId],
@@ -244,7 +237,7 @@ export class ProductComponent implements OnInit {
   addNewDescrLine(e) {
     const val = e.target.value;
     if (val.length) {
-      this.mainProduct.descr.push(val);
+      this.webStorageService.lang === 'ru' ? this.mainProduct.rus_descr.push(val) : this.mainProduct.en_descr.push(val);
       e.target.value = '';
     }
   }
@@ -252,9 +245,9 @@ export class ProductComponent implements OnInit {
   blurDescrInput(i, e) {
     const val = e.target.value;
     if (val.length) {
-      this.mainProduct.descr[i] = val;
+      this.webStorageService.lang === 'ru' ? this.mainProduct.rus_descr[i] = val : this.mainProduct.en_descr[i] = val;
     } else {
-      this.mainProduct.descr.splice(i, 1);
+      this.webStorageService.lang === 'ru' ? this.mainProduct.rus_descr.splice(i, 1) : this.mainProduct.en_descr.splice(i, 1);
     }
   }
 
@@ -298,6 +291,7 @@ export class ProductComponent implements OnInit {
     for (let k in this.mainProduct) {
       switch (k) {
         case 'rus_name':
+        case 'en_name':
           if (!this.mainProduct[k].length) {
             validateMessages.push('Поле название не заполнено!');
           }
@@ -312,7 +306,8 @@ export class ProductComponent implements OnInit {
             validateMessages.push('Поле цена не заполнено!');
           }
           break;
-        case 'descr':
+        case 'rus_descr':
+        case 'en_descr':
           if (!this.mainProduct[k].length) {
             validateMessages.push('Необходимо добавить описание!');
           }

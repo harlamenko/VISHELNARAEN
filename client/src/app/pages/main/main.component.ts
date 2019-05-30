@@ -22,6 +22,7 @@ export class MainComponent implements OnInit {
   ngOnInit() {
     this._activatedRouter.paramMap.subscribe(params => {
       this._params = new ProductParams();
+
       if (params.get('sex') !== 'all') {
         this._params.sex = params.get('sex');
       }

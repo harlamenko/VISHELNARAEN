@@ -1,6 +1,6 @@
 <main class="wrapper">
   <header>    
-    <a href="#" class='header-action' routerLink="about">О нас</a> 
+    <a href="#" class='header-action' routerLink="about">{{ webStorageService.lang === 'ru' ? 'О нас' : 'About us' }}</a> 
     
     <span class='two-strings'(click)="showAdditionalInfo = true"></span>
 
@@ -8,36 +8,36 @@
     
     <span class='header-action' *ngIf="!webStorageService?.username?.length; else in" [ngClass]="{'mb-35': auth || reg}">
       <div class="header-action__controls__wrapper" *ngIf="auth || reg">
-        <input placeholder="Логин" [(ngModel)]="login" class="header-action__control" type="text">
-        <input placeholder="Пароль" [(ngModel)]="pwd" class="header-action__control" type="password">
+        <input placeholder="{{ webStorageService.lang === 'ru' ? 'Логин' : 'Login' }}" [(ngModel)]="login" class="header-action__control" type="text">
+        <input placeholder="{{ webStorageService.lang === 'ru' ? 'Пароль' : 'Password' }}" [(ngModel)]="pwd" class="header-action__control" type="password">
       </div>
       <div class="header-action__controls__wrapper" *ngIf="reg">
-        <input placeholder="Почта" [(ngModel)]="mail" class="header-action__control" type="mail">
-        <input placeholder="Повтор пароля" [(ngModel)]="repeatpwd" class="header-action__control" type="password">
+        <input placeholder="{{ webStorageService.lang === 'ru' ? 'Почта' : 'Email' }}" [(ngModel)]="mail" class="header-action__control" type="mail">
+        <input placeholder="{{ webStorageService.lang === 'ru' ? 'Повтор пароля' : 'Repeat password' }}" [(ngModel)]="repeatpwd" class="header-action__control" type="password">
       </div>
       <div class='header-action__btns'>
-        <a href="#" *ngIf="!auth" [ngClass]="{'not-active': reg}" (click)="changeActions('auth')">Вход</a> 
-        <a href="#" *ngIf="auth" (click)="logIn()">Войти</a> 
+        <a href="#" *ngIf="!auth" [ngClass]="{'not-active': reg}" (click)="changeActions('auth')">{{ webStorageService.lang === 'ru' ? 'Вход' : 'Sign in' }}</a> 
+        <a href="#" *ngIf="auth" (click)="logIn()">{{ webStorageService.lang === 'ru' ? 'Войти' : 'Sign up' }}</a> 
         /
-        <a href="#" *ngIf="!reg" [ngClass]="{'not-active': auth}" (click)="changeActions('reg')">Регистрация</a>
-        <a href="#" *ngIf="reg" (click)="signin()">Зарегаться</a>
+        <a href="#" *ngIf="!reg" [ngClass]="{'not-active': auth}" (click)="changeActions('reg')">{{ webStorageService.lang === 'ru' ? 'Регистрация' : 'Sign up' }}</a>
+        <a href="#" *ngIf="reg" (click)="signin()">{{ webStorageService.lang === 'ru' ? 'Регистрация' : 'Sign up' }}</a>
       </div>      
     </span>
     <ng-template #in>
       <span class='header-action'>
         <div class='header-action__btns'>
             {{webStorageService.username}}
-            <a href="#" (click)="logout()">Выйти</a> 
+            <a href="#" (click)="logout()">{{ webStorageService.lang === 'ru' ? 'Выйти' : 'Sign out' }}</a> 
         </div>
       </span>
     </ng-template>
   </header>
   <h1 class="gradient-element">
-    ВЫШЕЛНАРАЁН
+      {{ webStorageService.lang === 'ru' ? 'ВЫШЕЛНАРАЁН' : 'VISHELNARAEN' }}
   </h1>
   <nav>
-    <a routerLink="clothes/women/all">Для женщин</a>
-    <a routerLink="clothes">Одежда</a>
-    <a routerLink="clothes/men/all">Для мужчин</a>
+    <a routerLink="clothes/women/all">{{ webStorageService.lang === 'ru' ? 'Для женщин' : 'For women' }}</a>
+    <a routerLink="clothes">{{ webStorageService.lang === 'ru' ? 'Одежда' : 'Clothes' }}</a>
+    <a routerLink="clothes/men/all">{{ webStorageService.lang === 'ru' ? 'Для мужчин' : 'For men' }}</a>
   </nav>
 </main>

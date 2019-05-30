@@ -1,7 +1,7 @@
 <nav class="navigation">
   <a (click)="back()" class="navigation__link">
     <img class="navigation__link__arrow" src="../../../assets/icons/triangle.png" alt="<">
-    Назад
+    {{webStorageService.lang === 'ru' ? 'Назад' : 'Back'}}
   </a>
 </nav>
 

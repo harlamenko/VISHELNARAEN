@@ -12,13 +12,13 @@ export class CartComponent implements OnInit {
   public sum: number;
 
   constructor(
-    private _webStorageService: WebStorageService
+    public webStorageService: WebStorageService
   ) { }
 
   ngOnInit() {
-    this._webStorageService.cartLength.subscribe(
+    this.webStorageService.cartLength.subscribe(
       res => {
-        this.products = this._webStorageService.getFromLocalStorage('cart');
+        this.products = this.webStorageService.getFromLocalStorage('cart');
         this._countSum();
       }
     )

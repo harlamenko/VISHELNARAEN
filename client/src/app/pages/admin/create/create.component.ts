@@ -30,7 +30,7 @@ export class CreateComponent implements OnInit {
   ngOnInit() {
     this.mainProduct = {
       title: '',
-      cat: 'for_men',
+      cat: 'For men',
       type: 'jackets',
       price: 0,
       rus_name: '',
@@ -304,7 +304,7 @@ export class CreateComponent implements OnInit {
   clearProduct() {
     this.mainProduct = {
       title: '',
-      cat: 'for_men',
+      cat: 'For men',
       type: 'jackets',
       price: 0,
       rus_name: '',

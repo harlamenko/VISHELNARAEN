@@ -10,14 +10,14 @@ import { WebStorageService } from 'src/app/services/web-storage.service';
 export class CartClothesComponent implements OnInit {
   @Input() product: Product;
   constructor(
-    private _webStorageService: WebStorageService
+    public webStorageService: WebStorageService
   ) { }
 
   ngOnInit() {
   }
 
   removeFromCart(id){
-    this._webStorageService.removeFromLocalStorage('cart', id);
+    this.webStorageService.removeFromLocalStorage('cart', id);
     delete this.product;
   }
 

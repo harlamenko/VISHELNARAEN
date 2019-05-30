@@ -1,7 +1,7 @@
 <div class="wrapper" [ngClass]="{'wrapper--without-filter': !needFilter, 'wrapper--with-filter': needFilter}" *ngIf="needLayout; else withoutLayout">
     <header class="header">
       <h1 class="header__logo gradient-element" routerLink="/">
-        ВЫШЕЛНАРАЁН
+        {{ webStorageService.lang === 'ru' ? 'ВЫШЕЛНАРАЁН' : 'VISHELNARAEN' }}
       </h1>
       
       <section class="header__main">
@@ -12,17 +12,17 @@
         <app-additional-info [showAdditionalInfo]="showAdditionalInfo" (close)="showAdditionalInfo = false"></app-additional-info>
 
         <div class="header__breadcrumbs" *ngIf="needBreadCrumbs && product.rus_name && product.type && product.sex">
-          <span class="header__breadcrumbs__crumb" routerLink="/clothes">Одежда</span>
+          <span class="header__breadcrumbs__crumb" routerLink="/clothes">{{ webStorageService.lang === 'ru' ? 'Одежда' : 'Clothes' }}</span>
           <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
-          <span class="header__breadcrumbs__crumb" routerLink="/clothes/product.sex.name">{{product.sex.rus_name}}</span>
+          <span class="header__breadcrumbs__crumb" routerLink="/clothes/product.sex.name">{{ webStorageService.lang === 'ru' ? product.sex.rus_name : product.sex.en_name }}</span>
           <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
-          <span class="header__breadcrumbs__crumb" routerLink="/clothes/product.type.name/product.sex.name">{{ product.type.rus_name }}</span>
+          <span class="header__breadcrumbs__crumb" routerLink="/clothes/product.type.name/product.sex.name">{{ webStorageService.lang === 'ru' ? product.type.rus_name : product.type.en_name }}</span>
           <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
-          <span class="header__breadcrumbs__crumb">{{ product.rus_name }}</span>
+          <span class="header__breadcrumbs__crumb">{{ webStorageService.lang === 'ru' ? product.rus_name : product.en_name }}</span>
         </div>
       </section>
       
-      <div class="header__cart" routerLink="/cart">Корзина<sup class="header__cart__count">{{cartLength}}</sup></div>
+      <div class="header__cart" routerLink="/cart">{{webStorageService.lang === 'ru' ? 'Корзина' : 'Cart' }}<sup class="header__cart__count">{{cartLength}}</sup></div>
   
     </header>
     

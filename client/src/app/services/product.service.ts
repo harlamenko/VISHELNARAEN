@@ -27,7 +27,7 @@ export class ProductService {
   public updateProduct(product) {
     return this._baseService.postHttpRequest(`api/admin/update/${product.id}`, product);
   }
-  
+
   public addProduct(product) {
     return this._baseService.postHttpRequest(`api/admin/store`, product);
   }

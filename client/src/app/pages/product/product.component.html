@@ -1,13 +1,13 @@
 <nav class="navigation">
   <a (click)="back()" class="navigation__link">
     <img class="navigation__link__arrow" src="../../../assets/icons/triangle.png" alt="<">
-    Назад
+    {{webStorageService.lang === 'ru' ? 'Назад' : 'Back'}}
   </a>
 </nav>
 <section class="main-section">
   <aside 
     class="main-section__side-product main-section__side-product--prev main-section__side-product--semitransparent">
-    <img  *ngIf="prevProduct" [src]="prevProduct.variants[0].photo" routerLink="/clothes/{{prevId}}" [alt]="prevProduct.rus_name">
+    <img  *ngIf="prevProduct" [src]="prevProduct.variants[0].photo" routerLink="/clothes/{{prevId}}" [alt]="webStorageService.lang === 'ru' ? prevProduct.rus_name : prevProduct.en_name">
   </aside>
   <main class="main-section__current-product" *ngIf="mainProduct">
     <figure class="main-section__current-product__card">
@@ -24,34 +24,33 @@
       </div>
       <img class="main-section__current-product__card__photo" 
           [src]="mainProduct.variants[currentVariant].photo" 
-          [alt]="mainProduct.rus_name">
+          [alt]="webStorageService.lang === 'ru' ? mainProduct.rus_name : mainProduct.en_name">
       <figcaption class="main-section__current-product__card__info" *ngIf="!webStorageService.isAdmin; else namesPriceControls">
-        <p class="main-section__current-product__card__info__name">{{ mainProduct.rus_name }}</p>
-        <p class="main-section__current-product__card__info__title">{{ mainProduct.title }}</p>
-        <p class="main-section__current-product__card__info__price">{{ mainProduct.price }}₽</p>
+        <p class="main-section__current-product__card__info__name">{{ webStorageService.lang === 'ru' ? mainProduct.rus_name : mainProduct.en_name }}</p>
+        <p class="main-section__current-product__card__info__title">{{webStorageService.lang === 'ru' ?  mainProduct.rus_title : mainProduct.en_title }}</p>
+        <p class="main-section__current-product__card__info__price">{{webStorageService.lang === 'ru' ?  mainProduct.price + '₽' : (mainProduct.price / 65 | number:'1.0-0') + '$'}}</p>
       </figcaption>
       <ng-template #namesPriceControls>
           <figcaption  class="main-section__current-product__card__info">
-              <textarea placeholder="Название" [(ngModel)]="mainProduct.rus_name" (keydown)="keydownNamePriceCtrls($event)" class="main-section__current-product__card__info__name name-price-controls">{{mainProduct.rus_name}}</textarea>
-              <input placeholder="Краткое описание" type="text" [(ngModel)]="mainProduct.title" (keydown)="keydownNamePriceCtrls($event)" class="main-section__current-product__card__info__title name-price-controls" [value]="mainProduct.title">
-              <input placeholder="Цена" min="0" type="number" [(ngModel)]="mainProduct.price" (keydown)="keydownNamePriceCtrls($event)" class="main-section__current-product__card__info__price name-price-controls" [value]="mainProduct.price">
+              <textarea placeholder="{{webStorageService.lang === 'ru' ? 'Название' : 'Name'}}" [(ngModel)]="webStorageService.lang === 'ru' ? mainProduct.rus_name : mainProduct.en_name" (keydown)="keydownNamePriceCtrls($event)" class="main-section__current-product__card__info__name name-price-controls">{{webStorageService.lang === 'ru' ?  mainProduct.rus_name : mainProduct.en_name}}</textarea>
+              <input placeholder="{{webStorageService.lang === 'ru' ?  'Краткое описание' : 'Short description'}}" type="text" [(ngModel)]="mainProduct.title" (keydown)="keydownNamePriceCtrls($event)" class="main-section__current-product__card__info__title name-price-controls" [value]="webStorageService.lang === 'ru' ?  mainProduct.ru_title : mainProduct.en_title">
+              <input placeholder="Цена" min="0" type="number" [(ngModel)]="mainProduct.price" (keydown)="keydownNamePriceCtrls($event)" class="main-section__current-product__card__info__price name-price-controls" [value]="webStorageService.lang === 'ru' ? mainProduct.price : (mainProduct.price / 65 | number:'1.0-0')">
           </figcaption>
       </ng-template>
     </figure>
     <section class="main-section__current-product__description description">
-      <li class='description__category'>Цвет:
+      <li class='description__category'>{{webStorageService.lang === 'ru' ? 'Цвет' : 'Color'}}:
         <ul class='description__category__sub'>
           <li *ngFor="let color of allColors; index as i"
             class='description__category description__category--inline color-rect' 
             [ngClass]="{'current-color': i === currentVariant, 'admin-btns__add-color': color === 'none'}"
             (click)="currentVariant = !variantAdded ? i : currentVariant; !variantAdded ? chooseSizeId(0, true) : ''"
             [style.background-color]="color">
-            <!-- TODO:: изменить способ выбора цвета -->
           </li>
           <!-- <li class='description__category description__category--inline color-rect color-rect--none' style="background-color: #ebce8d"></li> -->
         </ul>
       </li>
-      <li class='description__category'>Размер:
+      <li class='description__category'>{{webStorageService.lang === 'ru' ? 'Размер' : 'Size' }}:
         <ul class='description__category__sub'>
           <li *ngFor="let size of allSizes; index as i"
           class='description__category description__category--inline size'
@@ -62,10 +61,10 @@
           (click)="webStorageService.isAdmin ? toggleSize(size, i) : chooseSizeId(i)">{{size}}</li>
         </ul>
       </li>
-      <li class='description__category'>Описание:
+      <li class='description__category'>{{webStorageService.lang === 'ru' ? 'Описание' : 'Description' }}:
         <div class="description-controls__wrapper">
           <ul class='description__category__sub' *ngIf="!webStorageService.isAdmin; else descriptionControls">
-            <li class='description__category' *ngFor="let line of mainProduct?.descr">{{line}}</li>
+            <li class='description__category' *ngFor="let line of webStorageService.lang === 'ru' ? mainProduct.rus_descr : mainProduct.en_descr">{{line}}</li>
           </ul>
         </div>
       <ng-template #descriptionControls>
@@ -74,7 +73,7 @@
                   <li class='description__category'>
                       <input autofocus id="newLineInput" (keydown)="keydownDescrInput($event)" (blur)="addNewDescrLine($event)" class="description-controls">
                   </li>
-                  <li class='description__category' *ngFor="let line of mainProduct.descr; index as i">
+                  <li class='description__category' *ngFor="let line of webStorageService.lang === 'ru' ? mainProduct.rus_descr : mainProduct.en_descr; index as i">
                     <input [value]="line" (keydown)="keydownDescrInput($event)" (blur)="blurDescrInput(i, $event)" class="description-controls">
                   </li>
               </ul>
@@ -83,20 +82,20 @@
       </li>
       <section class="main-section__current-product__category-sex-controls" *ngIf="webStorageService.isAdmin">
         <select (change)="handleSelection($event, 'type')" class="main-section__current-product__category-sex-controls__control">
-          <option [value]="type.name" [attr.selected]="mainProduct.type === type.name ? true : null" *ngFor="let type of sexesTypes.types">{{ type.rus_name }}</option>
+          <option [value]="type.en_name" [attr.selected]="mainProduct.type.en_name === type.en_name ? true : null" *ngFor="let type of sexesTypes.types">{{webStorageService.lang === 'ru' ? type.rus_name : type.en_name }}</option>
         </select>
         
         <select (change)="handleSelection($event, 'sex')" class="main-section__current-product__category-sex-controls__control">
-          <option [value]="sex.name" [attr.selected]="mainProduct.sex === sex.name ? true : null" *ngFor="let sex of sexesTypes.sex">{{ sex.rus_name }}</option>
+          <option [value]="sex.en_name" [attr.selected]="mainProduct.cat.en_name === sex.en_name ? true : null" *ngFor="let sex of sexesTypes.sex">{{webStorageService.lang === 'ru' ? sex.rus_name : sex.en_name }}</option>
         </select>
       </section>
-      <a class="btn gradient-border in" *ngIf="!webStorageService.isAdmin" (click)='addToCart()'>В корзину</a>
-      <a class="btn gradient-border in btn--admin" *ngIf="webStorageService.isAdmin" (click)='updateProduct()'>Обновить</a>
-      <a class="btn gradient-border in btn--admin" *ngIf="webStorageService.isAdmin" (click)='baseService.popup.open("Вы точно хотите удалить товар?","deleteProduct", this)'>Удалить</a>
+      <a class="btn gradient-border in" *ngIf="!webStorageService.isAdmin" (click)='addToCart()'>{{webStorageService.lang === 'ru' ? 'В корзину' : 'Add to cart' }}</a>
+      <a class="btn gradient-border in btn--admin" *ngIf="webStorageService.isAdmin" (click)='updateProduct()'>{{webStorageService.lang === 'ru' ? 'Обновить' : 'Update' }}</a>
+      <a class="btn gradient-border in btn--admin" *ngIf="webStorageService.isAdmin" (click)='baseService.popup.open("Вы точно хотите удалить товар?","deleteProduct", this)'>{{webStorageService.lang === 'ru' ? 'Удалить' : 'Delete' }}</a>
     </section>
   </main>
   <aside 
     class="main-section__side-product main-section__side-product--next main-section__side-product--semitransparent">
-    <img *ngIf="nextProduct" [src]="nextProduct.variants[0].photo" routerLink="/clothes/{{nextId}}" [alt]="nextProduct.rus_name">
+    <img *ngIf="nextProduct" [src]="nextProduct.variants[0].photo" routerLink="/clothes/{{nextId}}" [alt]="webStorageService.lang === 'ru' ? nextProduct.rus_name : nextProduct.en_name">
   </aside>
 </section>
