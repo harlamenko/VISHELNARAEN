@@ -103,7 +103,14 @@ class ProductsController extends Controller
             ], 404, "Product not found");
         }
 
-        //Получение объекта параметров товара
+        $nextId = Product::select()->where('id','>',$id)->get()->min()->id;
+        $prevId = Product::select()->where('id','<',$id)->get()->max()->id;
+
+        $product->next_id = $nextId;
+        $product->prev_id = $prevId;
+
+
+            //Получение объекта параметров товара
         $product_color_size_photos = ProductColorSizePhoto::where('id','=',$id)->get();
         if (!$product_color_size_photos)
         {
