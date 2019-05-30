@@ -9,6 +9,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 export class ProductService {
   public sortType = 'popularity';
   public product: BehaviorSubject<Product> = new BehaviorSubject(new Product());
+  public products: BehaviorSubject<Product[]> = new BehaviorSubject([]);
 
   constructor(private _baseService: BaseService) { }
 

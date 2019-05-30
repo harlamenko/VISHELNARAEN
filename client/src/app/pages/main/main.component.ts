@@ -29,8 +29,11 @@ export class MainComponent implements OnInit {
       if (params.get('type') !== 'all') {
         this._params.type = params.get('type');
       }
-      this.productService.getProducts(this._params).subscribe(products => {
+      this.productService.products.subscribe(products => {
         this.products = products;
+      });
+      this.productService.getProducts(this._params).subscribe(products => {
+        this.productService.products.next(products);
       });
     });
   }

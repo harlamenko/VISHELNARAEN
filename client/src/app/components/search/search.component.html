@@ -1,3 +1,7 @@
-<div >
-  <!-- Поиск -->
+<div class="search__wrapper">
+  <input 
+  type="text" 
+  placeholder="{{webStorageService.lang === 'ru' ? 'Поиск' : 'Search'}}" 
+  (keydown)="search($event, this.value)"
+  class="search">
 </div>
