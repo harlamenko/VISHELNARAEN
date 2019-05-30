@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/models/Product';
 import { WebStorageService } from 'src/app/services/web-storage.service';
+import { ProductService } from 'src/app/services/product.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -12,7 +14,9 @@ export class CartComponent implements OnInit {
   public sum: number;
 
   constructor(
-    public webStorageService: WebStorageService
+    private _router: Router,
+    public webStorageService: WebStorageService,
+    public productService: ProductService
   ) { }
 
   ngOnInit() {
@@ -29,5 +33,14 @@ export class CartComponent implements OnInit {
     this.products.forEach(el => this.sum += el.price)
 
     return this.sum;
+  }
+
+  public buy() {
+    const ids = [];
+    this.products.forEach(p => ids.push(p.id));
+    this.productService.buyProducts({ids: ids}).subscribe(res => console.log(res), err => console.log(err));
+    window.localStorage.setItem('cart', '[]');
+    this.webStorageService.cartLength.next(0);
+    this._router.navigateByUrl(`/clothes/all/all`);
   }
 }

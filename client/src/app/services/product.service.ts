@@ -32,6 +32,10 @@ export class ProductService {
     return this._baseService.postHttpRequest(`api/admin/store`, product);
   }
 
+  public buyProducts(ids) {
+    return this._baseService.postHttpRequest(`api/buy`, ids);
+  }
+
   public getSexType() {
     return this._baseService.getHttpRequest(`api/sexType`);
   }

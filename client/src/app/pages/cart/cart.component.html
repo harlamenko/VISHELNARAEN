@@ -11,4 +11,4 @@
     </ng-template>
 </section>
 <p class="cart__price">{{ webStorageService.lang === 'ru' ? 'Итого' : 'Summary' }}: {{ webStorageService.lang === 'ru' ? sum + '₽' : (sum / 65 | number:'1.0-0') + '$'}}</p>
-<button class="btn gradient-border in cart__btn">{{ webStorageService.lang === 'ru' ? 'Заказать' : 'Buy' }}</button>
+<button class="btn gradient-border in cart__btn" (click)="buy()">{{ webStorageService.lang === 'ru' ? 'Заказать' : 'Buy' }}</button>

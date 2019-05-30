@@ -45,12 +45,26 @@ export class ProductComponent implements OnInit {
     this._route.paramMap.subscribe(
       params => {
         this.mainId = +params.get('id');
-        this.nextId = this.mainId + 1;
-        this.prevId = this.mainId - 1;
         this._productService.getProductById(this.mainId).subscribe(
           product => {
             this.mainProduct = product;
+            this.nextId = this.mainProduct.next_id;
+            this.prevId = this.mainProduct.prev_id;
+            if (this.nextId !== null) {
+              this._productService.getProductById(this.nextId).subscribe(
+                prod => this.nextProduct = prod,
+                errors => this.nextProduct = null
+              );
+            }
+            if (this.prevId !== null) {
+              this._productService.getProductById(this.prevId).subscribe(
+                prod => this.prevProduct = prod,
+                errors => this.prevProduct = null
+              );
+            }
+
             this._productService.product.next(this.mainProduct);
+
             this.getAllColorsAndSizes();
 
             this._productService.getSexType().subscribe(res => {
@@ -70,14 +84,6 @@ export class ProductComponent implements OnInit {
               });
             });
           }
-        );
-        this._productService.getProductById(this.nextId).subscribe(
-          product => this.nextProduct = product,
-          errors => this.nextProduct = null
-        );
-        this._productService.getProductById(this.prevId).subscribe(
-          product => this.prevProduct = product,
-          errors => this.prevProduct = null
         );
       },
       errors => console.error(errors)

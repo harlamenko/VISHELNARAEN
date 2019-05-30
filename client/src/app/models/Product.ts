@@ -11,6 +11,8 @@ interface IProduct {
     variants: Variant[];
     sex?: any;
     en_name: string;
+    next_id: number;
+    prev_id: number;
 }
 
 export class Variant {
@@ -38,4 +40,6 @@ export class Product implements IProduct {
     variants: Variant[];
     sex?: any;
     en_name: string;
+    next_id: number;
+    prev_id: number;
 }
