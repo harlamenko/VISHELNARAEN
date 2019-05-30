@@ -45,22 +45,37 @@ class ProductsController extends Controller
         //+$request->qs То что пользователь записал в поисковую строку
         if (strlen($request->qs) > 0) {
             if ($request->lang == 'ru') {
-
+                $products = Product::where('cat','like',"%{$request->qs}%")
+                        ->orWhere('type','like',"%{$request->qs}%")
+                        ->orWhere('rus_name','like',"%{$request->qs}%")
+                        ->orWhere('rus_descr','like',"%{$request->qs}%")
+                        ->orWhere('price','like',"%{$request->qs}%")
+                        ->get(['id','cat','type','price','en_name','rus_name','rating']);
             }
             if ($request->lang == 'en') {
-
+                $products = Product::where('cat','like',"%{$request->qs}%")
+                    ->orWhere('type','like',"%{$request->qs}%")
+                    ->orWhere('en_name','like',"%{$request->qs}%")
+                    ->orWhere('en_descr','like',"%{$request->qs}%")
+                    ->orWhere('price','like',"%{$request->qs}%")
+                    ->get(['id','cat','type','price','en_name','rus_name','rating']);
+            }
+        } else {
+            if ($request->sex && $request->type) {
+                $products = Product::where('cat', $sex)
+                    ->where('type', $request->type)
+                    ->get(['id','cat','type','price','en_name','rus_name','rating']);
+            } else if ($request->sex && !$request->type) {
+                $products = Product::where('cat', $sex)
+                    ->get(['id','cat','type','price','en_name','rus_name','rating']);
+            } else if (!$request->sex && $request->type) {
+                $products = Product::where('type', $request->type)
+                    ->get(['id','cat','type','price','en_name','rus_name','rating']);
+            } else {
+                $products = Product::all(['id','cat','type','price','en_name','rus_name','rating']);
             }
         }
 
-        if ($request->sex && $request->type) {
-            $products = Product::where('cat', $sex)->where('type', $request->type)->get(['id','cat','type','price','en_name','rus_name','rating']);
-        } else if ($request->sex && !$request->type) {
-            $products = Product::where('cat', $sex)->get(['id','cat','type','price','en_name','rus_name','rating']);
-        } else if (!$request->sex && $request->type) {
-            $products = Product::where('type', $request->type)->get(['id','cat','type','price','en_name','rus_name','rating']);
-        } else {
-            $products = Product::all(['id','cat','type','price','en_name','rus_name','rating']);
-        }
         $fullProducts = [];
         foreach ($products as $key=>$product) {
             $productsPhotos[$key] = ProductColorSizePhoto::where('id', $product->id)->get('photo')->first();
