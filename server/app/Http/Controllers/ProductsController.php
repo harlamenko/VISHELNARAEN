@@ -24,8 +24,8 @@ class ProductsController extends Controller
     }
 
     public function getSexAndTypes () {
-        $sex = Cat::get(['name','rus_name']);
-        $type = Type::get(['name','rus_name']);
+        $sex = Cat::get(['en_name','rus_name']);
+        $type = Type::get(['en_name','rus_name']);
         $sexType = ['sex'=>$sex,'types'=>$type];
         return $sexType;
     }
@@ -34,27 +34,38 @@ class ProductsController extends Controller
 
         switch ($request->sex) {
             case 'men':
-                $sex = 'for_men';
+                $sex = 'For men';
                 break;
             case 'women':
-                $sex = 'for_women';
+                $sex = 'For women';
                 break;
         }
 
+        //+$request->lang Поиск по языку (ru,en)
+        //+$request->qs То что пользователь записал в поисковую строку
+        if (strlen($request->qs) > 0) {
+            if ($request->lang == 'ru') {
+
+            }
+            if ($request->lang == 'en') {
+
+            }
+        }
+
         if ($request->sex && $request->type) {
-            $products = Product::where('cat', $sex)->where('type', $request->type)->get(['id','cat','type','price','rus_name','rating']);
+            $products = Product::where('cat', $sex)->where('type', $request->type)->get(['id','cat','type','price','en_name','rus_name','rating']);
         } else if ($request->sex && !$request->type) {
-            $products = Product::where('cat', $sex)->get(['id','cat','type','price','rus_name','rating']);
+            $products = Product::where('cat', $sex)->get(['id','cat','type','price','en_name','rus_name','rating']);
         } else if (!$request->sex && $request->type) {
-            $products = Product::where('type', $request->type)->get(['id','cat','type','price','rus_name','rating']);
+            $products = Product::where('type', $request->type)->get(['id','cat','type','price','en_name','rus_name','rating']);
         } else {
-            $products = Product::all(['id','cat','type','price','rus_name','rating']);
+            $products = Product::all(['id','cat','type','price','en_name','rus_name','rating']);
         }
         $fullProducts = [];
         foreach ($products as $key=>$product) {
             $productsPhotos[$key] = ProductColorSizePhoto::where('id', $product->id)->get('photo')->first();
             $fullProducts[] = ['id'=>$product->id, 'cat'=>$product->cat, 'type'=>$product->type, 'price'=>$product->price,
-                'rus_name'=>$product->rus_name, 'rating'=>$product->rating, 'photo'=>$productsPhotos[$key]->photo];
+                'rus_name'=>$product->rus_name, 'en_name'=>$product->en_name,'rating'=>$product->rating, 'photo'=>$productsPhotos[$key]->photo];
         }
         return $fullProducts;
     }
@@ -96,7 +107,7 @@ class ProductsController extends Controller
         }
 
         //Получение цветов товара
-        $colors = ProductColorSizePhoto::select('colors.name')
+        $colors = ProductColorSizePhoto::select('colors.hashcode')
             ->join('colors', 'product_color_size_photos.id_color', '=', 'colors.id')
             ->where('product_color_size_photos.id','=', $id)
             ->get();
@@ -121,8 +132,11 @@ class ProductsController extends Controller
         }
 
         //Приведение параметров в требуемый вид
-        $resultDescr = explode('; ', $product->descr);
-        $product->descr = $resultDescr;
+        $resultDescrRus = explode('; ', $product->rus_descr);
+        $resultDescrEn = explode('; ', $product->en_descr);
+
+        $product->rus_descr = $resultDescrRus;
+        $product->en_descr = $resultDescrEn;
 
         $resultSizes = [];
         foreach ($sizes as $size) {
@@ -131,7 +145,7 @@ class ProductsController extends Controller
 
         $resultColors = [];
         foreach($colors as $color) {
-            $resultColors[] = $color->name;
+            $resultColors[] = $color->hashcode;
         }
 
         $resultPhotos = [];
@@ -169,7 +183,7 @@ class ProductsController extends Controller
         }
 
         //Получение цветов товара
-        $colors = ProductColorSizePhoto::select('colors.name')
+        $colors = ProductColorSizePhoto::select('colors.hashcode')
             ->join('colors', 'product_color_size_photos.id_color', '=', 'colors.id')
             ->where('product_color_size_photos.id','=', $id)
             ->get();
@@ -190,7 +204,7 @@ class ProductsController extends Controller
 
         $resultColors = [];
         foreach($colors as $color) {
-            $resultColors[] = $color->name;
+            $resultColors[] = $color->hashcode;
         }
 
         foreach ($colors as $index => $color) {
@@ -201,7 +215,7 @@ class ProductsController extends Controller
     }
 
     public function getCats() {
-        $cats = Type::select('name', 'rus_name')->get();
+        $cats = Type::select('en_name', 'rus_name')->get();
         if (!$cats)
         {
             return $this->jsonResponse([
@@ -234,9 +248,9 @@ class ProductsController extends Controller
         $variants = $request->variants;
 
         foreach($variants as $variant) {
-            $colorArr = Color::where('name', $variant['color'])->get();
+            $colorArr = Color::where('hashcode', $variant['color'])->get();
             if (count($colorArr) > 0){
-                $colors[] = Color::where('name', $variant['color'])->get()->first();
+                $colors[] = Color::where('hashcode', $variant['color'])->get()->first();
             } else {
                 $colors[] = 'empty';
             }
@@ -251,13 +265,14 @@ class ProductsController extends Controller
                 if (!$this->createColor($variants[$i]['color'])) {
                     return response("Error while saving color in db", 500);
                 }
-                $id_colors[] = Color::where('name', $variants[$i]['color'])->get()->first()->id;
+                $id_colors[] = Color::where('hashcode', $variants[$i]['color'])->get()->first()->id;
             } else {
-                $id_colors[] = Color::where('name', $variants[$i]['color'])->get()->first()->id;
+                $id_colors[] = Color::where('hashcode', $variants[$i]['color'])->get()->first()->id;
             }
         }
 
-        $request->descr = implode("; ",$request->descr);
+        $request->rus_descr = implode("; ",$request->rus_descr);
+        $request->en_descr = implode("; ",$request->en_descr);
 
         $newProduct = new Product();
         if (!$this->createOrUpdateProduct($request, $newProduct))
@@ -306,9 +321,9 @@ class ProductsController extends Controller
         $variants = $request->variants;
 
         foreach($variants as $variant) {
-            $colorArr = Color::where('name', $variant['color'])->get();
+            $colorArr = Color::where('hashcode', $variant['color'])->get();
             if (count($colorArr) > 0){
-                $colors[] = Color::where('name', $variant['color'])->get()->first();
+                $colors[] = Color::where('hashcode', $variant['color'])->get()->first();
             } else {
                 $colors[] = 'empty';
             }
@@ -323,12 +338,13 @@ class ProductsController extends Controller
                 if (!$this->createColor($variants[$i]['color'])) {
                     return response("Error while saving color in db", 500);
                 }
-                $id_colors[] = Color::where('name', $variants[$i]['color'])->get()->first()->id;
+                $id_colors[] = Color::where('hashcode', $variants[$i]['color'])->get()->first()->id;
             } else {
-                $id_colors[] = Color::where('name', $variants[$i]['color'])->get()->first()->id;
+                $id_colors[] = Color::where('hashcode', $variants[$i]['color'])->get()->first()->id;
             }
         }
-        $request->descr = implode("; ",$request->descr);
+        $request->rus_descr = implode("; ",$request->rus_descr);
+        $request->en_descr = implode("; ",$request->en_descr);
 
         if (!$this->createOrUpdateProduct($request, $product)) {
             return response("Error while saving product in db", 500);
@@ -381,17 +397,18 @@ class ProductsController extends Controller
 //
     private function createColor($colorName): bool {
         $newColor = new Color();
-        $newColor->name = $colorName;
+        $newColor->hashcode = $colorName;
         return $newColor->save();
     }
 
     private function createOrUpdateProduct(Request $request, $newProduct): bool {
         $newProduct->rus_name = $request->rus_name;
-        $newProduct->title = $request->title;
+        $newProduct->en_name = $request->en_name;
         $newProduct->cat = $request->cat;
         $newProduct->type = $request->type;
         $newProduct->price = $request->price;
-        $newProduct->descr = $request->descr;
+        $newProduct->rus_descr = $request->rus_descr;
+        $newProduct->en_descr = $request->en_descr;
         $newProduct->rating = 0;
         //$newProduct->img = $this->saveImageAndGetPath($request);
 
@@ -416,11 +433,12 @@ class ProductsController extends Controller
 
         $validator = Validator::make($request->all(), [
             'rus_name' => 'required',
-            'title' => 'required',
+            'en_name' => 'required',
             'cat' => 'required',
             'type' => 'required',
             'price' => 'required|int',
-            'descr' => 'required',
+            'rus_descr' => 'required',
+            'en_descr' => 'required',
             'variants' => 'required|array',
             'variants.*' => 'required|array',
             'variants.*.color' => 'required',
