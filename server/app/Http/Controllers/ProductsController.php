@@ -45,22 +45,37 @@ class ProductsController extends Controller
         //+$request->qs То что пользователь записал в поисковую строку
         if (strlen($request->qs) > 0) {
             if ($request->lang == 'ru') {
-
+                $products = Product::where('cat','like',"%{$request->qs}%")
+                        ->orWhere('type','like',"%{$request->qs}%")
+                        ->orWhere('rus_name','like',"%{$request->qs}%")
+                        ->orWhere('rus_descr','like',"%{$request->qs}%")
+                        ->orWhere('price','like',"%{$request->qs}%")
+                        ->get(['id','cat','type','price','en_name','rus_name','rating']);
             }
             if ($request->lang == 'en') {
-
+                $products = Product::where('cat','like',"%{$request->qs}%")
+                    ->orWhere('type','like',"%{$request->qs}%")
+                    ->orWhere('en_name','like',"%{$request->qs}%")
+                    ->orWhere('en_descr','like',"%{$request->qs}%")
+                    ->orWhere('price','like',"%{$request->qs}%")
+                    ->get(['id','cat','type','price','en_name','rus_name','rating']);
+            }
+        } else {
+            if ($request->sex && $request->type) {
+                $products = Product::where('cat', $sex)
+                    ->where('type', $request->type)
+                    ->get(['id','cat','type','price','en_name','rus_name','rating']);
+            } else if ($request->sex && !$request->type) {
+                $products = Product::where('cat', $sex)
+                    ->get(['id','cat','type','price','en_name','rus_name','rating']);
+            } else if (!$request->sex && $request->type) {
+                $products = Product::where('type', $request->type)
+                    ->get(['id','cat','type','price','en_name','rus_name','rating']);
+            } else {
+                $products = Product::all(['id','cat','type','price','en_name','rus_name','rating']);
             }
         }
 
-        if ($request->sex && $request->type) {
-            $products = Product::where('cat', $sex)->where('type', $request->type)->get(['id','cat','type','price','en_name','rus_name','rating']);
-        } else if ($request->sex && !$request->type) {
-            $products = Product::where('cat', $sex)->get(['id','cat','type','price','en_name','rus_name','rating']);
-        } else if (!$request->sex && $request->type) {
-            $products = Product::where('type', $request->type)->get(['id','cat','type','price','en_name','rus_name','rating']);
-        } else {
-            $products = Product::all(['id','cat','type','price','en_name','rus_name','rating']);
-        }
         $fullProducts = [];
         foreach ($products as $key=>$product) {
             $productsPhotos[$key] = ProductColorSizePhoto::where('id', $product->id)->get('photo')->first();
@@ -87,6 +102,13 @@ class ProductsController extends Controller
                 "message" => "Product not found"
             ], 404, "Product not found");
         }
+
+        $nextId = Product::select()->where('id','>',$id)->get()->min()->id;
+        $prevId = Product::select()->where('id','<',$id)->get()->max()->id;
+
+        $product->next_id = $nextId;
+        $product->prev_id = $prevId;
+
 
         //Получение объекта параметров товара
         $product_color_size_photos = ProductColorSizePhoto::where('id','=',$id)->get();
@@ -378,23 +400,22 @@ class ProductsController extends Controller
 
         return $this->jsonResponse(["status" => true], 201, "Successful delete");
     }
-//
-//    public function searchByTitle($title) {
-//        $products = Product::where("title", "like", '%' . $title . '%')->get();
-//
-//        foreach($products as $product) {
-//            $product->title = explode(',',$product->title);
-//        }
-//
-//        return $this->jsonResponse(["body" => $products], 200, "Found Products");
-//    }
-//
-//    /**
-//     * @param Request $request
-//     * @param $newProduct
-//     * @return bool
-//     */
-//
+
+    public function buy(Request $request) {
+        foreach ($request->ids as $id) {
+            $product = Product::find($id);
+            $rating = Product::find($id)->rating;
+            $rating++;
+
+            if (!$product) {
+                return $this->jsonResponse(["message"=> "Product with id = $id not found"], 404, "Product not found");
+            }
+
+            $product->where('id',$id)->update(['rating'=> $rating]);
+        }
+        return $this->jsonResponse(["status" => 'ok'], 201, "Successful bought");
+    }
+
     private function createColor($colorName): bool {
         $newColor = new Color();
         $newColor->hashcode = $colorName;
