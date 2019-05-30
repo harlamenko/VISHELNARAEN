@@ -110,7 +110,7 @@ class ProductsController extends Controller
         $product->prev_id = $prevId;
 
 
-            //Получение объекта параметров товара
+        //Получение объекта параметров товара
         $product_color_size_photos = ProductColorSizePhoto::where('id','=',$id)->get();
         if (!$product_color_size_photos)
         {
@@ -400,23 +400,22 @@ class ProductsController extends Controller
 
         return $this->jsonResponse(["status" => true], 201, "Successful delete");
     }
-//
-//    public function searchByTitle($title) {
-//        $products = Product::where("title", "like", '%' . $title . '%')->get();
-//
-//        foreach($products as $product) {
-//            $product->title = explode(',',$product->title);
-//        }
-//
-//        return $this->jsonResponse(["body" => $products], 200, "Found Products");
-//    }
-//
-//    /**
-//     * @param Request $request
-//     * @param $newProduct
-//     * @return bool
-//     */
-//
+
+    public function buy(Request $request) {
+        foreach ($request->ids as $id) {
+            $product = Product::find($id);
+            $rating = Product::find($id)->rating;
+            $rating++;
+
+            if (!$product) {
+                return $this->jsonResponse(["message"=> "Product with id = $id not found"], 404, "Product not found");
+            }
+
+            $product->where('id',$id)->update(['rating'=> $rating]);
+        }
+        return $this->jsonResponse(["status" => 'ok'], 201, "Successful bought");
+    }
+
     private function createColor($colorName): bool {
         $newColor = new Color();
         $newColor->hashcode = $colorName;

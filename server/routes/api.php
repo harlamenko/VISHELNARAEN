@@ -8,6 +8,7 @@ Route::apiResource("/products", "ProductsController");
 Route::post('/products/params','ProductsController@showProductsWithParams');
 Route::get('/products/{id}','ProductsController@show');
 Route::get('/sexType','ProductsController@getSexAndTypes');
+Route::post('/buy','ProductsController@buy');
 Route::middleware('checkAdmin')->get('/admin/{id}', 'ProductsController@getAssortment');
 Route::middleware('checkAdmin')->get('/admin/cats/get','ProductsController@getCats');
 Route::middleware('checkAdmin')->post('/admin/store','ProductsController@store');
