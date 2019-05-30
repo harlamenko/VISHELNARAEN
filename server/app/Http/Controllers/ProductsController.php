@@ -41,8 +41,7 @@ class ProductsController extends Controller
                 break;
         }
 
-        //+$request->lang Поиск по языку (ru,en)
-        //+$request->qs То что пользователь записал в поисковую строку
+        $products = [];
         if (strlen($request->qs) > 0) {
             if ($request->lang == 'ru') {
                 $products = Product::where('cat','like',"%{$request->qs}%")
@@ -50,6 +49,7 @@ class ProductsController extends Controller
                         ->orWhere('rus_name','like',"%{$request->qs}%")
                         ->orWhere('rus_descr','like',"%{$request->qs}%")
                         ->orWhere('price','like',"%{$request->qs}%")
+                        ->skip($request->count)->take(6)
                         ->get(['id','cat','type','price','en_name','rus_name','rating']);
             }
             if ($request->lang == 'en') {
@@ -58,21 +58,26 @@ class ProductsController extends Controller
                     ->orWhere('en_name','like',"%{$request->qs}%")
                     ->orWhere('en_descr','like',"%{$request->qs}%")
                     ->orWhere('price','like',"%{$request->qs}%")
+                    ->skip($request->count)->take(6)
                     ->get(['id','cat','type','price','en_name','rus_name','rating']);
             }
         } else {
             if ($request->sex && $request->type) {
                 $products = Product::where('cat', $sex)
                     ->where('type', $request->type)
+                    ->skip($request->count)->take(6)
                     ->get(['id','cat','type','price','en_name','rus_name','rating']);
             } else if ($request->sex && !$request->type) {
                 $products = Product::where('cat', $sex)
+                    ->skip($request->count)->take(6)
                     ->get(['id','cat','type','price','en_name','rus_name','rating']);
             } else if (!$request->sex && $request->type) {
                 $products = Product::where('type', $request->type)
+                    ->skip($request->count)->take(6)
                     ->get(['id','cat','type','price','en_name','rus_name','rating']);
             } else {
-                $products = Product::all(['id','cat','type','price','en_name','rus_name','rating']);
+                $products = Product::skip($request->count)->take(6)
+                    ->get(['id','cat','type','price','en_name','rus_name','rating']);
             }
         }
 
@@ -103,8 +108,17 @@ class ProductsController extends Controller
             ], 404, "Product not found");
         }
 
-        $nextId = Product::select()->where('id','>',$id)->get()->min()->id;
-        $prevId = Product::select()->where('id','<',$id)->get()->max()->id;
+        $prevId = null;
+        $nextId = null;
+
+        if ($id > 1) {
+            $prevId = Product::select()->where('id','<',$id)->get()->max()->id;
+        }
+
+        $maxId = Product::select()->get('id')->max()->id;
+        if ($id < $maxId) {
+            $nextId = Product::select()->where('id','>',$id)->get()->min()->id;
+        }
 
         $product->next_id = $nextId;
         $product->prev_id = $prevId;
@@ -427,11 +441,12 @@ class ProductsController extends Controller
         $newProduct->en_name = $request->en_name;
         $newProduct->cat = $request->cat;
         $newProduct->type = $request->type;
+        $newProduct->rus_title = $request->rus_title;
+        $newProduct->en_title = $request->en_title;
         $newProduct->price = $request->price;
         $newProduct->rus_descr = $request->rus_descr;
         $newProduct->en_descr = $request->en_descr;
         $newProduct->rating = 0;
-        //$newProduct->img = $this->saveImageAndGetPath($request);
 
         return $newProduct->save();
     }
@@ -458,6 +473,8 @@ class ProductsController extends Controller
             'cat' => 'required',
             'type' => 'required',
             'price' => 'required|int',
+            'rus_title' => 'required',
+            'en_title' => 'required',
             'rus_descr' => 'required',
             'en_descr' => 'required',
             'variants' => 'required|array',
