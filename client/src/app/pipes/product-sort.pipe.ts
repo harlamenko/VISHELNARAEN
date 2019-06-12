@@ -11,7 +11,7 @@ export class ProductSortPipe implements PipeTransform {
         products.sort((prev, current) => prev.price - current.price);
         break;
       case 'popularity':
-        products.sort((prev, current) => prev.rating - current.rating);
+        products.sort((prev, current) => current.rating - prev.rating);
         break;
     }
     return products;

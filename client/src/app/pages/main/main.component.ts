@@ -49,11 +49,10 @@ export class MainComponent implements OnInit {
 
   loadMore(e) {
     // TODO(Harlamenko) переделать на нормальную подгрузку
-      this._params.count = this.productService.products.getValue().length;
+    this._params.count = this.productService.products.getValue().length;
 
-      this.productService.getProducts(this._params).subscribe(products => {
-        this.productService.products.next(this.productService.products.getValue().concat(products));
-      });
-    }
+    this.productService.getProducts(this._params).subscribe(products => {
+      this.productService.products.next(this.productService.products.getValue().concat(products));
+    });
   }
 }

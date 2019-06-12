@@ -33,7 +33,7 @@ export class SearchComponent implements OnInit {
 
       const prms = {
         qs: this.qs,
-        lang: 'en',
+        lang: this.webStorageService.lang,
         count: this.productService.products.getValue().length
       };
 
