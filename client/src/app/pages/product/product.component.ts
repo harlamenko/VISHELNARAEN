@@ -1,10 +1,11 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
 import { ActivatedRoute } from '@angular/router';
-import { Product } from 'src/app/models/Product';
+import { IProduct } from 'src/app/models/Product';
 import { WebStorageService } from 'src/app/services/web-storage.service';
 import { Variant } from 'src/app/models/Product';
 import { BaseService } from 'src/app/services/base.service';
+import { FormGroup, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-product',
@@ -12,9 +13,9 @@ import { BaseService } from 'src/app/services/base.service';
   styleUrls: ['./product.component.scss']
 })
 export class ProductComponent implements OnInit {
-  public mainProduct: Product;
-  public nextProduct: Product;
-  public prevProduct: Product;
+  public mainProduct: IProduct;
+  public nextProduct: IProduct;
+  public prevProduct: IProduct;
 
   public mainId: number;
   public nextId: number;
@@ -29,12 +30,25 @@ export class ProductComponent implements OnInit {
   public allSizes: string[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
   @ViewChild('canvasForPhoto') canvasForPhoto: ElementRef;
 
+  mainProductFG: FormGroup;
+
   constructor(
     private _productService: ProductService,
     private _route: ActivatedRoute,
     public webStorageService: WebStorageService,
-    public baseService: BaseService
-  ) { }
+    public baseService: BaseService,
+  ) {
+    this.mainProductFG = this._productService.productFG;
+  }
+
+  get currentVariantFormGroup() {
+    const variants = this.mainProductFG.get('variants') as FormArray;
+    return variants.length ? variants.controls[this.currentVariant] : null;
+  }
+
+  get description() {
+    return this.mainProductFG.get('rus_descr');
+  }
 
   ngOnInit() {
     if (this.webStorageService.isAdmin) {
@@ -42,12 +56,16 @@ export class ProductComponent implements OnInit {
         this.sexesTypes = sexesTypes;
       });
     }
+    //TODO: использовать пайпы вместо вложенных сабов
     this._route.paramMap.subscribe(
       params => {
         this.mainId = +params.get('id');
         this._productService.getProductById(this.mainId).subscribe(
           product => {
             this.mainProduct = product;
+
+            this._productService.initProductFG(product);
+
             this.nextId = this.mainProduct.next_id;
             this.prevId = this.mainProduct.prev_id;
             if (this.nextId !== null) {
@@ -71,7 +89,7 @@ export class ProductComponent implements OnInit {
               res.sex.forEach(sex => {
                 if (sex.en_name === this.mainProduct.cat) {
                   const p = this._productService.product.getValue();
-                  p.sex = sex;
+                  p.cat = sex;
                   this._productService.product.next(p);
                 }
               });
@@ -250,10 +268,8 @@ export class ProductComponent implements OnInit {
 
   blurDescrInput(i, e) {
     const val = e.target.value;
-    if (val.length) {
-      this.webStorageService.lang === 'ru' ? this.mainProduct.rus_descr[i] = val : this.mainProduct.en_descr[i] = val;
-    } else {
-      this.webStorageService.lang === 'ru' ? this.mainProduct.rus_descr.splice(i, 1) : this.mainProduct.en_descr.splice(i, 1);
+    if (!val.length) {
+      // TODO: удаление форм контрола
     }
   }
 
@@ -265,6 +281,7 @@ export class ProductComponent implements OnInit {
       nextLine.focus();
     }
   }
+  
   keydownDescrInput(e) {
     if (e.key !== 'Enter')  { return; }
 
@@ -276,19 +293,6 @@ export class ProductComponent implements OnInit {
     if (nextLine) {
       nextLine.firstElementChild.focus();
     }
-  }
-
-  handleSelection(e, type) {
-    const val = e.target.value;
-
-    switch (type) {
-      case 'sex':
-        this.mainProduct.cat = val;
-        break;
-      case 'type':
-        this.mainProduct.type = val;
-        break;
-      }
   }
 
   validate() {
@@ -361,7 +365,7 @@ export class ProductComponent implements OnInit {
     }
   }
 
-  deleteProduct() {
+  public deleteProduct() {
     this._productService.deleteProductById(this.mainId).subscribe(
       res => {
         if (res[status] === true || res[status] === 'ok') {

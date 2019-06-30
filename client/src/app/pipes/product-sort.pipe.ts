@@ -1,11 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Product } from '../models/Product';
-import { isUndefined } from 'util';
+import { IProduct } from '../models/Product';
 
 @Pipe({name: 'productSort'})
 export class ProductSortPipe implements PipeTransform {
 
-  transform(products: Product[], type: string): any {
+  transform(products: IProduct[], type: string): any {
     switch (type) {
       case 'price':
         products.sort((prev, current) => prev.price - current.price);

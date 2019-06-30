@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from 'src/app/models/Product';
+import { IProduct } from 'src/app/models/Product';
 import { WebStorageService } from 'src/app/services/web-storage.service';
 import { ProductService } from 'src/app/services/product.service';
 import { Router } from '@angular/router';
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent implements OnInit {
-  public products: Product[];
+  public products: IProduct[];
   public sum: number;
 
   constructor(

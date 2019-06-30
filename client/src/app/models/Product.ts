@@ -1,45 +1,68 @@
-interface IProduct {
-    id: number;
-    title: string;
-    cat: string;
-    type: string;
-    price: number;
-    rus_name: string;
-    rating: number;
-    rus_descr: string[];
-    en_descr: string[];
-    variants: Variant[];
-    sex?: any;
-    en_name: string;
-    next_id: number;
-    prev_id: number;
-}
+import { Validators } from "@angular/forms";
 
 export class Variant {
-    color: string;
-    sizes: string[];
-    photo: string;
-
-    constructor() {
-        this.color = null;
-        this.sizes = null;
-        this.photo = null;
-    }
+    constructor(
+        public color: string = null,
+        public sizes: string[] = null,
+        public photo: string = null
+    ) {}
 }
 
-export class Product implements IProduct {
-    id: number;
-    title: string;
+export interface IProduct {
     cat: string;
-    type: string;
-    price: number;
-    rus_name: string;
-    rating: number;
-    rus_descr: string[];
     en_descr: string[];
-    variants: Variant[];
-    sex?: any;
     en_name: string;
+    en_title: string;
+    id: number;
     next_id: number;
     prev_id: number;
+    price: number;
+    rating: number;
+    rus_descr: string[];
+    rus_name: string;
+    rus_title: string;
+    type: string;
+    variants: Variant[];
+    created_at: Date;
+    updated_at: Date;
+}
+
+export class Product {
+    constructor(
+        public cat: string = null,
+        public en_descr: string[] = null,
+        public en_name: string = null,
+        public en_title: string = null,
+        public id: number = null,
+        public next_id: number = null,
+        public prev_id: number = null,
+        public price: number = null,
+        public rating: number = null,
+        public rus_descr: string[] = null,
+        public rus_name: string = null,
+        public rus_title: string = null,
+        public type: string = null,
+        public variants: Variant[] = null,
+        public created_at: Date = null,
+        public updated_at: Date = null,
+    ) {}
+}
+
+export class ProductValidation {
+    constructor(
+        public en_name = [Validators.required],
+        public rus_name = [Validators.required],
+        public en_descr = [Validators.required, Validators.minLength(1)],
+        public rus_descr = [Validators.required, Validators.minLength(1)],
+        public en_title = [Validators.required, Validators.minLength(1)],
+        public rus_title = [Validators.required, Validators.minLength(1)],
+        public cat = [Validators.required],
+        public price = [Validators.required, Validators.min(1)],
+        public type = [Validators.required],
+        public variants = {
+            color: [Validators.required],
+            sizes: [Validators.required],
+            photo: [Validators.required]
+        },
+    ) { }
 }

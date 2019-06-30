@@ -14,7 +14,7 @@ import { ProductComponent } from './pages/product/product.component';
 import { ProductSortPipe } from './pipes/product-sort.pipe';
 import { CartClothesComponent } from './components/cart-clothes/cart-clothes.component';
 import { AboutComponent } from './pages/about/about.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PopupComponent } from './components/popup/popup.component';
 import { CreateComponent } from './pages/admin/create/create.component';
 import { AdditionalInfoComponent } from './components/additional-info/additional-info.component';
@@ -54,7 +54,8 @@ const appRoutes: Routes = [
     ),
     BrowserModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

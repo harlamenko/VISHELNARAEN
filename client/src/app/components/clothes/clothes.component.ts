@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Product } from '../../models/Product';
+import { IProduct } from '../../models/Product';
 import { WebStorageService } from 'src/app/services/web-storage.service';
 
 @Component({
@@ -8,7 +8,7 @@ import { WebStorageService } from 'src/app/services/web-storage.service';
   styleUrls: ['./clothes.component.scss']
 })
 export class ClothesComponent implements OnInit {
-  @Input() product: Product;
+  @Input() product: IProduct;
   constructor(public webStorageService: WebStorageService) { }
 
   ngOnInit() {

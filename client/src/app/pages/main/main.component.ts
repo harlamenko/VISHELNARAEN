@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
-import { Product } from 'src/app/models/Product';
+import { IProduct } from 'src/app/models/Product';
 import { ProductParams } from 'src/app/models/ProductParams';
 import { ActivatedRoute } from '@angular/router';
 import { WebStorageService } from 'src/app/services/web-storage.service';
@@ -12,7 +12,7 @@ import { WebStorageService } from 'src/app/services/web-storage.service';
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit {
-  public products: Product[];
+  public products: IProduct[];
   private _params: ProductParams;
   constructor(
     public productService: ProductService,
