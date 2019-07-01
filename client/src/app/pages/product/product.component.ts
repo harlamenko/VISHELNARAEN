@@ -122,8 +122,9 @@ export class ProductComponent implements OnInit {
     }
   }
 
-  isExistedSize(i){
-    const sizes = this.mainProduct.variants[this.currentVariant].sizes;
+  isExistedSize(i) {
+    const sizes = this.mainProductFG.get('variants').value[this.currentVariant].sizes;
+
     return sizes.indexOf(this.allSizes[i]) !== -1;
   }
 

@@ -125,6 +125,7 @@
             'choosedSize': i === choosedSizeId, 
             'existed-size': isExistedSize(i)
           }"
+
           (click)="webStorageService.isAdmin ? toggleSize(size, i) : chooseSizeId(i)"
           >{{size}}</li>
         </ul>
