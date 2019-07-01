@@ -157,7 +157,9 @@
                     <input 
                       [formControlName]="i"
                       (keydown)="keydownDescrInput($event)"
-                      class="description-controls">
+                      (blur)="blurDescrInput(i, $event)"
+                      class="description-controls"
+                    >
                   </li>
               </ul>
           </div>
@@ -199,7 +201,7 @@
   </aside>
 </section>
 
-<!-- <section style="width: 40vw;
+<section style="width: 40vw;
 height: 100vh;
 position: fixed;
 background: lightgoldenrodyellow;
@@ -209,4 +211,4 @@ white-space: pre;
 overflow-x: hidden;
 ">
 {{ mainProductFG.value | json }}
-</section> -->
+</section>

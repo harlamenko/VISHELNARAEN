@@ -5,7 +5,7 @@ import { IProduct } from 'src/app/models/Product';
 import { WebStorageService } from 'src/app/services/web-storage.service';
 import { Variant } from 'src/app/models/Product';
 import { BaseService } from 'src/app/services/base.service';
-import { FormGroup, FormArray } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-product',
@@ -37,6 +37,7 @@ export class ProductComponent implements OnInit {
     private _route: ActivatedRoute,
     public webStorageService: WebStorageService,
     public baseService: BaseService,
+    public fb: FormBuilder
   ) {
     this.mainProductFG = this._productService.productFG;
   }
@@ -258,21 +259,25 @@ export class ProductComponent implements OnInit {
     };
   }
 
+  //TODO: вынести в директиву
   addNewDescrLine(e) {
     const val = e.target.value;
     if (val.length) {
-      this.webStorageService.lang === 'ru' ? this.mainProduct.rus_descr.push(val) : this.mainProduct.en_descr.push(val);
+      // this.webStorageService.lang === 'ru' ? this.mainProduct.rus_descr.push(val) : this.mainProduct.en_descr.push(val);
+      (this.mainProductFG.get('rus_descr') as FormArray).push(this.fb.control(val));
       e.target.value = '';
     }
   }
 
+  //TODO: вынести в директиву
   blurDescrInput(i, e) {
     const val = e.target.value;
     if (!val.length) {
-      // TODO: удаление форм контрола
+      (this.mainProductFG.get('rus_descr') as FormArray).removeAt(i);
     }
   }
 
+  //TODO: вынести в директиву
   keydownNamePriceCtrls(e) {
     if (e.key !== 'Enter')  { return; }
 
@@ -281,7 +286,8 @@ export class ProductComponent implements OnInit {
       nextLine.focus();
     }
   }
-  
+
+  //TODO: вынести в директиву
   keydownDescrInput(e) {
     if (e.key !== 'Enter')  { return; }
 
