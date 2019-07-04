@@ -3,7 +3,7 @@
     <app-clothes *ngIf="webStorageService.isAdmin" [product]='"adminControl"'></app-clothes>
     <app-clothes *ngFor="let product of (products | productSort: productService.sortType)" [product]='product'></app-clothes>
   </main>
-  <button  class="btn gradient-border in clothes-container__btn" (click)="loadMore()">load more...</button> 
+  <!-- <button  class="btn gradient-border in clothes-container__btn" (click)="loadMore()">load more...</button>  -->
 </section>
 
 <ng-template #empty>

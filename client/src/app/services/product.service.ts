@@ -68,15 +68,7 @@ export class ProductService {
 
   initProductFG(product) {
     product.variants.forEach(variant => {
-      (this.productFG.get('variants') as FormArray).push(
-        this._fb.group({
-          color: [''],
-          photo: [''],
-          sizes: this._fb.array(
-            variant.sizes.map(size => this._fb.control(''))
-          )
-        })
-      );
+      this.addVariantFG(this.productFG.get('variants') as FormArray, variant);
     });
 
     product.rus_descr.map(line => {
@@ -90,6 +82,18 @@ export class ProductService {
     this.setValidatorsTo(this.productFG);
 
     this.productFG.patchValue(product);
+  }
+
+  addVariantFG(variants: FormArray, variant) {
+    variants.push(
+      this._fb.group({
+        color: [''],
+        photo: [''],
+        sizes: this._fb.array(
+          variant.sizes.map(size => this._fb.control(''))
+        )
+      })
+    );
   }
 
   setValidatorsTo(fg, validators: ProductValidation | any = new ProductValidation()): void {

@@ -84,7 +84,7 @@ export class ProductComponent implements OnInit {
 
             this._productService.product.next(this.mainProduct);
 
-            this.getAllColorsAndSizes();
+            this.getAllVariantsColors();
 
             this._productService.getSexType().subscribe(res => {
               res.sex.forEach(sex => {
@@ -128,9 +128,9 @@ export class ProductComponent implements OnInit {
     return sizes.indexOf(this.allSizes[i]) !== -1;
   }
 
-  getAllColorsAndSizes() {
+  getAllVariantsColors() {
     this.allColors = [];
-    this.mainProduct.variants.forEach(variant => {
+    this.mainProductFG.get('variants').value.forEach(variant => {
       this.allColors.push(variant.color);
     });
   }
@@ -183,12 +183,14 @@ export class ProductComponent implements OnInit {
 
   addNewVariant(newVar) {
     this.variantAdded = true;
+    const variants = this.mainProductFG.get('variants') as FormArray;
     newVar.color = 'none';
     newVar.sizes = [];
-    this.mainProduct.variants.push(newVar);
-    this.getAllColorsAndSizes();
-    this.currentVariant = this.allColors.length - 1;
+    this._productService.addVariantFG(variants, newVar);
+    this.getAllVariantsColors();
     this.getPipette(newVar.photo);
+    this.currentVariant = this.allColors.length - 1;
+    variants.controls[this.currentVariant].patchValue(newVar);
   }
 
   delProduct() {
@@ -207,12 +209,14 @@ export class ProductComponent implements OnInit {
   }
 
   toggleSize(size, i) {
-    const sizes = this.mainProduct.variants[this.currentVariant].sizes;
-    const idx = sizes.indexOf(size);
+    //TODO: вынести текущий вариант в метод\динамич свойство
+    const sizes = (<any>this.mainProductFG.get('variants')).controls[this.currentVariant].controls["sizes"];
+    const idx = sizes.value.indexOf(size);
+
     if (idx !== -1){
-      sizes.splice(idx, 1);
+      sizes.removeAt(idx);
     } else {
-      sizes.push(size);
+      sizes.push(this.fb.control(size));
     }
     this.choosedSizeId = i;
   }
@@ -255,8 +259,9 @@ export class ProductComponent implements OnInit {
       const y = e.pageY - position.y;
       const p = ctx.getImageData(x, y, 1, 1).data;
       const hex = '#' + ('000000' + self.rgbToHex(p[0], p[1], p[2])).slice(-6);
-      self.mainProduct.variants[self.mainProduct.variants.length - 1].color = hex;
-      self.getAllColorsAndSizes();
+      const variants = (self.mainProductFG.get('variants') as any).controls;
+      variants[variants.length - 1].patchValue({'color': hex});
+      self.getAllVariantsColors();
     };
   }
 
@@ -387,4 +392,10 @@ export class ProductComponent implements OnInit {
     );
   }
 
+  selectColorOfVariant(variantIndex: number) {
+    if (!this.variantAdded) {
+      this.currentVariant = variantIndex;
+      this.chooseSizeId(0, true);
+    }
+  }
 }

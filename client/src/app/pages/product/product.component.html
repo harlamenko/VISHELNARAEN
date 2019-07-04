@@ -109,7 +109,7 @@
               'current-color': i === currentVariant,
               'admin-btns__add-color': color === 'none'
             }"
-            (click)="currentVariant = !variantAdded ? i : currentVariant; !variantAdded ? chooseSizeId(0, true) : ''"
+            (click)="selectColorOfVariant(i)"
             [style.background-color]="color"
           ></li>
           <!-- <li class='description__category description__category--inline color-rect color-rect--none' style="background-color: #ebce8d"></li> -->
@@ -201,7 +201,7 @@
     <img *ngIf="nextProduct" [src]="nextProduct.variants[0].photo" routerLink="/clothes/{{nextId}}" [alt]="webStorageService.lang === 'ru' ? nextProduct.rus_name : nextProduct.en_name">
   </aside>
 </section>
-
+<!-- 
 <section style="width: 40vw;
 height: 100vh;
 position: fixed;
@@ -212,4 +212,4 @@ white-space: pre;
 overflow-x: hidden;
 ">
 {{ mainProductFG.value | json }}
-</section>
+</section> -->
