@@ -16,11 +16,13 @@
         <input placeholder="{{ webStorageService.lang === 'ru' ? 'Повтор пароля' : 'Repeat password' }}" [(ngModel)]="repeatpwd" class="header-action__control" type="password">
       </div>
       <div class='header-action__btns'>
-        <a href="#" *ngIf="!auth" [ngClass]="{'not-active': reg}" (click)="changeActions('auth')">{{ webStorageService.lang === 'ru' ? 'Вход' : 'Sign in' }}</a> 
-        <a href="#" *ngIf="auth" (click)="logIn()">{{ webStorageService.lang === 'ru' ? 'Войти' : 'Sign up' }}</a> 
+        <!-- <a href="#" *ngIf="!auth" [ngClass]="{'not-active': reg}" (click)="changeActions('auth')">{{ webStorageService.lang === 'ru' ? 'Вход' : 'Sign in' }}</a> 
+        <a href="#" *ngIf="auth" (click)="logIn()">{{ webStorageService.lang === 'ru' ? 'Войти' : 'Sign up' }}</a>  -->
+        <a href="#" (click)="guest()">Гость</a> 
         /
-        <a href="#" *ngIf="!reg" [ngClass]="{'not-active': auth}" (click)="changeActions('reg')">{{ webStorageService.lang === 'ru' ? 'Регистрация' : 'Sign up' }}</a>
-        <a href="#" *ngIf="reg" (click)="signin()">{{ webStorageService.lang === 'ru' ? 'Регистрация' : 'Sign up' }}</a>
+        <!-- <a href="#" *ngIf="!reg" [ngClass]="{'not-active': auth}" (click)="changeActions('reg')">{{ webStorageService.lang === 'ru' ? 'Регистрация' : 'Sign up' }}</a>
+        <a href="#" *ngIf="reg" (click)="signin()">{{ webStorageService.lang === 'ru' ? 'Регистрация' : 'Sign up' }}</a> -->
+        <a href="#" (click)="admin()">Админ</a>
       </div>      
     </span>
     <ng-template #in>

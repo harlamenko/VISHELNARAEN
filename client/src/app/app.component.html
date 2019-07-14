@@ -11,7 +11,7 @@
         
         <app-additional-info [showAdditionalInfo]="showAdditionalInfo" (close)="showAdditionalInfo = false"></app-additional-info>
 
-        <div class="header__breadcrumbs" *ngIf="needBreadCrumbs && product.rus_name && product.type && product.sex">
+        <!-- <div class="header__breadcrumbs" *ngIf="needBreadCrumbs && product.rus_name && product.type && product.sex">
           <span class="header__breadcrumbs__crumb" routerLink="/clothes">{{ webStorageService.lang === 'ru' ? 'Одежда' : 'Clothes' }}</span>
           <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
           <span class="header__breadcrumbs__crumb" routerLink="/clothes/product.sex.name">{{ webStorageService.lang === 'ru' ? product.sex.rus_name : product.sex.en_name }}</span>
@@ -19,7 +19,7 @@
           <span class="header__breadcrumbs__crumb" routerLink="/clothes/product.type.name/product.sex.name">{{ webStorageService.lang === 'ru' ? product.type.rus_name : product.type.en_name }}</span>
           <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
           <span class="header__breadcrumbs__crumb">{{ webStorageService.lang === 'ru' ? product.rus_name : product.en_name }}</span>
-        </div>
+        </div> -->
       </section>
       
       <div class="header__cart" routerLink="/cart">{{webStorageService.lang === 'ru' ? 'Корзина' : 'Cart' }}<sup class="header__cart__count">{{cartLength}}</sup></div>

@@ -1,18 +1,20 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 import { ProductService } from 'src/app/services/product.service';
 import { ActivatedRoute } from '@angular/router';
-import { IProduct } from 'src/app/models/Product';
+import { IProduct, ProductFormGroupModel } from 'src/app/models/Product';
 import { WebStorageService } from 'src/app/services/web-storage.service';
 import { Variant } from 'src/app/models/Product';
 import { BaseService } from 'src/app/services/base.service';
 import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss']
 })
-export class ProductComponent implements OnInit {
+export class ProductComponent implements OnInit, OnDestroy {
   public mainProduct: IProduct;
   public nextProduct: IProduct;
   public prevProduct: IProduct;
@@ -31,6 +33,7 @@ export class ProductComponent implements OnInit {
   @ViewChild('canvasForPhoto') canvasForPhoto: ElementRef;
 
   mainProductFG: FormGroup;
+  private alive: Subject<void> = new Subject();
 
   constructor(
     private _productService: ProductService,
@@ -38,9 +41,7 @@ export class ProductComponent implements OnInit {
     public webStorageService: WebStorageService,
     public baseService: BaseService,
     public fb: FormBuilder
-  ) {
-    this.mainProductFG = this._productService.productFG;
-  }
+  ) {}
 
   get currentVariantFormGroup() {
     const variants = this.mainProductFG.get('variants') as FormArray;
@@ -48,65 +49,76 @@ export class ProductComponent implements OnInit {
   }
 
   get description() {
-    return this.mainProductFG.get('rus_descr');
+    return this.mainProductFG.get('rus_descr') as FormArray;
+  }
+
+  get variants() {
+    return this.mainProductFG.get('variants') as FormArray;
+  }
+
+  get isAdmin() {
+    return this.webStorageService.isAdmin;
   }
 
   ngOnInit() {
-    if (this.webStorageService.isAdmin) {
+    if (this.isAdmin) {
       this._productService.getSexType().subscribe(sexesTypes => {
         this.sexesTypes = sexesTypes;
       });
     }
-    //TODO: использовать пайпы вместо вложенных сабов
-    this._route.paramMap.subscribe(
+
+    this._route.paramMap
+    .pipe(takeUntil(this.alive))
+    .subscribe(
       params => {
         this.mainId = +params.get('id');
-        this._productService.getProductById(this.mainId).subscribe(
-          product => {
-            this.mainProduct = product;
+        this._productService.getProductById(this.mainId)
+          .pipe(takeUntil(this.alive))
+          .subscribe(
+            product => {
+              this.mainProductFG = new ProductFormGroupModel(product) as FormGroup;
 
-            this._productService.initProductFG(product);
+              this._changeEditability();
 
-            this.nextId = this.mainProduct.next_id;
-            this.prevId = this.mainProduct.prev_id;
-            if (this.nextId !== null) {
-              this._productService.getProductById(this.nextId).subscribe(
-                prod => this.nextProduct = prod,
-                errors => this.nextProduct = null
-              );
+              this.nextId = this.mainProductFG.get('next_id').value;
+              this.prevId = this.mainProductFG.get('prev_id').value;
+
+              if (this.nextId !== null) {
+                this._productService.getProductById(this.nextId)
+                .pipe(takeUntil(this.alive))
+                .subscribe(
+                  prod => this.nextProduct = prod,
+                  errors => this.nextProduct = null
+                );
+              }
+
+              if (this.prevId !== null) {
+                this._productService.getProductById(this.prevId)
+                  .pipe(takeUntil(this.alive))
+                  .subscribe(
+                  prod => this.prevProduct = prod,
+                  errors => this.prevProduct = null
+                );
+              }
+
+              this.getAllVariantsColors();
             }
-            if (this.prevId !== null) {
-              this._productService.getProductById(this.prevId).subscribe(
-                prod => this.prevProduct = prod,
-                errors => this.prevProduct = null
-              );
-            }
-
-            this._productService.product.next(this.mainProduct);
-
-            this.getAllVariantsColors();
-
-            this._productService.getSexType().subscribe(res => {
-              res.sex.forEach(sex => {
-                if (sex.en_name === this.mainProduct.cat) {
-                  const p = this._productService.product.getValue();
-                  p.cat = sex;
-                  this._productService.product.next(p);
-                }
-              });
-              res.types.forEach(type => {
-                if (type.en_name === this.mainProduct.type) {
-                  const p = this._productService.product.getValue();
-                  p.type = type;
-                  this._productService.product.next(p);
-                }
-              });
-            });
-          }
-        );
+          );
       },
       errors => console.error(errors)
     );
+  }
+
+  private _changeEditability() {
+    if (this.isAdmin) { return; }
+
+    this.mainProductFG.get('rus_name').disable();
+    this.mainProductFG.get('rus_title').disable();
+    this.mainProductFG.get('price').disable();
+
+    this.description.controls.forEach(control => {
+      control.disable();
+    });
   }
 
   chooseSizeId(i, findExisted = false) {
@@ -186,7 +198,8 @@ export class ProductComponent implements OnInit {
     const variants = this.mainProductFG.get('variants') as FormArray;
     newVar.color = 'none';
     newVar.sizes = [];
-    this._productService.addVariantFG(variants, newVar);
+    // TODO: заменить добавление нового варианта
+    // this._productService.addVariantFG(variants, newVar);
     this.getAllVariantsColors();
     this.getPipette(newVar.photo);
     this.currentVariant = this.allColors.length - 1;
@@ -397,5 +410,10 @@ export class ProductComponent implements OnInit {
       this.currentVariant = variantIndex;
       this.chooseSizeId(0, true);
     }
+  }
+
+  ngOnDestroy() {
+    this.alive.next();
+    this.alive.complete();
   }
 }

@@ -32,6 +32,5 @@ export class AppComponent implements DoCheck, OnInit{
   }
   ngOnInit() {
     this.webStorageService.cartLength.subscribe(len => this.cartLength = len)
-    this._productService.product.subscribe(product => this.product = product);
   }
 }

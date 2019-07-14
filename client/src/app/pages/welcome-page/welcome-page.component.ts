@@ -135,4 +135,11 @@ export class WelcomePageComponent implements OnInit {
     this.webStorageService.cartLength.next(0);
   }
 
+  guest() {
+    this.webStorageService.isAdmin = false;
+  }
+
+  admin() {
+    this.webStorageService.isAdmin = true;
+  }
 }

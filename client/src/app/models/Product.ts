@@ -1,4 +1,4 @@
-import { Validators } from "@angular/forms";
+import { Validators, FormBuilder } from "@angular/forms";
 
 export class Variant {
     constructor(
@@ -65,4 +65,47 @@ export class ProductValidation {
             photo: [Validators.required]
         },
     ) { }
+}
+
+export class ProductFormGroupModel {
+    constructor (product: IProduct) {
+        const _fb = new FormBuilder;
+        const productValidation = new ProductValidation;
+
+        Object.keys(product).forEach(k => {
+            switch (k) {
+                case 'variants':
+                    const vars = product.variants.map(variant => {
+                        const varsObj = {};
+
+                        Object.keys(variant).forEach(key => {
+                            if (key === 'sizes') {
+                                varsObj[key] = _fb.array(variant[key].map(size => _fb.control(size)), productValidation.variants[key])
+                            } else {
+                                varsObj[key] = [variant[key], productValidation.variants[key]];
+                            }
+                        });
+
+                        return _fb.group(varsObj);
+                    });
+
+                    this[k] = _fb.array(vars);
+                    break;
+
+                case 'en_descr':
+                case 'rus_descr':
+                    this[k] = _fb.array(product[k].map(line => _fb.control(line)));
+                    break;
+
+                default:
+                    this[k] = [product[k]];
+
+                    if (k in productValidation) {
+                        this[k].push(productValidation[k]);
+                    }
+            }
+        });
+
+        return _fb.group(this);
+    }
 }
