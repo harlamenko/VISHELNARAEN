@@ -319,49 +319,6 @@ export class ProductComponent implements OnInit, OnDestroy {
     }
   }
 
-  validate() {
-    const validateMessages = [];
-// tslint:disable-next-line: forin
-    for (let k in this.mainProduct) {
-      switch (k) {
-        case 'rus_name':
-        case 'en_name':
-          if (!this.mainProduct[k].length) {
-            validateMessages.push('Поле название не заполнено!');
-          }
-          break;
-        case 'title':
-          if (!this.mainProduct[k].length) {
-            validateMessages.push('Поле описание не заполнено!');
-          }
-          break;
-        case 'price':
-          if (!this.mainProduct[k]) {
-            validateMessages.push('Поле цена не заполнено!');
-          }
-          break;
-        case 'rus_descr':
-        case 'en_descr':
-          if (!this.mainProduct[k].length) {
-            validateMessages.push('Необходимо добавить описание!');
-          }
-          break;
-        case 'variants':
-          this.mainProduct.variants.forEach((variant, i) => {
-            if (!variant.sizes.length) {
-              validateMessages.push(`Не указаны размеры ${i + 1}-го товара!`);
-            }
-          });
-          break;
-      }
-    }
-
-    return {
-      success: !validateMessages.length,
-      messages: validateMessages
-    }
-  }
-
   updateProduct() {
     if (this.variantAdded) {
       this.baseService.popup.open('Редактирование не окончено!', null, null, true);
