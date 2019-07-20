@@ -8,6 +8,7 @@ import { Variant } from 'src/app/models/Product';
 import { BaseService } from 'src/app/services/base.service';
 import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
+import { isNull } from 'util';
 
 @Component({
   selector: 'app-product',
@@ -166,7 +167,7 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   // циклический слайдер
   slidePhoto(side) {
-    switch(side){
+    switch (side) {
       case 'right':
         this.currentVariant = (this.currentVariant + 1) % this.allColors.length;
         break;
@@ -185,36 +186,34 @@ export class ProductComponent implements OnInit, OnDestroy {
 
     reader.addEventListener('load', (event: any) => {
       const base64Img = event.target.result;
-      const newVar = new Variant();
-      newVar.photo = base64Img;
-      this.addNewVariant(newVar);
+
+      this.addNewVariant(base64Img);
     });
 
     reader.readAsDataURL(file);
   }
 
-  addNewVariant(newVar) {
+  addNewVariant(photo: string) {
     this.variantAdded = true;
-    const variants = this.mainProductFG.get('variants') as FormArray;
-    newVar.color = 'none';
-    newVar.sizes = [];
-    // TODO: заменить добавление нового варианта
-    // this._productService.addVariantFG(variants, newVar);
+    this.getPipette(photo);
+    const variants: FormArray = this.mainProductFG.get('variants') as FormArray;
+    const varFG: FormGroup = ProductFormGroupModel.makeVariantFG(photo, null, this.allSizes);
+
+    variants.push(varFG);
+    this.currentVariant = variants.length - 1;
     this.getAllVariantsColors();
-    this.getPipette(newVar.photo);
-    this.currentVariant = this.allColors.length - 1;
-    variants.controls[this.currentVariant].patchValue(newVar);
   }
 
   delProduct() {
-    this.mainProduct.variants.splice(this.currentVariant, 1);
+    const vars = this.mainProductFG.get('variants') as FormArray;
+    vars.removeAt(this.currentVariant);
     this.allColors.splice(this.currentVariant, 1);
     this.currentVariant = 0;
   }
 
   endAddVariant() {
-    const vars = this.mainProduct.variants;
-    if (vars[vars.length - 1].color === 'none') {
+    const vars = this.mainProductFG.get('variants');
+    if (isNull(vars.value[this.currentVariant].color)) {
       this.baseService.popup.open('Необходимо выбрать цвет товара!', null, null, true);
     } else {
       this.variantAdded = false;
@@ -369,13 +368,13 @@ export class ProductComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const validateResult = this.validate();
+    const validationMessages: string[] = this._productService.collectValidationMessages(this.mainProductFG);
 
-    if (!validateResult.success) {
-      this.baseService.popup.open(validateResult.messages, null, null, true);
+    if (!this.mainProductFG.valid) {
+      this.baseService.popup.open(validationMessages, null, null, true);
       return;
     } else {
-      this._productService.updateProduct(this.mainProduct).subscribe(
+      this._productService.updateProduct(this.mainProductFG.value).subscribe(
         res => {
           if (res.status === 'ok') {
             this.baseService.popup.open('Информация о продукте успешно обновлена.', null, null, true);
@@ -393,7 +392,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   public deleteProduct() {
     this._productService.deleteProductById(this.mainId).subscribe(
       res => {
-        if (res[status] === true || res[status] === 'ok') {
+        if (res.status) {
           this.baseService.popup.open('Продукт успешно удален.', null, null, true);
         } else {
           this.baseService.popup.open('Ошибка! Продукт не был удален.', null, null, true);

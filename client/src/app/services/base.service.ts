@@ -17,7 +17,7 @@ export class BaseService {
       this.isOpen = false;
       document.querySelector('body').style.overflow = 'auto';
     },
-    open: function(msg, confirmFuncName, ctx, warning = false) {
+    open: function(msg: string | string[], confirmFuncName, ctx, warning = false) {
       this.message = typeof msg === 'string' ? msg : msg.join('\n');
       this.warning = warning;
       this.isOpen = true;

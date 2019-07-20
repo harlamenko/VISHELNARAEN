@@ -1,4 +1,5 @@
-import { Validators, FormBuilder } from "@angular/forms";
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { RxwebValidators } from "@rxweb/reactive-form-validators";
 
 export class Variant {
     constructor(
@@ -50,19 +51,32 @@ export class Product {
 
 export class ProductValidation {
     constructor(
-        public en_name = [Validators.required],
-        public rus_name = [Validators.required],
-        public en_descr = [Validators.required, Validators.minLength(1)],
-        public rus_descr = [Validators.required, Validators.minLength(1)],
-        public en_title = [Validators.required, Validators.minLength(1)],
-        public rus_title = [Validators.required, Validators.minLength(1)],
-        public cat = [Validators.required],
-        public price = [Validators.required, Validators.min(1)],
-        public type = [Validators.required],
+        public en_name = [RxwebValidators.required({message: 'You must enter a product name.'})],
+        public rus_name = [RxwebValidators.required({message: 'Необходимо ввести название товара.'})],
+        public en_descr = [
+            RxwebValidators.minLength({
+                value: 1,
+                message: 'Description must contain at least 1 line.'
+            })
+        ],
+        public rus_descr = [
+            RxwebValidators.minLength({
+                value: 1,
+                message: 'Описание должно содержать не менее 1 строки.'
+            })
+        ],
+        public en_title = [RxwebValidators.required({message: 'You must enter a product short description.'})],
+        public rus_title = [RxwebValidators.required({message: 'Необходимо ввести краткое описание товара.'})],
+        public cat = [RxwebValidators.required({message: 'Необходимо выбрать пол потребителя.'})],
+        public price = [
+            RxwebValidators.required({message: 'Необходимо указать цену товара.'}),
+            RxwebValidators.minNumber({value: 1, message: 'Цена должна быть больше 0.'})
+        ],
+        public type = [RxwebValidators.required({message: 'Необходимо указать категорию товара.'})],
         public variants = {
-            color: [Validators.required],
-            sizes: [Validators.required],
-            photo: [Validators.required]
+            color: [RxwebValidators.required({message: 'Необходимо указать цвет товара.'})],
+            sizes: [RxwebValidators.minLength({value: 1, message: 'Необходимо указать размеры товара.'})],
+            photo: [RxwebValidators.required({message: 'Необходимо добавить фото товара.'})]
         },
     ) { }
 }
@@ -107,5 +121,18 @@ export class ProductFormGroupModel {
         });
 
         return _fb.group(this);
+    }
+
+    static makeVariantFG(photo: string, color: string, sizes: string[]): FormGroup {
+        const _fb = new FormBuilder;
+        const productValidation = new ProductValidation;
+
+        const newVar = {
+            sizes : _fb.array(sizes.map(size => _fb.control(size)), productValidation.variants.sizes),
+            photo  : [photo, productValidation.variants.photo],
+            color : [color, productValidation.variants.color]
+        };
+
+        return _fb.group(newVar);
     }
 }

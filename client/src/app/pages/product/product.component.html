@@ -166,7 +166,11 @@
         </select>
       </section>
       <a class="btn gradient-border in" *ngIf="!webStorageService.isAdmin" (click)='addToCart()'>{{webStorageService.lang === 'ru' ? 'В корзину' : 'Add to cart' }}</a>
-      <a class="btn gradient-border in btn--admin" *ngIf="webStorageService.isAdmin" (click)='updateProduct()'>{{webStorageService.lang === 'ru' ? 'Обновить' : 'Update' }}</a>
+      <a
+      *ngIf="webStorageService.isAdmin"
+      class="btn gradient-border in btn--admin"
+      (click)='updateProduct()'
+      >{{webStorageService.lang === 'ru' ? 'Обновить' : 'Update' }}</a>
       <a class="btn gradient-border in btn--admin" *ngIf="webStorageService.isAdmin" (click)='baseService.popup.open("Вы точно хотите удалить товар?","deleteProduct", this)'>{{webStorageService.lang === 'ru' ? 'Удалить' : 'Delete' }}</a>
     </section>
   </main>

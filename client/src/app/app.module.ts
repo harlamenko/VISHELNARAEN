@@ -18,6 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PopupComponent } from './components/popup/popup.component';
 import { CreateComponent } from './pages/admin/create/create.component';
 import { AdditionalInfoComponent } from './components/additional-info/additional-info.component';
+import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators'; // <-- #2 import module
 
 const appRoutes: Routes = [
   {path: '', component: WelcomePageComponent},
@@ -55,7 +56,8 @@ const appRoutes: Routes = [
     BrowserModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RxReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
