@@ -1,0 +1,45 @@
+<main class="wrapper">
+  <header>    
+    <a href="#" class='header-action' routerLink="about">{{ webStorageService.lang === 'ru' ? 'О нас' : 'About us' }}</a> 
+    
+    <span class='two-strings'(click)="showAdditionalInfo = true"></span>
+
+    <app-additional-info [showAdditionalInfo]="showAdditionalInfo" (close)="showAdditionalInfo = false"></app-additional-info>
+    
+    <span class='header-action' *ngIf="!webStorageService?.username?.length; else in" [ngClass]="{'mb-35': auth || reg}">
+      <div class="header-action__controls__wrapper" *ngIf="auth || reg">
+        <input placeholder="{{ webStorageService.lang === 'ru' ? 'Логин' : 'Login' }}" [(ngModel)]="login" class="header-action__control" type="text">
+        <input placeholder="{{ webStorageService.lang === 'ru' ? 'Пароль' : 'Password' }}" [(ngModel)]="pwd" class="header-action__control" type="password">
+      </div>
+      <div class="header-action__controls__wrapper" *ngIf="reg">
+        <input placeholder="{{ webStorageService.lang === 'ru' ? 'Почта' : 'Email' }}" [(ngModel)]="mail" class="header-action__control" type="mail">
+        <input placeholder="{{ webStorageService.lang === 'ru' ? 'Повтор пароля' : 'Repeat password' }}" [(ngModel)]="repeatpwd" class="header-action__control" type="password">
+      </div>
+      <div class='header-action__btns'>
+        <!-- <a href="#" *ngIf="!auth" [ngClass]="{'not-active': reg}" (click)="changeActions('auth')">{{ webStorageService.lang === 'ru' ? 'Вход' : 'Sign in' }}</a> 
+        <a href="#" *ngIf="auth" (click)="logIn()">{{ webStorageService.lang === 'ru' ? 'Войти' : 'Sign up' }}</a>  -->
+        <a href="#" (click)="guest()">Гость</a> 
+        /
+        <!-- <a href="#" *ngIf="!reg" [ngClass]="{'not-active': auth}" (click)="changeActions('reg')">{{ webStorageService.lang === 'ru' ? 'Регистрация' : 'Sign up' }}</a>
+        <a href="#" *ngIf="reg" (click)="signin()">{{ webStorageService.lang === 'ru' ? 'Регистрация' : 'Sign up' }}</a> -->
+        <a href="#" (click)="admin()">Админ</a>
+      </div>      
+    </span>
+    <ng-template #in>
+      <span class='header-action'>
+        <div class='header-action__btns'>
+            {{webStorageService.username}}
+            <a href="#" (click)="logout()">{{ webStorageService.lang === 'ru' ? 'Выйти' : 'Sign out' }}</a> 
+        </div>
+      </span>
+    </ng-template>
+  </header>
+  <h1 class="gradient-element">
+      {{ webStorageService.lang === 'ru' ? 'ВЫШЕЛНАРАЁН' : 'VISHELNARAEN' }}
+  </h1>
+  <nav>
+    <a routerLink="/products/women/all">{{ webStorageService.lang === 'ru' ? 'Для женщин' : 'For women' }}</a>
+    <a routerLink="/products">{{ webStorageService.lang === 'ru' ? 'Одежда' : 'Clothes' }}</a>
+    <a routerLink="/products/men/all">{{ webStorageService.lang === 'ru' ? 'Для мужчин' : 'For men' }}</a>
+  </nav>
+</main>

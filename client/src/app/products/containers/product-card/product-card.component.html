@@ -1,0 +1,153 @@
+<div class="wrapper wrapper--with-filter">
+  <header class="header">
+    <h1 class="header__logo gradient-element" routerLink="/">
+      {{ webStorageService.lang === 'ru' ? 'ВЫШЕЛНАРАЁН' : 'VISHELNARAEN' }}
+    </h1>
+
+    <section class="header__main">
+      <div class="header__breadcrumbs">
+        <span class="header__breadcrumbs__crumb"
+          routerLink="/products">{{ webStorageService.lang === 'ru' ? 'Одежда' : 'Clothes' }}</span>
+        <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
+        <span class="header__breadcrumbs__crumb"
+          routerLink="/products/mainProductFG?.value.cat.rus_name">{{mainProductFG?.get('cat').value.rus_name}}</span>
+        <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
+        <span class="header__breadcrumbs__crumb"
+          routerLink="/products/mainProductFG?.value.type.rus_name/mainProductFG?.value.cat.rus_name">{{mainProductFG?.get('type').value.rus_name}}</span>
+        <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
+        <span class="header__breadcrumbs__crumb">{{mainProductFG?.get('rus_name').value}}</span>
+      </div>
+    </section>
+
+    <div class="header__cart" routerLink="/cart">
+      {{webStorageService.lang === 'ru' ? 'Корзина' : 'Cart' }}
+      <sup class="header__cart__count">{{cartLength}}</sup>
+    </div>
+
+  </header>
+
+  <section class="outlet">
+
+
+    <nav class="navigation">
+      <a (click)="back()" class="navigation__link">
+        <img class="navigation__link__arrow" src="../../../assets/icons/triangle.png" alt="<">
+        {{webStorageService.lang === 'ru' ? 'Назад' : 'Back'}}
+      </a>
+    </nav>
+
+    <section class="main-section">
+      <aside
+        class="main-section__side-product main-section__side-product--prev main-section__side-product--semitransparent">
+        <ng-container *ngIf="prevProduct">
+          <img [src]="prevProduct.variants[0].photo" routerLink="/products/{{prevId}}"
+            [alt]="webStorageService.lang === 'ru' ? prevProduct.rus_name : prevProduct.en_name">
+        </ng-container>
+      </aside>
+
+      <main class="main-section__current-product" *ngIf="mainProductFG">
+        <figure class="main-section__current-product__card">
+          <div class="admin-btns" *ngIf="isAdmin">
+            <canvas #canvasForPhoto class="canvasForPhoto" [ngClass]="{'hide': !variantAdded}"></canvas>
+
+            <button class="admin-btns__add" *ngIf="!variantAdded">
+              <input type="file" accept="image/*" (change)="addPhotoVariant($event)" id="addFileBtn">
+            </button>
+
+            <button class="admin-btns__done" *ngIf="variantAdded" (click)="endAddVariant()"></button>
+
+            <button class="admin-btns__del" *ngIf="!variantAdded && variants.value.length > 1"
+              (click)="baseService.popup.open('Вы точно хотите удалить?','delProduct', this)"></button>
+
+            <button class="btn-arrow admin-btns__left" *ngIf="variants.value.length > 1"
+              (click)="slidePhoto('left')"></button>
+
+            <button class="btn-arrow admin-btns__right" *ngIf="variants.value.length > 1"
+              (click)="slidePhoto('right')"></button>
+          </div>
+
+          <img class="main-section__current-product__card__photo" [src]="currentVariantFormGroup.value.photo"
+            [alt]="webStorageService.lang === 'ru' ? mainProductFG.get('rus_name').value : mainProductFG.get('en_name').value">
+          <figcaption class="main-section__current-product__card__info" [formGroup]="mainProductFG">
+            <textarea formControlName="rus_name" placeholder="{{webStorageService.lang === 'ru' ? 'Название' : 'Name'}}"
+              (keydown)="keydownNamePriceCtrls($event)"
+              class="main-section__current-product__card__info__name name-price-controls"></textarea>
+
+            <input formControlName="rus_title"
+              placeholder="{{webStorageService.lang === 'ru' ?  'Краткое описание' : 'Short description'}}" type="text"
+              (keydown)="keydownNamePriceCtrls($event)"
+              class="main-section__current-product__card__info__title name-price-controls">
+
+            <input formControlName="price" placeholder="Цена" type="number" (keydown)="keydownNamePriceCtrls($event)"
+              class="main-section__current-product__card__info__price name-price-controls">
+          </figcaption>
+        </figure>
+
+        <section class="main-section__current-product__description description" [formGroup]="mainProductFG">
+          <li class='description__category'>{{webStorageService.lang === 'ru' ? 'Цвет' : 'Color'}}:
+            <ul class='description__category__sub'>
+              <li *ngFor="let color of allColors; index as i"
+                class='description__category description__category--inline color-rect' [ngClass]="{
+                'current-color': i === currentVariant,
+                'admin-btns__add-color': color === 'none'
+              }" (click)="selectColorOfVariant(i)" [style.background-color]="color"></li>
+              <!-- <li class='description__category description__category--inline color-rect color-rect--none' style="background-color: #ebce8d"></li> -->
+            </ul>
+          </li>
+
+          <li class='description__category'>{{webStorageService.lang === 'ru' ? 'Размер' : 'Size' }}:
+            <ul class='description__category__sub'>
+              <li *ngFor="let size of allSizes; index as i"
+                class='description__category description__category--inline size' [ngClass]="{
+              'choosedSize': i === choosedSizeId, 
+              'existed-size': isExistedSize(i)
+            }" (click)="webStorageService.isAdmin ? toggleSize(size, i) : chooseSizeId(i)">{{size}}</li>
+            </ul>
+          </li>
+
+          <li class='description__category'>{{webStorageService.lang === 'ru' ? 'Описание' : 'Description' }}:
+            <div class="description-controls__wrapper" id="description-controls__wrapper">
+              <ul class='description__category__sub'>
+                <li class='description__category' *ngIf="isAdmin">
+                  <input autofocus id="newLineInput" (keydown)="keydownDescrInput($event)"
+                    (blur)="addNewDescrLine($event)" class="description-controls">
+                </li>
+                <li class='description__category' *ngFor="let line of description.controls; index as i"
+                  formArrayName="rus_descr">
+                  <input [formControlName]="i" (keydown)="keydownDescrInput($event)" (blur)="blurDescrInput(i, $event)"
+                    class="description-controls">
+                </li>
+              </ul>
+            </div>
+          </li>
+
+          <section *ngIf="isAdmin" class="main-section__current-product__category-sex-controls">
+            <select class="main-section__current-product__category-sex-controls__control" formControlName="type">
+              <option *ngFor="let type of sexesTypes?.types"
+                [attr.selected]="mainProductFG.get('type').value === type.en_name ? true : null">
+                {{webStorageService.lang === 'ru' ? type.rus_name : type.en_name}}</option>
+            </select>
+
+            <select class="main-section__current-product__category-sex-controls__control" formControlName="cat">
+              <option *ngFor="let sex of sexesTypes?.sex"
+                [attr.selected]="mainProductFG.get('cat').value === sex.en_name ? true : null">{{sex.rus_name}}</option>
+            </select>
+          </section>
+          <a class="btn gradient-border in" *ngIf="!webStorageService.isAdmin"
+            (click)='addToCart()'>{{webStorageService.lang === 'ru' ? 'В корзину' : 'Add to cart' }}</a>
+          <a *ngIf="webStorageService.isAdmin" class="btn gradient-border in btn--admin"
+            (click)='updateProduct()'>{{webStorageService.lang === 'ru' ? 'Обновить' : 'Update' }}</a>
+          <a class="btn gradient-border in btn--admin" *ngIf="webStorageService.isAdmin"
+            (click)='baseService.popup.open("Вы точно хотите удалить товар?","deleteProduct", this)'>{{webStorageService.lang === 'ru' ? 'Удалить' : 'Delete' }}</a>
+        </section>
+      </main>
+      <aside
+        class="main-section__side-product main-section__side-product--next main-section__side-product--semitransparent">
+        <ng-container *ngIf="prevProduct">
+          <img [src]="nextProduct.variants[0].photo" routerLink="/products/{{nextId}}"
+            [alt]="webStorageService.lang === 'ru' ? nextProduct.rus_name : nextProduct.en_name">
+        </ng-container>
+      </aside>
+    </section>
+  </section>
+</div>

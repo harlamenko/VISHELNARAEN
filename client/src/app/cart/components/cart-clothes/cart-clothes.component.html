@@ -1,0 +1,21 @@
+<figure *ngIf="product" class="cart-clothes">
+  <img [src]="product.photo" class="cart-clothes__photo" routerLink="/products/{{product.id}}" [alt]="product.name">
+
+  <figcaption class="cart-clothes__description" routerLink="/products/{{product.id}}">
+    <p class="cart-clothes__description__elem cart-clothes__description__name">{{ webStorageService.lang === 'ru' ? product.rus_name : product.en_name}}</p>
+
+    <li class='cart-clothes__description__elem cart-clothes__description__category'>{{ webStorageService.lang === 'ru' ? 'Размер': 'Size'}}:
+      <ul class='cart-clothes__description__category__sub'>
+        <li class='cart-clothes__description__category'>{{product.size}}</li>
+      </ul>
+    </li>
+    <li class='cart-clothes__description__elem cart-clothes__description__category'>{{ webStorageService.lang === 'ru' ? 'Цвет' : 'Color'}}:
+      <ul class='cart-clothes__description__category__sub'>
+        <li class='cart-clothes__description__category color' [style.background-color]="product.color"></li>
+      </ul>
+    </li>
+
+    <p class="cart-clothes__description__elem cart-clothes__description__price">{{ webStorageService.lang === 'ru' ? product.price + '₽' : (product.price / 65 | number:'1.0-0') + '$'}}</p>
+  </figcaption>
+  <button class="cart-clothes__btn" (click)="removeFromCart(product.id)"></button>
+</figure>

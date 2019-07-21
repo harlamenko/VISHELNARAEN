@@ -1,0 +1,15 @@
+<figure class="clothes gradient-border in" *ngIf="product && product !== 'adminControl'; else adminControl" routerLink="/products/{{product.id}}">
+  <img class="clothes__photo" [src]="product.photo" [alt]="product.rus_name">
+  <figcaption class="clothes__info">
+    <p class="clothes__info__name gradient-element">{{webStorageService.lang === 'ru' ? product.rus_name : product.en_name}}</p>
+    <p class="clothes__info__price">{{ webStorageService.lang === 'ru' ? product.price + '₽' : (product.price / 65 | number:'1.0-0') + '$'}}</p>
+  </figcaption>
+</figure>
+<ng-template #adminControl>
+    <figure class="clothes gradient-border in" routerLink="/admin/create">
+      <button class="adminControlBtn"></button>
+      <figcaption class="clothes__info">
+        <p class="clothes__info__name gradient-element">{{webStorageService.lang === 'ru' ? 'Добавить новый продукт' : 'Add new product'}}</p>
+      </figcaption>
+    </figure>
+</ng-template>

@@ -1,0 +1,53 @@
+<div class="wrapper wrapper--with-filter">
+  <header class="header">
+    <h1 class="header__logo gradient-element" routerLink="/">
+      {{ webStorageService.lang === 'ru' ? 'ВЫШЕЛНАРАЁН' : 'VISHELNARAEN' }}
+    </h1>
+
+    <section class="header__main">
+      <app-search class="header__search"></app-search>
+
+      <span class='header__decor two-strings' (click)="showAdditionalInfo = true"></span>
+
+      <app-additional-info [showAdditionalInfo]="showAdditionalInfo" (close)="showAdditionalInfo = false">
+      </app-additional-info>
+
+      <!-- <div class="header__breadcrumbs" *ngIf="product.rus_name && product.type && product.sex">
+          <span class="header__breadcrumbs__crumb" routerLink="/products">{{ webStorageService.lang === 'ru' ? 'Одежда' : 'Clothes' }}</span>
+          <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
+          <span class="header__breadcrumbs__crumb" routerLink="/products/product.sex.name">{{ webStorageService.lang === 'ru' ? product.sex.rus_name : product.sex.en_name }}</span>
+          <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
+          <span class="header__breadcrumbs__crumb" routerLink="/products/product.type.name/product.sex.name">{{ webStorageService.lang === 'ru' ? product.type.rus_name : product.type.en_name }}</span>
+          <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
+          <span class="header__breadcrumbs__crumb">{{ webStorageService.lang === 'ru' ? product.rus_name : product.en_name }}</span>
+        </div> -->
+    </section>
+
+    <div class="header__cart" routerLink="/cart">
+      {{webStorageService.lang === 'ru' ? 'Корзина' : 'Cart' }}
+      <sup class="header__cart__count">{{cartLength}}</sup>
+    </div>
+
+  </header>
+
+  <aside class="filter-container">
+    <app-filter></app-filter>
+  </aside>
+
+  <section class="outlet">
+    <section class="clothes-container" *ngIf="products?.length; else empty">
+      <main class="clothes-container__clothes">
+        <app-product *ngIf="webStorageService.isAdmin" [product]='"adminControl"'></app-product>
+        <app-product *ngFor="let product of (products | productSort: productService.sortType)" [product]='product'>
+        </app-product>
+      </main>
+      <!-- <button  class="btn gradient-border in clothes-container__btn" (click)="loadMore()">load more...</button>  -->
+    </section>
+    
+    <ng-template #empty>
+      <p *ngIf="products">
+        {{ webStorageService.lang === 'ru' ? 'Сорри, товаров по такому фильтру нет...' : 'Sorry, there are no products for this filter...' }}
+      </p>
+    </ng-template>
+  </section>
+</div>
