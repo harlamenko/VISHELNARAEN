@@ -7,7 +7,6 @@ import { WebStorageService } from 'src/app/main/web-storage.service';
 import { BaseService } from 'src/app/main/base.service';
 import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { isNull, isUndefined } from 'util';
 
 @Component({
   selector: 'app-product-card',
@@ -34,8 +33,6 @@ export class ProductCardComponent implements OnInit, OnDestroy {
     sex: string,
     pName: string,
   };
-  
-  @ViewChild('canvasForPhoto') canvasForPhoto: ElementRef;
 
   mainProductFG: FormGroup;
   private alive: Subject<void> = new Subject();
@@ -134,7 +131,13 @@ export class ProductCardComponent implements OnInit, OnDestroy {
       control.disable();
     });
   }
-
+  
+  selectColorOfVariant(variantIndex: number) {
+    if (!this.variantAdded) {
+      this.currentVariant = variantIndex;
+      this.chooseSizeId(0, true);
+    }
+  }
   chooseSizeId(i, findExisted = false) {
     if (this.isExistedSize(i)) {
       this.choosedSizeId = i;
@@ -174,64 +177,6 @@ export class ProductCardComponent implements OnInit, OnDestroy {
     this.webStorageService.storeToLocal('cart', obj);
   }
 
-  back() {
-    window.history.back();
-  }
-
-  // циклический слайдер
-  slidePhoto(side) {
-    switch (side) {
-      case 'right':
-        this.currentVariant = (this.currentVariant + 1) % this.allColors.length;
-        break;
-      case 'left':
-        // чтобы не уходить в индекс меньший нуля присваиваем idx индекс последнего эл, если текущий idx = 0
-        this.currentVariant = this.currentVariant === 0 ? this.allColors.length - 1 : ((this.currentVariant - 1) % this.allColors.length);
-        break;
-    }
-  }
-
-  addPhotoVariant(e) {
-    if (!e.isTrusted) { return; }
-
-    const file: File = e.target.files[0];
-    const reader = new FileReader();
-
-    reader.addEventListener('load', (event: any) => {
-      const base64Img = event.target.result;
-
-      this.addNewVariant(base64Img);
-    });
-
-    reader.readAsDataURL(file);
-  }
-
-  addNewVariant(photo: string) {
-    this.variantAdded = true;
-    this.getPipette(photo);
-    const variants: FormArray = this.mainProductFG.get('variants') as FormArray;
-    const varFG: FormGroup = ProductFormGroupModel.makeVariantFG(photo, null, this.allSizes);
-
-    variants.push(varFG);
-    this.currentVariant = variants.length - 1;
-    this.getAllVariantsColors();
-  }
-
-  delProduct() {
-    const vars = this.mainProductFG.get('variants') as FormArray;
-    vars.removeAt(this.currentVariant);
-    this.allColors.splice(this.currentVariant, 1);
-    this.currentVariant = 0;
-  }
-
-  endAddVariant() {
-    const vars = this.mainProductFG.get('variants');
-    if (isNull(vars.value[this.currentVariant].color)) {
-      this.baseService.popup.open('Необходимо выбрать цвет товара!', null, null, true);
-    } else {
-      this.variantAdded = false;
-    }
-  }
 
   toggleSize(size, i) {
     //TODO: вынести текущий вариант в метод\динамич свойство
@@ -258,39 +203,6 @@ export class ProductCardComponent implements OnInit, OnDestroy {
     return undefined;
   }
 
-  rgbToHex(r, g, b){
-    if (r > 255 || g > 255 || b > 255) {
-        throw "Invalid color component";
-    }
-    return ((r << 16) | (g << 8) | b).toString(16);
-  }
-
-  getPipette(src) {
-    const canvas = this.canvasForPhoto.nativeElement;
-    canvas.width = canvas.offsetParent.offsetWidth;
-    canvas.height = canvas.offsetParent.offsetHeight;
-    const ctx = canvas.getContext('2d');
-
-    const image = new Image();
-    image.src = src;
-    image.onload = function() {
-      ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-    }
-
-    const self = this;
-    canvas.onclick = function(e) {
-      const position = self.findPos(this);
-      const x = e.pageX - position.x;
-      const y = e.pageY - position.y;
-      const p = ctx.getImageData(x, y, 1, 1).data;
-      const hex = '#' + ('000000' + self.rgbToHex(p[0], p[1], p[2])).slice(-6);
-      const variants = (self.mainProductFG.get('variants') as any).controls;
-      variants[variants.length - 1].patchValue({'color': hex});
-      self.getAllVariantsColors();
-    };
-  }
-
-  //TODO: вынести в директиву
   addNewDescrLine(e) {
     const val = e.target.value;
     if (val.length) {
@@ -300,7 +212,6 @@ export class ProductCardComponent implements OnInit, OnDestroy {
     }
   }
 
-  //TODO: вынести в директиву
   blurDescrInput(i, e) {
     const val = e.target.value;
     if (!val.length) {
@@ -308,17 +219,6 @@ export class ProductCardComponent implements OnInit, OnDestroy {
     }
   }
 
-  //TODO: вынести в директиву
-  keydownNamePriceCtrls(e) {
-    if (e.key !== 'Enter')  { return; }
-
-    const nextLine = e.target.nextElementSibling;
-    if (nextLine) {
-      nextLine.focus();
-    }
-  }
-
-  //TODO: вынести в директиву
   keydownDescrInput(e) {
     if (e.key !== 'Enter')  { return; }
 
@@ -372,13 +272,6 @@ export class ProductCardComponent implements OnInit, OnDestroy {
         this.baseService.popup.open('Приносим извенения, серверная ошибка.', null, null, true);
       }
     );
-  }
-
-  selectColorOfVariant(variantIndex: number) {
-    if (!this.variantAdded) {
-      this.currentVariant = variantIndex;
-      this.chooseSizeId(0, true);
-    }
   }
 
   ngOnDestroy() {

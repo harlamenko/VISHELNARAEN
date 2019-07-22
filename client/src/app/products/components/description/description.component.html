@@ -1,0 +1,15 @@
+<li class='description__category'>{{webStorageService.lang === 'ru' ? 'Описание' : 'Description' }}:
+    <div class="description-controls__wrapper" id="description-controls__wrapper">
+      <ul class='description__category__sub'>
+        <li class='description__category' *ngIf="isAdmin">
+          <input autofocus id="newLineInput" (keydown)="keydownDescrInput($event)"
+            (blur)="addNewDescrLine($event)" class="description-controls">
+        </li>
+        <li class='description__category' *ngFor="let line of description.controls; index as i"
+          formArrayName="rus_descr">
+          <input [formControlName]="i" (keydown)="keydownDescrInput($event)" (blur)="blurDescrInput(i, $event)"
+            class="description-controls">
+        </li>
+      </ul>
+    </div>
+  </li>

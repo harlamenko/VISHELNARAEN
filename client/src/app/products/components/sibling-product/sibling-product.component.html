@@ -1,0 +1,8 @@
+<aside class="sibling-product sibling-product--prev sibling-product--semitransparent">
+    <img 
+      *ngIf="product"
+      [src]="product.variants[0].photo"
+      [routerLink]="['/products',product.id]"
+      [alt]="webStorageService.lang === 'ru' ? product.rus_name : product.en_name"
+    >
+</aside>

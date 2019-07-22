@@ -1,0 +1,109 @@
+.admin-btns {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 2px solid;
+    & input[type=file] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+    }
+    & button, input[type=file] {
+        width: 30px;
+        height: 30px;
+        background: none;
+    }
+    & .btn-arrow {
+        transform: rotate(45deg);
+        margin: 30px;
+    }
+    &__add, &__done{
+        border: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-bottom: 2px solid;
+        border-right: 2px solid;
+
+        &::after {
+            display: block;
+            content: '';
+            border-left: 2px solid;
+            width: 0px;
+            height: 50%;
+            margin: 0 auto;
+            cursor: pointer;
+        }
+        &::before {
+            display: block;
+            content: '';
+            border-left: 2px solid;
+            transform: rotate(90deg);
+            width: 0px;
+            height: 50%;
+            margin: 0 auto;
+            margin-bottom: -13px;
+            cursor: pointer;
+            
+        }
+    }
+    &__done {
+        &::after {
+            height: 20%;
+            margin: 0 auto;
+            cursor: pointer;
+            transform: rotate(-45deg);
+            margin-left: 2px;
+            margin-top: 6px;
+        }
+        &::before {
+            transform: rotate(45deg);
+        }
+    }
+    &__del{
+        border: 0;
+        position: absolute;
+        top: 0;
+        right: 0;
+        border-bottom: 2px solid;
+        border-left: 2px solid;
+        
+        &::after {
+            display: block;
+            content: '';
+            border-left: 2px solid;
+            width: 0px;
+            height: 50%;
+            transform: rotate(-45deg);
+            margin: 0 auto;
+            cursor: pointer;
+        }
+        &::before {
+            display: block;
+            content: '';
+            border-left: 2px solid;
+            transform: rotate(45deg);
+            width: 0px;
+            height: 50%;
+            margin: 0 auto;
+            margin-bottom: -13px;
+            cursor: pointer;
+        }
+    }
+    &__left{
+        border: 0;
+        border-bottom: 2px solid;
+        border-left: 2px solid;
+    }
+    &__right{
+        border: 0;
+        border-top: 2px solid;
+        border-right: 2px solid;
+    }
+}

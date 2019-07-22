@@ -1,0 +1,15 @@
+.sibling-product{
+    width: 141px;
+    height: 145px;
+
+    &--semitransparent {
+        opacity: .5;
+    }
+    &--next{
+        justify-self: end;
+    }
+        
+    & > img {
+        height: 100%;
+    }
+}

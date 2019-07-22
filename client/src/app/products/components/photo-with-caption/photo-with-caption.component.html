@@ -1,0 +1,18 @@
+<figure class="current-product__card">
+  <img class="current-product__card__photo" 
+    [src]="photo"
+    [alt]="webStorageService.lang === 'ru' ? group.get('rus_name').value : group.get('en_name').value">
+  <figcaption class="current-product__card__info" [formGroup]="group">
+    <textarea formControlName="rus_name" placeholder="{{webStorageService.lang === 'ru' ? 'Название' : 'Name'}}"
+      (keydown)="keydownNamePriceCtrls($event)"
+      class="current-product__card__info__name name-price-controls"></textarea>
+
+    <input formControlName="rus_title"
+      placeholder="{{webStorageService.lang === 'ru' ?  'Краткое описание' : 'Short description'}}" type="text"
+      (keydown)="keydownNamePriceCtrls($event)"
+      class="current-product__card__info__title name-price-controls">
+
+    <input formControlName="price" placeholder="Цена" type="number" (keydown)="keydownNamePriceCtrls($event)"
+      class="current-product__card__info__price name-price-controls">
+  </figcaption>
+</figure>

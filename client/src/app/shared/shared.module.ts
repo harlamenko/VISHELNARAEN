@@ -5,6 +5,7 @@ import { FormsModule } from "@angular/forms";
 import { HeaderComponent } from './header/header.component';
 import { HeaderBreadcrumbsComponent } from './header-breadcrumbs/header-breadcrumbs.component';
 import { RouterModule } from "@angular/router";
+import { BackBtnComponent } from './back-btn/back-btn.component';
 
 @NgModule({
     imports: [
@@ -16,6 +17,7 @@ import { RouterModule } from "@angular/router";
         AdditionalInfoComponent,
         HeaderComponent,
         HeaderBreadcrumbsComponent,
+        BackBtnComponent,
     ],
     exports: [
         AdditionalInfoComponent,
@@ -23,7 +25,8 @@ import { RouterModule } from "@angular/router";
         HeaderBreadcrumbsComponent,
         CommonModule,
         FormsModule,
-        RouterModule
+        RouterModule,
+        BackBtnComponent
     ]
 })
 export class SharedModule { }

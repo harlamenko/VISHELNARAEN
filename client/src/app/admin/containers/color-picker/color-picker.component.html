@@ -1,0 +1,16 @@
+<div class="admin-btns">
+  <canvas #canvasForPhoto class="canvasForPhoto" [ngClass]="{'hide': !variantAdded}"></canvas>
+
+  <button class="admin-btns__add" *ngIf="!variantAdded">
+    <input type="file" accept="image/*" (change)="addPhotoVariant($event)" id="addFileBtn">
+  </button>
+
+  <button class="admin-btns__done" *ngIf="variantAdded" (click)="endAddVariant()"></button>
+
+  <button class="admin-btns__del" *ngIf="!variantAdded && variants.value.length > 1"
+    (click)="baseService.popup.open('Вы точно хотите удалить?','delProduct', this)"></button>
+
+  <button class="btn-arrow admin-btns__left" *ngIf="variants.value.length > 1" (click)="slidePhoto('left')"></button>
+
+  <button class="btn-arrow admin-btns__right" *ngIf="variants.value.length > 1" (click)="slidePhoto('right')"></button>
+</div>

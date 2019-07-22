@@ -1,0 +1,10 @@
+<li class='description__category'>{{webStorageService.lang === 'ru' ? 'Цвет' : 'Color'}}:
+    <ul class='description__category__sub'>
+      <li *ngFor="let color of allColors; index as i"
+        class='description__category description__category--inline color-rect' [ngClass]="{
+          'current-color': i === currentVariant,
+          'admin-btns__add-color': color === 'none'
+        }" (click)="selectColorOfVariant(i)" [style.background-color]="color"></li>
+      <!-- <li class='description__category description__category--inline color-rect color-rect--none' style="background-color: #ebce8d"></li> -->
+    </ul>
+  </li>
