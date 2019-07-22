@@ -1,0 +1,14 @@
+<section class="header__main">
+  <div class="header__breadcrumbs">
+    <span class="header__breadcrumbs__crumb"
+      routerLink="/products">{{ webStorageService.lang === 'ru' ? 'Одежда' : 'Clothes' }}</span>
+    <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
+    <span class="header__breadcrumbs__crumb"
+      [routerLink]="['/products', sex]">{{sex}}</span>
+    <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
+    <span class="header__breadcrumbs__crumb"
+      [routerLink]="['/products', sex, category]">{{category}}</span>
+    <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
+    <span class="header__breadcrumbs__crumb">{{pName}}</span>
+  </div>
+</section>

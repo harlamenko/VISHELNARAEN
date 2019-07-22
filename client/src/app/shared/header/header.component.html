@@ -1,0 +1,12 @@
+<header class="header">
+  <h1 class="header__logo gradient-element" routerLink="/">
+    {{ webStorageService.lang === 'ru' ? 'ВЫШЕЛНАРАЁН' : 'VISHELNARAEN' }}
+  </h1>
+
+  <ng-content #intermediateContent></ng-content>
+
+  <div class="header__cart" routerLink="/cart">
+    {{webStorageService.lang === 'ru' ? 'Корзина' : 'Cart' }}
+    <sup class="header__cart__count">{{cartLength}}</sup>
+  </div>
+</header>

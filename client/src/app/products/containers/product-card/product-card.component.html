@@ -1,34 +1,15 @@
 <div class="wrapper wrapper--with-filter">
-  <header class="header">
-    <h1 class="header__logo gradient-element" routerLink="/">
-      {{ webStorageService.lang === 'ru' ? 'ВЫШЕЛНАРАЁН' : 'VISHELNARAEN' }}
-    </h1>
-
-    <section class="header__main">
-      <div class="header__breadcrumbs">
-        <span class="header__breadcrumbs__crumb"
-          routerLink="/products">{{ webStorageService.lang === 'ru' ? 'Одежда' : 'Clothes' }}</span>
-        <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
-        <span class="header__breadcrumbs__crumb"
-          routerLink="/products/mainProductFG?.value.cat.rus_name">{{mainProductFG?.get('cat').value.rus_name}}</span>
-        <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
-        <span class="header__breadcrumbs__crumb"
-          routerLink="/products/mainProductFG?.value.type.rus_name/mainProductFG?.value.cat.rus_name">{{mainProductFG?.get('type').value.rus_name}}</span>
-        <img class="header__breadcrumbs__arrow" src="../../../assets/icons/arrow.png" alt="->">
-        <span class="header__breadcrumbs__crumb">{{mainProductFG?.get('rus_name').value}}</span>
-      </div>
-    </section>
-
-    <div class="header__cart" routerLink="/cart">
-      {{webStorageService.lang === 'ru' ? 'Корзина' : 'Cart' }}
-      <sup class="header__cart__count">{{cartLength}}</sup>
-    </div>
-
-  </header>
+  
+  <app-header>
+    <app-header-breadcrumbs
+      *ngIf="breadmsInfo"
+      [sex]="breadmsInfo.sex"
+      [category]="breadmsInfo.category"
+      [pName]="breadmsInfo.pName"
+    ></app-header-breadcrumbs>
+  </app-header>
 
   <section class="outlet">
-
-
     <nav class="navigation">
       <a (click)="back()" class="navigation__link">
         <img class="navigation__link__arrow" src="../../../assets/icons/triangle.png" alt="<">

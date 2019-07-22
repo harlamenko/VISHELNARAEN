@@ -7,7 +7,7 @@ import { WebStorageService } from 'src/app/main/web-storage.service';
 import { BaseService } from 'src/app/main/base.service';
 import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { isNull } from 'util';
+import { isNull, isUndefined } from 'util';
 
 @Component({
   selector: 'app-product-card',
@@ -25,10 +25,16 @@ export class ProductCardComponent implements OnInit, OnDestroy {
   public variantAdded = false;
   public sexesTypes: any;
 
-  public currentVariant = 0;
-  public choosedSizeId = 0;
-  public allColors: string[];
-  public allSizes: string[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+  currentVariant = 0;
+  choosedSizeId = 0;
+  allColors: string[];
+  allSizes: string[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+  breadmsInfo: {
+    category: string,
+    sex: string,
+    pName: string,
+  };
+  
   @ViewChild('canvasForPhoto') canvasForPhoto: ElementRef;
 
   mainProductFG: FormGroup;
@@ -76,7 +82,8 @@ export class ProductCardComponent implements OnInit, OnDestroy {
           .subscribe(
             product => {
               this.mainProductFG = new ProductFormGroupModel(product) as FormGroup;
-
+              
+              this.setBreadmsInfo();
               this._changeEditability();
 
               this.nextId = this.mainProductFG.get('next_id').value;
@@ -106,6 +113,14 @@ export class ProductCardComponent implements OnInit, OnDestroy {
       },
       errors => console.error(errors)
     );
+  }
+
+  setBreadmsInfo() {
+    this.breadmsInfo = {
+      category: this.mainProductFG.get('type').value,
+      sex: this.mainProductFG.get('cat').value,
+      pName: this.mainProductFG.get('rus_name').value,
+    }
   }
 
   private _changeEditability() {

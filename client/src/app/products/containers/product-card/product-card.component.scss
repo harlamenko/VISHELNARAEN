@@ -408,58 +408,58 @@
     align-items: end;
     grid-template-areas:
     "header_logo header_logo header_main header_main header_main header_main header_main header_cart";
-}
-.header__main {
-    grid-area: header_main;
-    display: flex;
-}
-.header__logo {
-    font-family: 'Travels ExtraBold';
-    font-size: 1.3rem;
-    letter-spacing: 2px;
-    grid-area: header_logo;
-    cursor: pointer;
-}
+    &__main {
+        grid-area: header_main;
+        display: flex;
+    }
+    &__logo {
+        font-family: 'Travels ExtraBold';
+        font-size: 1.3rem;
+        letter-spacing: 2px;
+        grid-area: header_logo;
+        cursor: pointer;
+    }
 
-.header__decor {
-    grid-area: header_decor;
-    position: static;
-}
+    &__decor {
+        grid-area: header_decor;
+        position: static;
+    }
 
-.header__search {
-    grid-area: header_search;
-}
+    &__search {
+        grid-area: header_search;
+    }
 
-.header__cart {
-    grid-area: header_cart;
-    text-align: right;
-    cursor: pointer;
-    justify-self: end;
-}
+    &__cart {
+        grid-area: header_cart;
+        text-align: right;
+        cursor: pointer;
+        justify-self: end;
+    }
 
-.header__cart__count {
-    font-size: 10px;
-    vertical-align: super;
-    display: inline-block;
-    width: 20px;
-    height: 11px;
-    text-align: left;
-}
-.header__breadcrumbs {
-    grid-area: header_bcrumbs;
-}
-.header__breadcrumbs__arrow {
-    margin: 0 8px -8px;
-}
-.header__breadcrumbs__crumb{
-    white-space: pre;
-}
-.header__breadcrumbs__crumb:last-child {
-    border-bottom: 2px solid #000;
-    display: inline-block;
-    margin-bottom: -6px;
-    max-width: 265px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+    &__cart__count {
+        font-size: 10px;
+        vertical-align: super;
+        display: inline-block;
+        width: 20px;
+        height: 11px;
+        text-align: left;
+    }
+    &__breadcrumbs {
+        grid-area: header_bcrumbs;
+    }
+    &__breadcrumbs__arrow {
+        margin: 0 8px -8px;
+    }
+    &__breadcrumbs__crumb{
+        white-space: pre;
+    }
+    &__breadcrumbs__crumb:last-child {
+        border-bottom: 2px solid #000;
+        display: inline-block;
+        margin-bottom: -6px;
+        max-width: 265px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
 }
