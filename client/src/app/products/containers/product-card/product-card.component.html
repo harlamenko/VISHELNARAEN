@@ -1,6 +1,6 @@
 <div class="wrapper wrapper--with-filter">
   
-  <app-header>
+  <app-header [cartLength]="webStorageService.cartLength | async">
     <app-header-breadcrumbs
       *ngIf="breadmsInfo"
       [sex]="breadmsInfo.sex"

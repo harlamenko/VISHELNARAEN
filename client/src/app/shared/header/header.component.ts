@@ -1,4 +1,4 @@
-import { Component, OnInit, ContentChild } from '@angular/core';
+import { Component, OnInit, ContentChild, Input } from '@angular/core';
 import { WebStorageService } from 'src/app/main/web-storage.service';
 import { ViewEncapsulation } from '@angular/compiler/src/core';
 
@@ -8,7 +8,7 @@ import { ViewEncapsulation } from '@angular/compiler/src/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  
+  @Input() cartLength;
   constructor(
     public webStorageService: WebStorageService,
   ) { }

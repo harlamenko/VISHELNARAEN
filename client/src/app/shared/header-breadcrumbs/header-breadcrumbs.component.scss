@@ -1,0 +1,19 @@
+.breadcrumbs {
+    &__arrow {
+        margin: 0 8px -8px;
+    }
+
+    &__crumb{
+        white-space: pre;
+
+        &:last-child {
+            border-bottom: 2px solid #000;
+            display: inline-block;
+            margin-bottom: -6px;
+            max-width: 265px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    }
+}
