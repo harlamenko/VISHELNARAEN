@@ -1,4 +1,4 @@
-<header class="header">
+<header class="header container">
   <h1 class="header__logo" routerLink="/">
     {{ webStorageService.lang === 'ru' ? 'ВЫШЕЛНАРАЁН' : 'VISHELNARAEN' }}
   </h1>
@@ -7,6 +7,6 @@
 
   <div class="header__cart" routerLink="/cart">
     {{webStorageService.lang === 'ru' ? 'Корзина' : 'Cart' }}
-    <sup class="header__cart__count">{{cartLength}}</sup>
+    <sup class="header__cart__count">{{webStorageService.cartLength | async}}</sup>
   </div>
 </header>
