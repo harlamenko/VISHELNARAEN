@@ -6,6 +6,7 @@ import { HeaderComponent } from './header/header.component';
 import { HeaderBreadcrumbsComponent } from './header-breadcrumbs/header-breadcrumbs.component';
 import { RouterModule } from "@angular/router";
 import { BackBtnComponent } from './back-btn/back-btn.component';
+import { BtnComponent } from './btn/btn.component';
 
 @NgModule({
     imports: [
@@ -18,6 +19,7 @@ import { BackBtnComponent } from './back-btn/back-btn.component';
         HeaderComponent,
         HeaderBreadcrumbsComponent,
         BackBtnComponent,
+        BtnComponent,
     ],
     exports: [
         AdditionalInfoComponent,

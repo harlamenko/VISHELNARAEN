@@ -9,7 +9,6 @@ import { WebStorageService } from 'src/app/main/web-storage.service';
 })
 export class PhotoWithCaptionComponent implements OnInit {
   @Input() group: FormGroup;
-  @Input() photo: string;
 
   constructor(public webStorageService: WebStorageService) { }
 

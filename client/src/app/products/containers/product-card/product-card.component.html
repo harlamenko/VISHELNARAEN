@@ -14,38 +14,51 @@
       <app-back-btn></app-back-btn>
     </nav>
 
-    <section class="main-section">
+    <app-product-info class="main-section">
       <app-sibling-product
         [product]="prevProduct"
       ></app-sibling-product>
 
-      <main class="main-section__current-product" *ngIf="mainProductFG">
+      <main class="main-section__current-product" [*ngIf]="mainProductFG">
         <app-photo-with-caption
           [group]="mainProductFG"
-          [photo]="currentVariantFormGroup.value.photo"
-        ></app-photo-with-caption>
+        >
+          <app-photo [photo]="currentVariantFormGroup.value.photo"></app-photo>
+        </app-photo-with-caption>
 
-        <section class="main-section__current-product__description description" [formGroup]="mainProductFG">
+        <app-product-info [group]="mainProductFG">
           <app-colors></app-colors>
 
           <app-sizes [currentVariant]="currentVariant"></app-sizes>
 
-          <section *ngIf="isAdmin" class="main-section__current-product__category-sex-controls">
-            <app-admin-options [opts]="sexesTypes?.types"></app-admin-options>
-            <app-admin-options [opts]="sexesTypes?.sex"></app-admin-options>
+          <!-- 
+            TODO(Harlamenko): transfer to admin
 
-            <!-- <select class="main-section__current-product__category-sex-controls__control" formControlName="cat">
-              <option *ngFor="let sex of sexesTypes?.sex"
-                [attr.selected]="mainProductFG.get('cat').value === sex.en_name ? true : null">{{sex.rus_name}}</option>
-            </select> -->
-          </section>
-          <a class="btn gradient-border in" *ngIf="!webStorageService.isAdmin"
-            (click)='addToCart()'>{{webStorageService.lang === 'ru' ? 'В корзину' : 'Add to cart' }}</a>
-          <a *ngIf="webStorageService.isAdmin" class="btn gradient-border in btn--admin"
-            (click)='updateProduct()'>{{webStorageService.lang === 'ru' ? 'Обновить' : 'Update' }}</a>
-          <a class="btn gradient-border in btn--admin" *ngIf="webStorageService.isAdmin"
-            (click)='baseService.popup.open("Вы точно хотите удалить товар?","deleteProduct", this)'>{{webStorageService.lang === 'ru' ? 'Удалить' : 'Delete' }}</a>
-        </section>
+            <section *ngIf="isAdmin" class="main-section__current-product__category-sex-controls">
+              <app-admin-options [opts]="sexesTypes?.types"></app-admin-options>
+              <app-admin-options [opts]="sexesTypes?.sex"></app-admin-options>
+
+              <select class="main-section__current-product__category-sex-controls__control" formControlName="cat">
+                <option *ngFor="let sex of sexesTypes?.sex"
+                  [attr.selected]="mainProductFG.get('cat').value === sex.en_name ? true : null">{{sex.rus_name}}</option>
+              </select>
+            </section>
+          -->
+
+          <app-btn (clickEvent)='addToCart()' *ngIf="!webStorageService.isAdmin">
+            {{webStorageService.lang === 'ru' ? 'В корзину' : 'Add to cart' }}
+          </app-btn>
+          
+          <app-btn (clickEvent)='updateProduct()' *ngIf="webStorageService.isAdmin">
+            {{webStorageService.lang === 'ru' ? 'Обновить' : 'Update' }}
+          </app-btn>
+
+          <app-btn 
+            (clickEvent)='baseService.popup.open("Вы точно хотите удалить товар?","deleteProduct", this)()'
+            *ngIf="webStorageService.isAdmin">
+            {{webStorageService.lang === 'ru' ? 'Удалить' : 'Delete' }}
+          </app-btn>
+        </app-product-info>
       </main>
 
       <app-sibling-product

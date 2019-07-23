@@ -16,6 +16,8 @@ import { SizesComponent } from './components/sizes/sizes.component';
 import { ColorsComponent } from './components/colors/colors.component';
 import { DiscriptionComponent } from './components/discription/discription.component';
 import { DescriptionComponent } from './components/description/description.component';
+import { PhotoComponent } from './components/photo/photo.component';
+import { ProductInfoComponent } from './containers/product-info/product-info.component';
 
 
 @NgModule({
@@ -38,6 +40,8 @@ import { DescriptionComponent } from './components/description/description.compo
     ColorsComponent,
     DiscriptionComponent,
     DescriptionComponent,
+    PhotoComponent,
+    ProductInfoComponent,
   ]
 })
 export class ProductsModule { }
