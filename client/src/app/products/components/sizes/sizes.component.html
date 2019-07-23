@@ -1,9 +1,13 @@
-<li class='description__category'>{{webStorageService.lang === 'ru' ? 'Размер' : 'Size' }}:
-    <ul class='description__category__sub'>
-      <li *ngFor="let size of allSizes; index as i"
-        class='description__category description__category--inline size' [ngClass]="{
-      'choosedSize': i === choosedSizeId, 
-      'existed-size': isExistedSize(i)
-    }" (click)="webStorageService.isAdmin ? toggleSize(size, i) : chooseSizeId(i)">{{size}}</li>
-    </ul>
-  </li>
+<li class='description__category'>
+  Размер:
+  <ul class='description__category__sub'>
+    <li
+      *ngFor="let size of allSizes; index as i"
+      class='description__category description__category--inline size'
+      [ngClass]="{
+        'choosedSize': i === choosedSizeId, 
+        'existed-size': isExistedSize(i)
+      }"
+      (click)="webStorageService.isAdmin ? toggleSize(size, i) : chooseSizeId(i)">{{size}}</li>
+  </ul>
+</li>

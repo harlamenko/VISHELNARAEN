@@ -1,4 +1,6 @@
-<img class="current-product__card__photo"
+<img 
+  class="current-product__card__photo"
+  *ngIf="group"
   [src]="photo"
-  [alt]="group.get('rus_name').value">
-<figcaption class="current-product__card__info" [formGroup]="group">
+  [alt]="group.get('rus_name').value"
+>

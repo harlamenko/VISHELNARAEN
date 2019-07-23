@@ -14,20 +14,23 @@
       <app-back-btn></app-back-btn>
     </nav>
 
-    <app-product-info class="main-section">
+    <section class="main-section">
       <app-sibling-product
         [product]="prevProduct"
       ></app-sibling-product>
 
-      <main class="main-section__current-product" [*ngIf]="mainProductFG">
-        <app-photo-with-caption
-          [group]="mainProductFG"
-        >
-          <app-photo [photo]="currentVariantFormGroup.value.photo"></app-photo>
+      <main class="main-section__current-product" *ngIf="mainProductFG">
+        <app-photo-with-caption [group]="mainProductFG">
+          <app-photo
+            [group]="mainProductFG"
+            [photo]="currentVariantFormGroup.value.photo"
+          ></app-photo>
         </app-photo-with-caption>
 
-        <app-product-info [group]="mainProductFG">
-          <app-colors></app-colors>
+        <app-product-info>
+          <app-colors
+            [allColors]="allColors"
+          ></app-colors>
 
           <app-sizes [currentVariant]="currentVariant"></app-sizes>
 

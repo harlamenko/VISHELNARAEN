@@ -27,6 +27,7 @@ import { BtnComponent } from './btn/btn.component';
         HeaderBreadcrumbsComponent,
         CommonModule,
         FormsModule,
+        BtnComponent,
         RouterModule,
         BackBtnComponent
     ]

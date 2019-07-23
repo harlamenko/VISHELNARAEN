@@ -9,10 +9,12 @@ import { WebStorageService } from 'src/app/main/web-storage.service';
 export class SizesComponent implements OnInit {
   allSizes: string[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
   @Input() currentVariant;
+  choosedSizeId;
   constructor(public webStorageService: WebStorageService) { }
 
   ngOnInit() {
   }
-
-
+  toggleSize(){}
+  chooseSizeId(){}
+  isExistedSize(){}
 }
