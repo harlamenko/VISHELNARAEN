@@ -3,11 +3,11 @@ import { FormGroup } from '@angular/forms';
 import { WebStorageService } from 'src/app/main/web-storage.service';
 
 @Component({
-  selector: 'app-photo-with-caption',
-  templateUrl: './photo-with-caption.component.html',
-  styleUrls: ['./photo-with-caption.component.scss']
+  selector: 'app-container-with-caption',
+  templateUrl: './container-with-caption.component.html',
+  styleUrls: ['./container-with-caption.component.scss']
 })
-export class PhotoWithCaptionComponent implements OnInit {
+export class ContainerWithCaptionComponent implements OnInit {
   @Input() group: FormGroup;
 
   constructor(public webStorageService: WebStorageService) { }

@@ -1,0 +1,56 @@
+@import '../../../../assets/styles/mixins.scss';
+
+.container {
+    width: 300px;
+    
+    &__caption {
+        display: flex;        
+        flex-flow: column;
+
+        &__name{
+            font-size: 1.2rem;
+            max-width: 98%;
+            max-height: 70px;
+            resize: none;
+
+            @include disabled;
+            &:disabled {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                height: 30px;
+            }
+        }
+        &__short-desc{
+            color: #a1a1a1;
+            margin: 8px 0;
+            font-size: 0.78rem;
+            
+            @include disabled;
+            &:disabled {
+                border: none;
+            }
+        }
+        &__price{
+            font-size: 0.78rem;
+
+            @include disabled;
+        }
+    }
+}
+
+.current-product {
+    &__category-sex-controls {
+        display: flex;
+        justify-content: space-between;
+        margin: 40px 0 -10px;
+        
+        &__control {
+            border: 2px solid;
+            height: 30px;
+            width: 49%;
+        }
+    }
+
+   
+}

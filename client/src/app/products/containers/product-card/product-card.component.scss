@@ -1,96 +1,21 @@
+@import '../../../../assets/styles/mixins.scss';
 
+:host {
+    display: flex;
+    flex-flow: column;
+    height: 100vh;
+}
 .main-section {
-    grid-area: main;
-    display: grid;
-    height: calc(100vh - 140px);
-    min-height: 516px;
+    display: flex;
+    flex-grow: 1;
     align-items: center;
-    grid-template-columns: 1fr 3fr 1fr;
-}
-.color-rect {
-    width: 20px;
-    height: 20px;
-    border: 2px solid;
-    vertical-align: bottom;
+    justify-content: space-around;
 
-    &--none {
-        position: relative;
-        &::after {
-            content: '';
-            background: black;
-            width: 210%;
-            height: 2px;
-            -webkit-transform: rotate(45deg);
-            transform: rotate(135deg);
-            display: block;
-            position: absolute;
-            top: 7px;
-            left: -9px;
-        }
-        &::before {
-            content: '';
-            background: black;
-            width: 210%;
-            height: 2px;
-            transform: rotate(45deg);
-            display: block;
-            position: absolute;
-            top: 7px;
-            left: -9px;
-        }
+    &__current-product {
+        display: flex;
     }
 }
-.btn {
-    padding: 27px;
-    margin-top: 50px;
-    text-align: center;
-    width: 80%;
-    cursor: pointer;
 
-    &--admin {
-        display: inline-block;
-        width: 49%;
-    }
-    &--admin:last-of-type {
-        margin-left: 7px;
-    }
-
-}
-
-.current-color {
-    width: 30px !important;
-    height: 30px !important;
-    position: relative;
-    top: 5px;
-}
-
-.choosedSize {
-    text-decoration: underline;
-}
-
-
-.admin-btns__add-color {
-    &::after {
-        display: block;
-        content: '';
-        border-left: 2px solid;
-        width: 0px;
-        height: 50%;
-        margin: 0 auto;
-        cursor: pointer;
-    }
-    &::before {
-        display: block;
-        content: '';
-        border-left: 2px solid;
-        transform: rotate(90deg);
-        width: 0px;
-        height: 50%;
-        margin: 6px auto;
-        margin-bottom: -13px;
-        cursor: pointer;
-    }
-}
 
 .canvasForPhoto{
     position: absolute;
@@ -104,75 +29,5 @@
     &.hide {
         width: 0;
         height: 0;
-    }
-}
-
-.size:not(.existed-size) {
-    color: gray;
-    &:hover {
-        cursor: not-allowed !important;
-    }
-}
-
-.header {
-    grid-area: header;
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    align-items: end;
-    grid-template-areas:
-    "header_logo header_logo header_main header_main header_main header_main header_main header_cart";
-    &__main {
-        grid-area: header_main;
-        display: flex;
-    }
-    &__logo {
-        font-family: 'Travels ExtraBold';
-        font-size: 1.3rem;
-        letter-spacing: 2px;
-        grid-area: header_logo;
-        cursor: pointer;
-    }
-
-    &__decor {
-        grid-area: header_decor;
-        position: static;
-    }
-
-    &__search {
-        grid-area: header_search;
-    }
-
-    &__cart {
-        grid-area: header_cart;
-        text-align: right;
-        cursor: pointer;
-        justify-self: end;
-    }
-
-    &__cart__count {
-        font-size: 10px;
-        vertical-align: super;
-        display: inline-block;
-        width: 20px;
-        height: 11px;
-        text-align: left;
-    }
-    &__breadcrumbs {
-        grid-area: header_bcrumbs;
-    }
-    &__breadcrumbs__arrow {
-        margin: 0 8px -8px;
-    }
-    &__breadcrumbs__crumb{
-        white-space: pre;
-    }
-    &__breadcrumbs__crumb:last-child {
-        border-bottom: 2px solid #000;
-        display: inline-block;
-        margin-bottom: -6px;
-        max-width: 265px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
     }
 }

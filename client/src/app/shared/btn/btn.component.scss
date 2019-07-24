@@ -1,0 +1,12 @@
+:host{
+    flex-grow: 1;
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-end;
+}
+
+.btn {
+    width: 100%;
+    padding-bottom: 20px;
+    padding-top: 20px;
+}

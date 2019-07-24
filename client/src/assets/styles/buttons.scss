@@ -1,12 +1,13 @@
 .btn {
   display: block;
   box-shadow: inset 0px 0px 0px 5px black;
-  padding: 25px 125px;
+  padding: 10px 15px;
   font-family: 'Travels Bold';
-  margin-top: 10vh;
+  margin: 0 auto;
   background: none;
   border: none;
   cursor: pointer;
+  text-align: center;
 }
 
 .btn:hover {

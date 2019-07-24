@@ -12,7 +12,3 @@
 button:hover, input[type=file]:hover, a:hover {
     cursor: pointer;
 }
-
-.container {
-    margin: 0 135px;
-}

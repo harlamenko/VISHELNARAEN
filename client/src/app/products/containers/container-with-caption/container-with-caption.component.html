@@ -1,0 +1,28 @@
+<figure class="container" [formGroup]="group">
+  <ng-content></ng-content>
+  
+  <figcaption class="container__caption">
+    <textarea 
+      formControlName="rus_name"
+      placeholder="{{webStorageService.lang === 'ru' ? 'Название' : 'Name'}}"
+      (keydown)="keydownNamePriceCtrls($event)"
+      class="container__caption__name"
+    ></textarea>
+
+    <input
+      formControlName="rus_title"
+      placeholder="{{webStorageService.lang === 'ru' ?  'Краткое описание' : 'Short description'}}"
+      type="text"
+      (keydown)="keydownNamePriceCtrls($event)"
+      class="container__caption__short-desc"
+    >
+
+    <input
+      formControlName="price"
+      placeholder="Цена"
+      type="number"
+      (keydown)="keydownNamePriceCtrls($event)"
+      class="container__caption__price"
+    >
+  </figcaption>
+</figure>

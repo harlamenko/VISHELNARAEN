@@ -1,0 +1,18 @@
+@import '../../../../assets/styles/mixins.scss';
+
+.description {
+    margin-top: 5px;
+    width: 350px;
+    
+    &__line {
+        width: 100%;
+        text-overflow: ellipsis;
+        @include disabled;
+        
+        
+        &__wrapper {
+            list-style-type: disc;
+            margin-left: 35px;
+        }
+    }
+}

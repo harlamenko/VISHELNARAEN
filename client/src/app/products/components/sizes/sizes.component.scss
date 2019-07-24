@@ -1,0 +1,27 @@
+:host {
+    display: flex;
+    align-items: center;
+    flex-basis: 30px;
+    margin-bottom: 5px;
+}
+
+.label {
+    margin-right: 8px;
+}
+
+.size{
+    color: black;
+    margin-right: 5px;
+
+    &:not(.existed-size) {
+        color: gray;
+
+        &:hover {
+            cursor: not-allowed !important;
+        }
+    }
+}
+
+.choosedSize {
+    text-decoration: underline;
+}

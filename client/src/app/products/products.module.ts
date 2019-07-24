@@ -10,12 +10,12 @@ import { ProductSortPipe } from './product-sort.pipe';
 import { FilterComponent } from './components/filter/filter.component';
 import { SearchComponent } from './components/search/search.component';
 import { SiblingProductComponent } from './components/sibling-product/sibling-product.component';
-import { PhotoWithCaptionComponent } from './containers/photo-with-caption/photo-with-caption.component';
 import { SizesComponent } from './components/sizes/sizes.component';
 import { ColorsComponent } from './components/colors/colors.component';
 import { DescriptionComponent } from './components/description/description.component';
 import { PhotoComponent } from './components/photo/photo.component';
 import { ProductInfoComponent } from './containers/product-info/product-info.component';
+import { ContainerWithCaptionComponent } from './containers/container-with-caption/container-with-caption.component';
 
 
 @NgModule({
@@ -32,7 +32,7 @@ import { ProductInfoComponent } from './containers/product-info/product-info.com
     FilterComponent,
     SearchComponent,
     SiblingProductComponent,
-    PhotoWithCaptionComponent,
+    ContainerWithCaptionComponent,
     SizesComponent,
     ColorsComponent,
     DescriptionComponent,

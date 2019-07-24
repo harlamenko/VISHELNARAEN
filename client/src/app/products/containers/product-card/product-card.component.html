@@ -1,72 +1,71 @@
-<div class="wrapper wrapper--with-filter">
-  
-  <app-header>
-    <app-header-breadcrumbs
-      *ngIf="breadmsInfo"
-      [sex]="breadmsInfo.sex"
-      [category]="breadmsInfo.category"
-      [pName]="breadmsInfo.pName"
-    ></app-header-breadcrumbs>
-  </app-header>
+<app-header>
+  <app-header-breadcrumbs
+    *ngIf="breadmsInfo"
+    [sex]="breadmsInfo.sex"
+    [category]="breadmsInfo.category"
+    [pName]="breadmsInfo.pName"
+  ></app-header-breadcrumbs>
+</app-header>
 
-  <section class="outlet">
-    <nav class="navigation">
-      <app-back-btn></app-back-btn>
-    </nav>
+<app-back-btn></app-back-btn>
 
-    <section class="main-section">
-      <app-sibling-product
-        [product]="prevProduct"
-      ></app-sibling-product>
+<section class="main-section">
+  <app-sibling-product
+    [product]="prevProduct"
+  ></app-sibling-product>
 
-      <main class="main-section__current-product" *ngIf="mainProductFG">
-        <app-photo-with-caption [group]="mainProductFG">
-          <app-photo
-            [group]="mainProductFG"
-            [photo]="currentVariantFormGroup.value.photo"
-          ></app-photo>
-        </app-photo-with-caption>
+  <main class="main-section__current-product" *ngIf="mainProductFG">
+    <app-container-with-caption [group]="mainProductFG">
+      <app-photo
+        [group]="mainProductFG"
+        [photo]="currentVariantFormGroup.value.photo"
+      ></app-photo>
+    </app-container-with-caption>
 
-        <app-product-info>
-          <app-colors
-            [allColors]="allColors"
-          ></app-colors>
+    <app-product-info>
+      <app-colors
+        [allColors]="allColors"
+        [currentVariant]="currentVariant"
+      ></app-colors>
 
-          <app-sizes [currentVariant]="currentVariant"></app-sizes>
+      <app-sizes [currentVariant]="currentVariant"></app-sizes>
 
-          <!-- 
-            TODO(Harlamenko): transfer to admin
+      <app-description
+        [group]="mainProductFG"
+        [description]="description.controls"
+      ></app-description>
+      
+      <!-- 
+        TODO(Harlamenko): transfer to admin
 
-            <section *ngIf="isAdmin" class="main-section__current-product__category-sex-controls">
-              <app-admin-options [opts]="sexesTypes?.types"></app-admin-options>
-              <app-admin-options [opts]="sexesTypes?.sex"></app-admin-options>
+        <section *ngIf="isAdmin" class="main-section__current-product__category-sex-controls">
+          <app-admin-options [opts]="sexesTypes?.types"></app-admin-options>
+          <app-admin-options [opts]="sexesTypes?.sex"></app-admin-options>
 
-              <select class="main-section__current-product__category-sex-controls__control" formControlName="cat">
-                <option *ngFor="let sex of sexesTypes?.sex"
-                  [attr.selected]="mainProductFG.get('cat').value === sex.en_name ? true : null">{{sex.rus_name}}</option>
-              </select>
-            </section>
-          -->
+          <select class="main-section__current-product__category-sex-controls__control" formControlName="cat">
+            <option *ngFor="let sex of sexesTypes?.sex"
+              [attr.selected]="mainProductFG.get('cat').value === sex.en_name ? true : null">{{sex.rus_name}}</option>
+          </select>
+        </section>
+      -->
 
-          <app-btn (clickEvent)='addToCart()' *ngIf="!webStorageService.isAdmin">
-            {{webStorageService.lang === 'ru' ? 'В корзину' : 'Add to cart' }}
-          </app-btn>
-          
-          <app-btn (clickEvent)='updateProduct()' *ngIf="webStorageService.isAdmin">
-            {{webStorageService.lang === 'ru' ? 'Обновить' : 'Update' }}
-          </app-btn>
+      <app-btn (clickEvent)='addToCart()' *ngIf="!webStorageService.isAdmin">
+        {{webStorageService.lang === 'ru' ? 'В корзину' : 'Add to cart' }}
+      </app-btn>
+      
+      <app-btn (clickEvent)='updateProduct()' *ngIf="webStorageService.isAdmin">
+        {{webStorageService.lang === 'ru' ? 'Обновить' : 'Update' }}
+      </app-btn>
 
-          <app-btn 
-            (clickEvent)='baseService.popup.open("Вы точно хотите удалить товар?","deleteProduct", this)()'
-            *ngIf="webStorageService.isAdmin">
-            {{webStorageService.lang === 'ru' ? 'Удалить' : 'Delete' }}
-          </app-btn>
-        </app-product-info>
-      </main>
+      <app-btn 
+        (clickEvent)='baseService.popup.open("Вы точно хотите удалить товар?","deleteProduct", this)()'
+        *ngIf="webStorageService.isAdmin">
+        {{webStorageService.lang === 'ru' ? 'Удалить' : 'Delete' }}
+      </app-btn>
+    </app-product-info>
+  </main>
 
-      <app-sibling-product
-        [product]="nextProduct"
-      ></app-sibling-product>
-    </section>
-  </section>
-</div>
+  <app-sibling-product
+    [product]="nextProduct"
+  ></app-sibling-product>
+</section>

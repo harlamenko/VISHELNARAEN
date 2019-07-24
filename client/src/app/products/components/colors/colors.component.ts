@@ -6,8 +6,9 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./colors.component.scss']
 })
 export class ColorsComponent implements OnInit {
+  @Input() allColors: string[];
+  @Input() currentVariant: number;
   
-  @Input() allColors;
   constructor() { }
 
   ngOnInit() {
