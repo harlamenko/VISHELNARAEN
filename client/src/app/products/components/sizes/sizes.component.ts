@@ -1,5 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { WebStorageService } from 'src/app/main/web-storage.service';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-sizes',
@@ -7,14 +6,21 @@ import { WebStorageService } from 'src/app/main/web-storage.service';
   styleUrls: ['./sizes.component.scss']
 })
 export class SizesComponent implements OnInit {
-  allSizes: string[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
-  @Input() currentVariant;
-  choosedSizeId;
-  constructor(public webStorageService: WebStorageService) { }
+  @Input() currentVariantSizes: string[];
+  @Input() choosedSizeId: number;
+  @Input() allSizes: number;
 
-  ngOnInit() {
+  @Output() clickEvent: EventEmitter<string> = new EventEmitter();
+
+  constructor() {}
+
+  ngOnInit() {}
+
+  click(size: string) {
+    this.clickEvent.emit(size);
   }
-  toggleSize(){}
-  chooseSizeId(){}
-  isExistedSize(){}
+
+  isExistedSize(size: string): boolean {
+    return this.currentVariantSizes.indexOf(size) !== -1;
+  }
 }

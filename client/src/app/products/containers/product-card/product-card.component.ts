@@ -28,11 +28,6 @@ export class ProductCardComponent implements OnInit, OnDestroy {
   choosedSizeId = 0;
   allColors: string[];
   allSizes: string[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
-  breadmsInfo: {
-    category: string,
-    sex: string,
-    pName: string,
-  };
 
   mainProductFG: FormGroup;
   private alive: Subject<void> = new Subject();
@@ -58,6 +53,10 @@ export class ProductCardComponent implements OnInit, OnDestroy {
     return this.mainProductFG.get('variants') as FormArray;
   }
 
+  get currentVariantSizes() {
+    return this.mainProductFG.get('variants').value[this.currentVariant].sizes;
+  }
+
   get isAdmin() {
     return this.webStorageService.isAdmin;
   }
@@ -79,8 +78,7 @@ export class ProductCardComponent implements OnInit, OnDestroy {
           .subscribe(
             product => {
               this.mainProductFG = new ProductFormGroupModel(product) as FormGroup;
-              
-              this.setBreadmsInfo();
+
               this._changeEditability();
 
               this.nextId = this.mainProductFG.get('next_id').value;
@@ -112,14 +110,6 @@ export class ProductCardComponent implements OnInit, OnDestroy {
     );
   }
 
-  setBreadmsInfo() {
-    this.breadmsInfo = {
-      category: this.mainProductFG.get('type').value,
-      sex: this.mainProductFG.get('cat').value,
-      pName: this.mainProductFG.get('rus_name').value,
-    }
-  }
-
   private _changeEditability() {
     if (this.isAdmin) { return; }
 
@@ -131,30 +121,24 @@ export class ProductCardComponent implements OnInit, OnDestroy {
       control.disable();
     });
   }
-  
-  selectColorOfVariant(variantIndex: number) {
-    if (!this.variantAdded) {
-      this.currentVariant = variantIndex;
-      this.chooseSizeId(0, true);
+
+  selectColorOfVariant(variantIndex: number): void {
+    if (this.currentVariant === variantIndex || this.variantAdded) {
+      return;
     }
+
+    this.currentVariant = variantIndex;
+    this.choosedSizeId = -1;
   }
-  chooseSizeId(i, findExisted = false) {
-    if (this.isExistedSize(i)) {
-      this.choosedSizeId = i;
-    } else {
-      if (!findExisted) { return; }
-      let idx = 0;
-      while(!this.isExistedSize(idx) && idx < this.allSizes.length){
-        idx++;
-      }
-      this.choosedSizeId = this.isExistedSize(idx) ? idx : null;
+
+  chooseSizeId(size: string) {
+    if (this.isExistedSize(size)) {
+      this.choosedSizeId = this.allSizes.indexOf(size);
     }
   }
 
-  isExistedSize(i) {
-    const sizes = this.mainProductFG.get('variants').value[this.currentVariant].sizes;
-
-    return sizes.indexOf(this.allSizes[i]) !== -1;
+  isExistedSize(size: string): boolean {
+    return this.currentVariantSizes.indexOf(size) !== -1;
   }
 
   getAllVariantsColors() {
@@ -179,7 +163,6 @@ export class ProductCardComponent implements OnInit, OnDestroy {
 
 
   toggleSize(size, i) {
-    //TODO: вынести текущий вариант в метод\динамич свойство
     const sizes = (<any>this.mainProductFG.get('variants')).controls[this.currentVariant].controls["sizes"];
     const idx = sizes.value.indexOf(size);
 

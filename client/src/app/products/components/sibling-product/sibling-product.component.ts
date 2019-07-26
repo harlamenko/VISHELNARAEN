@@ -1,16 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { WebStorageService } from 'src/app/main/web-storage.service';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-sibling-product',
   templateUrl: './sibling-product.component.html',
   styleUrls: ['./sibling-product.component.scss']
 })
-export class SiblingProductComponent implements OnInit {
+export class SiblingProductComponent {
   @Input() product: any;
-  constructor(public webStorageService: WebStorageService) { }
-
-  ngOnInit() {
-  }
-
 }

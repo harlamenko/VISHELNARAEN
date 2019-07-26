@@ -2,7 +2,7 @@
     <img 
       *ngIf="product"
       [src]="product.variants[0].photo"
-      [routerLink]="['/products',product.id]"
-      [alt]="webStorageService.lang === 'ru' ? product.rus_name : product.en_name"
+      [routerLink]="['/products', product.id]"
+      [alt]="product.en_name"
     >
 </aside>

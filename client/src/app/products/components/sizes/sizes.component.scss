@@ -12,6 +12,10 @@
 .size{
     color: black;
     margin-right: 5px;
+    
+    &:hover {
+        cursor: pointer;
+    }
 
     &:not(.existed-size) {
         color: gray;

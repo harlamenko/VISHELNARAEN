@@ -14,8 +14,13 @@
     [product]="prevProduct"
   ></app-sibling-product>
 
-  <main class="main-section__current-product" *ngIf="mainProductFG">
-    <app-container-with-caption [group]="mainProductFG">
+  <main
+    *ngIf="mainProductFG"
+    class="main-section__current-product"
+  >
+    <app-container-with-caption
+      [group]="mainProductFG"
+    >
       <app-photo
         [group]="mainProductFG"
         [photo]="currentVariantFormGroup.value.photo"
@@ -26,9 +31,15 @@
       <app-colors
         [allColors]="allColors"
         [currentVariant]="currentVariant"
+        (clickEvent)="selectColorOfVariant($event)"
       ></app-colors>
 
-      <app-sizes [currentVariant]="currentVariant"></app-sizes>
+      <app-sizes
+        [allSizes]="allSizes"
+        [currentVariantSizes]="currentVariantSizes"
+        [choosedSizeId]="choosedSizeId"
+        (clickEvent)="webStorageService.isAdmin ? toggleSize($event) : chooseSizeId($event)"
+      ></app-sizes>
 
       <app-description
         [group]="mainProductFG"
