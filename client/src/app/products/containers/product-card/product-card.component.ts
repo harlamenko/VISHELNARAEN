@@ -16,20 +16,13 @@ import { Subject } from 'rxjs';
 export class ProductCardComponent implements OnInit, OnDestroy {
   public nextProduct: IProduct;
   public prevProduct: IProduct;
-
-  public mainId: number;
-  public nextId: number;
-  public prevId: number;
-
   public variantAdded = false;
   public sexesTypes: any;
-
   currentVariant = 0;
   choosedSizeId = 0;
-  allColors: string[];
   allSizes: string[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
-
   mainProductFG: FormGroup;
+
   private alive: Subject<void> = new Subject();
 
   constructor(
@@ -57,6 +50,10 @@ export class ProductCardComponent implements OnInit, OnDestroy {
     return this.mainProductFG.get('variants').value[this.currentVariant].sizes;
   }
 
+  get allColors() {
+    return this.variants.value.map(variant => variant.color);
+  }
+
   get isAdmin() {
     return this.webStorageService.isAdmin;
   }
@@ -72,20 +69,21 @@ export class ProductCardComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.alive))
     .subscribe(
       params => {
-        this.mainId = +params.get('id');
-        this._productService.getProductById(this.mainId)
+        const mainId = +params.get('id');
+        this._productService.getProductById(mainId)
           .pipe(takeUntil(this.alive))
           .subscribe(
             product => {
               this.mainProductFG = new ProductFormGroupModel(product) as FormGroup;
 
               this._changeEditability();
+              this.findFirstExistedSize();
 
-              this.nextId = this.mainProductFG.get('next_id').value;
-              this.prevId = this.mainProductFG.get('prev_id').value;
+              const nextId = this.mainProductFG.get('next_id').value;
+              const prevId = this.mainProductFG.get('prev_id').value;
 
-              if (this.nextId !== null) {
-                this._productService.getProductById(this.nextId)
+              if (nextId !== null) {
+                this._productService.getProductById(nextId)
                 .pipe(takeUntil(this.alive))
                 .subscribe(
                   prod => this.nextProduct = prod,
@@ -93,16 +91,14 @@ export class ProductCardComponent implements OnInit, OnDestroy {
                 );
               }
 
-              if (this.prevId !== null) {
-                this._productService.getProductById(this.prevId)
+              if (prevId !== null) {
+                this._productService.getProductById(prevId)
                   .pipe(takeUntil(this.alive))
                   .subscribe(
                   prod => this.prevProduct = prod,
                   errors => this.prevProduct = null
                 );
               }
-
-              this.getAllVariantsColors();
             }
           );
       },
@@ -128,7 +124,12 @@ export class ProductCardComponent implements OnInit, OnDestroy {
     }
 
     this.currentVariant = variantIndex;
-    this.choosedSizeId = -1;
+    this.findFirstExistedSize();
+  }
+
+  findFirstExistedSize(): void {
+    const size = this.allSizes.find(s => this.isExistedSize(s));
+    this.choosedSizeId = this.allSizes.indexOf(size);
   }
 
   chooseSizeId(size: string) {
@@ -139,13 +140,6 @@ export class ProductCardComponent implements OnInit, OnDestroy {
 
   isExistedSize(size: string): boolean {
     return this.currentVariantSizes.indexOf(size) !== -1;
-  }
-
-  getAllVariantsColors() {
-    this.allColors = [];
-    this.mainProductFG.get('variants').value.forEach(variant => {
-      this.allColors.push(variant.color);
-    });
   }
 
   addToCart() {
@@ -243,7 +237,9 @@ export class ProductCardComponent implements OnInit, OnDestroy {
   }
 
   public deleteProduct() {
-    this._productService.deleteProductById(this.mainId).subscribe(
+    const id = this.mainProductFG.get('id').value;
+
+    this._productService.deleteProductById(id).subscribe(
       res => {
         if (res.status) {
           this.baseService.popup.open('Продукт успешно удален.', null, null, true);
