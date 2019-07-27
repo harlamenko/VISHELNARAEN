@@ -1,12 +1,13 @@
 import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, pluck, map, tap, take, switchMap, flatMap, switchMapTo } from 'rxjs/operators';
 import { ProductService } from 'src/app/products/product.service';
 import { ActivatedRoute } from '@angular/router';
 import { IProduct, ProductFormGroupModel } from 'src/app/models/Product';
 import { WebStorageService } from 'src/app/main/web-storage.service';
 import { BaseService } from 'src/app/main/base.service';
 import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Subject, Observable, of } from 'rxjs';
+import { isNull } from 'util';
 
 @Component({
   selector: 'app-product-card',
@@ -60,50 +61,48 @@ export class ProductCardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (this.isAdmin) {
-      this._productService.getSexType().subscribe(sexesTypes => {
+      this._productService.getSexType().pipe(takeUntil(this.alive)).subscribe(sexesTypes => {
         this.sexesTypes = sexesTypes;
       });
     }
 
-    this._route.paramMap
-    .pipe(takeUntil(this.alive))
-    .subscribe(
-      params => {
-        const mainId = +params.get('id');
-        this._productService.getProductById(mainId)
-          .pipe(takeUntil(this.alive))
-          .subscribe(
-            product => {
-              this.mainProductFG = new ProductFormGroupModel(product) as FormGroup;
+    this._route.paramMap.pipe(
+      takeUntil(this.alive),
+      pluck('params', 'id'),
+      map(id => +id)
+    ).subscribe(id => {
+      // происходит отписка при ошибке на бэке, поэтому нельзя через switchMap
+      this._getMainProduct(id).subscribe();
+    });
+  }
 
-              this._changeEditability();
-              this.findFirstExistedSize();
+  private _getSiblingProduct(id: number): Observable<IProduct> {
+    if (!isNull(id)) {
+      return this._productService.getProductById(id).pipe(takeUntil(this.alive));
+    } else {
+      return of(null);
+    }
+  }
 
-              const nextId = this.mainProductFG.get('next_id').value;
-              const prevId = this.mainProductFG.get('prev_id').value;
+  private _getMainProduct(id: number): Observable<IProduct> {
+    return this._productService.getProductById(id).pipe(
+      takeUntil(this.alive),
+      tap(product => this._handleResponseWithMainProduct(product)),
+      tap(({next_id: nextId, prev_id: prevId}) => {
+        this.nextProduct = <IProduct>{id: nextId};
+        this.prevProduct = <IProduct>{id: prevId};
+      }),
+      switchMap(() => this._getSiblingProduct(this.nextProduct.id)),
+      tap(nextProduct => this.nextProduct = nextProduct),
+      switchMap(() => this._getSiblingProduct(this.prevProduct.id)),
+      tap(prevProduct => this.prevProduct = prevProduct),
+    )
+  }
 
-              if (nextId !== null) {
-                this._productService.getProductById(nextId)
-                .pipe(takeUntil(this.alive))
-                .subscribe(
-                  prod => this.nextProduct = prod,
-                  errors => this.nextProduct = null
-                );
-              }
-
-              if (prevId !== null) {
-                this._productService.getProductById(prevId)
-                  .pipe(takeUntil(this.alive))
-                  .subscribe(
-                  prod => this.prevProduct = prod,
-                  errors => this.prevProduct = null
-                );
-              }
-            }
-          );
-      },
-      errors => console.error(errors)
-    );
+  private _handleResponseWithMainProduct(product: IProduct): void {
+    this.mainProductFG = <FormGroup>new ProductFormGroupModel(product);
+    this._changeEditability();
+    this.findFirstExistedSize();
   }
 
   private _changeEditability() {
@@ -143,14 +142,15 @@ export class ProductCardComponent implements OnInit, OnDestroy {
   }
 
   addToCart() {
+    const variants = this.mainProductFG.get('variants').value
     const obj = {
       id: this.mainProductFG.get('id').value,
       rus_name: this.mainProductFG.get('rus_name').value,
       en_name: this.mainProductFG.get('en_name').value,
       price: this.mainProductFG.get('price').value,
-      photo: this.mainProductFG.get('variants').value[this.currentVariant].photo,
-      size: this.mainProductFG.get('variants').value[this.currentVariant].sizes[this.choosedSizeId],
-      color: this.mainProductFG.get('variants').value[this.currentVariant].color,
+      photo: variants[this.currentVariant].photo,
+      size: variants[this.currentVariant].sizes[this.choosedSizeId],
+      color: variants[this.currentVariant].color,
     };
     this.webStorageService.storeToLocal('cart', obj);
   }
