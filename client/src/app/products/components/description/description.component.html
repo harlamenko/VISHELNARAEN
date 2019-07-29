@@ -9,9 +9,9 @@
   >
     <input
       autofocus
-      id="newLineInput"
-      (keydown)="keydownDescrInput($event)"
-      (blur)="addNewDescrLine($event)"
+      #newLineInput
+      (keydown.enter)="addNewDescrLine(newLineInput.value);resetFocus()"
+      (blur)="addNewDescrLine(newLineInput.value)"
       class="description__line"
     >
   </li>
@@ -23,8 +23,8 @@
   >
     <input
       [formControlName]="i"
-      (keydown)="keydownDescrInput($event)"
-      (blur)="blurDescrInput(i, $event)"
+      (keydown.enter)="deleteIfEmpty(i)"
+      (blur)="deleteIfEmpty(i)"
       class="description__line"
     >
   </li>

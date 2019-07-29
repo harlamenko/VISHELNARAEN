@@ -1,13 +1,14 @@
 import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
-import { takeUntil, pluck, map, tap, take, switchMap, flatMap, switchMapTo } from 'rxjs/operators';
+import { takeUntil, pluck, map, tap, take, switchMap, flatMap, switchMapTo, catchError } from 'rxjs/operators';
 import { ProductService } from 'src/app/products/product.service';
 import { ActivatedRoute } from '@angular/router';
 import { IProduct, ProductFormGroupModel } from 'src/app/models/Product';
 import { WebStorageService } from 'src/app/main/web-storage.service';
 import { BaseService } from 'src/app/main/base.service';
 import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
-import { Subject, Observable, of } from 'rxjs';
+import { Subject, Observable, of, from } from 'rxjs';
 import { isNull } from 'util';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-product-card',
@@ -25,6 +26,7 @@ export class ProductCardComponent implements OnInit, OnDestroy {
   mainProductFG: FormGroup;
 
   private alive: Subject<void> = new Subject();
+  isProductNotFound: boolean;
 
   constructor(
     private _productService: ProductService,
@@ -87,7 +89,14 @@ export class ProductCardComponent implements OnInit, OnDestroy {
   private _getMainProduct(id: number): Observable<IProduct> {
     return this._productService.getProductById(id).pipe(
       takeUntil(this.alive),
+      tap(() => { this.isProductNotFound = false; }),
       tap(product => this._handleResponseWithMainProduct(product)),
+      catchError(e => {
+        if (e.status === 404) {
+          this.isProductNotFound = true;
+        }
+        return of(e);
+      }),
       tap(({next_id: nextId, prev_id: prevId}) => {
         this.nextProduct = <IProduct>{id: nextId};
         this.prevProduct = <IProduct>{id: prevId};
@@ -95,7 +104,7 @@ export class ProductCardComponent implements OnInit, OnDestroy {
       switchMap(() => this._getSiblingProduct(this.nextProduct.id)),
       tap(nextProduct => this.nextProduct = nextProduct),
       switchMap(() => this._getSiblingProduct(this.prevProduct.id)),
-      tap(prevProduct => this.prevProduct = prevProduct),
+      tap(prevProduct => this.prevProduct = prevProduct)
     )
   }
 
@@ -180,15 +189,6 @@ export class ProductCardComponent implements OnInit, OnDestroy {
     return undefined;
   }
 
-  addNewDescrLine(e) {
-    const val = e.target.value;
-    if (val.length) {
-      // this.webStorageService.lang === 'ru' ? this.mainProduct.rus_descr.push(val) : this.mainProduct.en_descr.push(val);
-      (this.mainProductFG.get('rus_descr') as FormArray).push(this.fb.control(val));
-      e.target.value = '';
-    }
-  }
-
   blurDescrInput(i, e) {
     const val = e.target.value;
     if (!val.length) {
@@ -196,30 +196,21 @@ export class ProductCardComponent implements OnInit, OnDestroy {
     }
   }
 
-  keydownDescrInput(e) {
-    if (e.key !== 'Enter')  { return; }
+  addLineToDescription(line: string) {
+      // this.webStorageService.lang === 'ru' ? this.mainProduct.rus_descr.push(line) : this.mainProduct.en_descr.push(line);
+      (this.mainProductFG.get('rus_descr') as FormArray).push(this.fb.control(line));
+  }
 
-    if (e.target.id === 'newLineInput') {
-      this.addNewDescrLine(e);
-      return;
-    }
-    const nextLine = e.target.parentElement.nextElementSibling;
-    if (nextLine) {
-      nextLine.firstElementChild.focus();
-    }
+  deleteLineOfDescription(index: number) {
+    (this.mainProductFG.get('rus_descr') as FormArray).removeAt(index);
   }
 
   updateProduct() {
     if (this.variantAdded) {
       this.baseService.popup.open('Редактирование не окончено!', null, null, true);
-      return;
-    }
-
-    const validationMessages: string[] = this._productService.collectValidationMessages(this.mainProductFG);
-
-    if (!this.mainProductFG.valid) {
+    } else if (!this.mainProductFG.valid) {
+      const validationMessages: string[] = this._productService.collectValidationMessages(this.mainProductFG);
       this.baseService.popup.open(validationMessages, null, null, true);
-      return;
     } else {
       this._productService.updateProduct(this.mainProductFG.value).subscribe(
         res => {

@@ -6,13 +6,13 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./btn.component.scss']
 })
 export class BtnComponent implements OnInit {
-  @Output() clickEvemt: EventEmitter<void> = new EventEmitter();
+  @Output() clickEvent: EventEmitter<void> = new EventEmitter();
   constructor() { }
 
   ngOnInit() {
   }
 
   emit() {
-    this.clickEvemt.emit();
+    this.clickEvent.emit();
   }
 }

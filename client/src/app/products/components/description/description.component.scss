@@ -3,12 +3,21 @@
 .description {
     margin-top: 5px;
     width: 350px;
+    height: 216px;
+    overflow-y: auto;
     
     &__line {
-        width: 100%;
-        text-overflow: ellipsis;
         @include disabled;
-        
+
+        width: 98%;
+        text-overflow: ellipsis;
+
+        &:disabled {
+            width: 100%;
+        }
+        &:not(:disabled) {
+            margin: 1px 0px;
+        }
         
         &__wrapper {
             list-style-type: disc;

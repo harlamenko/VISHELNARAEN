@@ -9,18 +9,16 @@ import { WebStorageService } from 'src/app/main/web-storage.service';
 })
 export class ContainerWithCaptionComponent implements OnInit {
   @Input() group: FormGroup;
+  maxPrice = 999999999;
 
   constructor(public webStorageService: WebStorageService) { }
 
   ngOnInit() {
   }
-  
-  keydownNamePriceCtrls(e) {
-    if (e.key !== 'Enter')  { return; }
 
-    const nextLine = e.target.nextElementSibling;
-    if (nextLine) {
-      nextLine.focus();
+  priceChanged(price) {
+    if (price > this.maxPrice) {
+      this.group.patchValue({price: this.maxPrice});
     }
   }
 }

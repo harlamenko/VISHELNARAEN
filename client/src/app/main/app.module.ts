@@ -15,7 +15,7 @@ const appRoutes: Routes = [
   {path: 'products', loadChildren: () => import('../products/products.module').then(m => m.ProductsModule)},
   {path: 'cart', loadChildren: () => import('../cart/cart.module').then(m => m.CartModule)},
   {path: 'about', loadChildren: () => import('../about/about.module').then(m => m.AboutModule)},
-  {path: 'admin/create', loadChildren: () => import('../admin/admin.module').then(m => m.AdminModule)},
+  // {path: 'admin', loadChildren: () => import('../admin/admin.module').then(m => m.AdminModule)},
   {path: '', redirectTo: 'welcome', pathMatch: 'full'},
   {path: '**', component: NotFoundComponent}
 ]

@@ -16,6 +16,10 @@
     }
 }
 
+.buttons {
+    display: flex;
+    justify-content: space-around;
+}
 
 .canvasForPhoto{
     position: absolute;
@@ -30,4 +34,11 @@
         width: 0;
         height: 0;
     }
+}
+
+#productNotFoundMessage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
 }
