@@ -21,6 +21,11 @@
     justify-content: space-around;
 }
 
+.options {
+    display: flex;
+    justify-content: space-between;
+}
+
 .canvasForPhoto{
     position: absolute;
     width: 100%;

@@ -49,33 +49,36 @@
           (delete)="deleteLineOfDescription($event)"
         ></app-description>
         
-        <!-- 
-          TODO(Harlamenko): transfer to admin
-  
-          <section *ngIf="isAdmin" class="main-section__current-product__category-sex-controls">
-            <app-admin-options [opts]="sexesTypes?.types"></app-admin-options>
-            <app-admin-options [opts]="sexesTypes?.sex"></app-admin-options>
-  
-            <select class="main-section__current-product__category-sex-controls__control" formControlName="cat">
-              <option *ngFor="let sex of sexesTypes?.sex"
-                [attr.selected]="mainProductFG.get('cat').value === sex.en_name ? true : null">{{sex.rus_name}}</option>
-            </select>
-          </section>
-        -->
-        <section class="buttons">
-          <app-btn (clickEvent)='addToCart()' *ngIf="!webStorageService.isAdmin">
-            {{webStorageService.lang === 'ru' ? 'В корзину' : 'Add to cart' }}
-          </app-btn>
-          
-          <app-btn (clickEvent)='updateProduct()' *ngIf="webStorageService.isAdmin">
-            {{webStorageService.lang === 'ru' ? 'Обновить' : 'Update' }}
-          </app-btn>
-    
-          <app-btn 
-            (clickEvent)='baseService.popup.open("Вы точно хотите удалить товар?","deleteProduct", this)()'
-            *ngIf="webStorageService.isAdmin">
-            {{webStorageService.lang === 'ru' ? 'Удалить' : 'Delete' }}
-          </app-btn>
+        <section
+          *ngIf="isAdmin"
+          class="options"
+        >
+          <app-options
+            [opts]="sexesTypes?.types"
+            [name]="'type'"
+            [group]="mainProductFG"
+          ></app-options>
+          <app-options
+            [opts]="sexesTypes?.sex"
+            [name]="'cat'"
+            [group]="mainProductFG"
+          ></app-options>
+        </section>
+
+          <section class="buttons">
+            <app-btn (clickEvent)='addToCart()' *ngIf="!webStorageService.isAdmin">
+              {{webStorageService.lang === 'ru' ? 'В корзину' : 'Add to cart' }}
+            </app-btn>
+            
+            <app-btn (clickEvent)='updateProduct()' *ngIf="webStorageService.isAdmin">
+              {{webStorageService.lang === 'ru' ? 'Обновить' : 'Update' }}
+            </app-btn>
+      
+            <app-btn 
+              (clickEvent)='baseService.popup.open("Вы точно хотите удалить товар?","deleteProduct", this)()'
+              *ngIf="webStorageService.isAdmin">
+              {{webStorageService.lang === 'ru' ? 'Удалить' : 'Delete' }}
+            </app-btn>
         </section>
       </app-product-info>
     </main>
