@@ -1,0 +1,13 @@
+<ng-container [formGroup]="group">
+  <select
+    class="control" 
+    [formControlName]="name"
+  >
+    <option
+      *ngFor="let option of opts"
+      [attr.selected]="group.get(name).value === option.en_name ? true : null"
+    >
+      {{option.rus_name}}
+    </option>
+  </select>
+</ng-container>
