@@ -6,9 +6,8 @@ import { IProduct, ProductFormGroupModel } from 'src/app/models/Product';
 import { WebStorageService } from 'src/app/main/web-storage.service';
 import { BaseService } from 'src/app/main/base.service';
 import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
-import { Subject, Observable, of, from } from 'rxjs';
+import { Subject, Observable, of, from, BehaviorSubject } from 'rxjs';
 import { isNull } from 'util';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-product-card',
@@ -27,6 +26,8 @@ export class ProductCardComponent implements OnInit, OnDestroy {
 
   private alive: Subject<void> = new Subject();
   isProductNotFound: boolean;
+  isVisibleColorPicker: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  newPhoto: WindowBase64;
 
   constructor(
     private _productService: ProductService,
@@ -164,6 +165,25 @@ export class ProductCardComponent implements OnInit, OnDestroy {
     this.webStorageService.storeToLocal('cart', obj);
   }
 
+  handleChoosedColor(color: string) {
+    const variants: FormArray = this.mainProductFG.get('variants') as FormArray;
+    const varFG: FormGroup = ProductFormGroupModel.makeVariantFG(this.newPhoto, color, this.allSizes);
+
+    variants.push(varFG);
+    this.currentVariant = variants.length - 1;
+    this.isVisibleColorPicker.next(false);
+  }
+
+  handleNewPhoto(base64: WindowBase64) {
+    this.isVisibleColorPicker.next(true);
+    this.newPhoto = base64;
+  }
+
+  deleteCurrentVariant() {
+    debugger;
+    this.variants.removeAt(this.currentVariant);
+    this.currentVariant = 0;
+  }
 
   toggleSize(size, i) {
     const sizes = (<any>this.mainProductFG.get('variants')).controls[this.currentVariant].controls["sizes"];

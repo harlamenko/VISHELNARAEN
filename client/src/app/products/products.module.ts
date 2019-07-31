@@ -17,6 +17,7 @@ import { PhotoComponent } from './components/photo/photo.component';
 import { ProductInfoComponent } from './containers/product-info/product-info.component';
 import { ContainerWithCaptionComponent } from './containers/container-with-caption/container-with-caption.component';
 import { OptionsComponent } from './components/options/options.component';
+import { ColorPickerComponent } from './components/color-picker/color-picker.component';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { OptionsComponent } from './components/options/options.component';
     DescriptionComponent,
     PhotoComponent,
     ProductInfoComponent,
-    OptionsComponent
+    OptionsComponent,
+    ColorPickerComponent
   ]
 })
 export class ProductsModule { }

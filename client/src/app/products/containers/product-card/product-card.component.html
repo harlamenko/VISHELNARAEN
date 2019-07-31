@@ -20,7 +20,15 @@
     >
       <app-container-with-caption
         [group]="mainProductFG"
+        (newPhotoSelected)="handleNewPhoto($event)"
+        (delete)="baseService.popup.open('Вы точно хотите удалить?','deleteCurrentVariant', this)"
       >
+        <app-color-picker
+          *ngIf="isVisibleColorPicker | async"
+          [photo]="newPhoto"
+          (colorChoosed)="handleChoosedColor($event)"
+        >
+        </app-color-picker>
         <app-photo
           [group]="mainProductFG"
           [photo]="currentVariantFormGroup.value.photo"

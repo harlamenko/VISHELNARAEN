@@ -1,6 +1,18 @@
 <figure class="container" [formGroup]="group">
-  <ng-content></ng-content>
+  <button
+    class="controller controller__add"
+  >
+    <input type="file" accept="image/*" (change)="selectPhoto($event)">
+  </button>
   
+  <button 
+    class="controller controller__del"
+    *ngIf="group.get('variants').value.length > 1"
+    (click)="deleteCurrentVariant()"
+  ></button>
+ 
+  <ng-content></ng-content>
+
   <figcaption class="container__caption">
     <textarea 
       formControlName="rus_name"
