@@ -31,7 +31,7 @@
         </app-color-picker>
         <app-photo
           [group]="mainProductFG"
-          [photo]="currentVariantFormGroup.value.photo"
+          [photo]="currentVariantFormGroup?.value.photo"
         ></app-photo>
       </app-container-with-caption>
   
@@ -78,15 +78,27 @@
             {{webStorageService.lang === 'ru' ? 'В корзину' : 'Add to cart' }}
           </app-btn>
           
-          <app-btn (clickEvent)='updateProduct()' *ngIf="webStorageService.isAdmin">
+          <app-btn (clickEvent)='updateProduct()' *ngIf="webStorageService.isAdmin && !isCreating">
             {{webStorageService.lang === 'ru' ? 'Обновить' : 'Update' }}
           </app-btn>
     
           <app-btn 
             (clickEvent)='baseService.popup.open("Вы точно хотите удалить товар?","deleteProduct", this)()'
-            *ngIf="webStorageService.isAdmin">
+            *ngIf="webStorageService.isAdmin && !isCreating">
             {{webStorageService.lang === 'ru' ? 'Удалить' : 'Delete' }}
           </app-btn>
+
+          <app-btn (clickEvent)='addProduct()' *ngIf="isCreating">
+            Сохранить
+          </app-btn>
+    
+          <app-btn 
+            (clickEvent)='clearProduct()'
+            *ngIf="isCreating">
+            Очистить
+          </app-btn>
+
+            
         </section>
       </app-product-info>
     </main>

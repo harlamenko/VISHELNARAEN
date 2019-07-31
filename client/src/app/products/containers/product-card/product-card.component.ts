@@ -1,8 +1,8 @@
 import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { takeUntil, pluck, map, tap, take, switchMap, flatMap, switchMapTo, catchError } from 'rxjs/operators';
 import { ProductService } from 'src/app/products/product.service';
-import { ActivatedRoute } from '@angular/router';
-import { IProduct, ProductFormGroupModel } from 'src/app/models/Product';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Product, IProduct, ProductFormGroupModel } from 'src/app/models/Product';
 import { WebStorageService } from 'src/app/main/web-storage.service';
 import { BaseService } from 'src/app/main/base.service';
 import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
@@ -15,10 +15,10 @@ import { isNull } from 'util';
   styleUrls: ['./product-card.component.scss']
 })
 export class ProductCardComponent implements OnInit, OnDestroy {
-  public nextProduct: IProduct;
-  public prevProduct: IProduct;
-  public variantAdded = false;
-  public sexesTypes: any;
+  nextProduct: IProduct;
+  prevProduct: IProduct;
+  isCreating = false;
+  sexesTypes: any;
   currentVariant = 0;
   choosedSizeId = 0;
   allSizes: string[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
@@ -51,7 +51,7 @@ export class ProductCardComponent implements OnInit, OnDestroy {
   }
 
   get currentVariantSizes() {
-    return this.mainProductFG.get('variants').value[this.currentVariant].sizes;
+    return this.currentVariantFormGroup ? this.currentVariantFormGroup.value.sizes : [];
   }
 
   get allColors() {
@@ -68,15 +68,23 @@ export class ProductCardComponent implements OnInit, OnDestroy {
         this.sexesTypes = sexesTypes;
       });
     }
+    if (this._route.snapshot.data.create) {
+      this.prepareForCreating();
+    } else {
+      this._route.paramMap.pipe(
+        takeUntil(this.alive),
+        pluck('params', 'id'),
+        map(id => +id)
+      ).subscribe(id => {
+        // происходит отписка при ошибке на бэке, поэтому нельзя через switchMap
+        this._getMainProduct(id).subscribe();
+      });
+    }
+  }
 
-    this._route.paramMap.pipe(
-      takeUntil(this.alive),
-      pluck('params', 'id'),
-      map(id => +id)
-    ).subscribe(id => {
-      // происходит отписка при ошибке на бэке, поэтому нельзя через switchMap
-      this._getMainProduct(id).subscribe();
-    });
+  prepareForCreating() {
+    this.mainProductFG = <FormGroup>new ProductFormGroupModel(new Product);
+    this.isCreating = true;
   }
 
   private _getSiblingProduct(id: number): Observable<IProduct> {
@@ -128,7 +136,7 @@ export class ProductCardComponent implements OnInit, OnDestroy {
   }
 
   selectColorOfVariant(variantIndex: number): void {
-    if (this.currentVariant === variantIndex || this.variantAdded) {
+    if (this.currentVariant === variantIndex || this.isVisibleColorPicker$.getValue()) {
       return;
     }
 
@@ -166,11 +174,11 @@ export class ProductCardComponent implements OnInit, OnDestroy {
   }
 
   handleChoosedColor(color: string) {
-    const variants: FormArray = this.mainProductFG.get('variants') as FormArray;
     const varFG: FormGroup = ProductFormGroupModel.makeVariantFG(this.newPhoto, color, this.allSizes);
 
-    variants.push(varFG);
-    this.currentVariant = variants.length - 1;
+    
+    this.variants.push(varFG);
+    this.currentVariant = this.variants.value.length - 1;
     this.isVisibleColorPicker$.next(false);
   }
 
@@ -226,7 +234,7 @@ export class ProductCardComponent implements OnInit, OnDestroy {
   }
 
   updateProduct() {
-    if (this.variantAdded) {
+    if (this.isVisibleColorPicker$.getValue()) {
       this.baseService.popup.open('Редактирование не окончено!', null, null, true);
     } else if (!this.mainProductFG.valid) {
       const validationMessages: string[] = this._productService.collectValidationMessages(this.mainProductFG);
@@ -262,6 +270,33 @@ export class ProductCardComponent implements OnInit, OnDestroy {
         this.baseService.popup.open('Приносим извенения, серверная ошибка.', null, null, true);
       }
     );
+  }
+
+  addProduct() {
+    if (this.isVisibleColorPicker$.getValue()) {
+      this.baseService.popup.open('Редактирование не окончено!', null, null, true);
+    } else if (!this.mainProductFG.valid) {
+      const validationMessages: string[] = this._productService.collectValidationMessages(this.mainProductFG);
+      this.baseService.popup.open(validationMessages, null, null, true);
+    } else {
+      this._productService.addProduct(this.mainProductFG.value).subscribe(
+        res => {
+          if (res.status === 'ok' || res.status) {
+            this.baseService.popup.open('Новый продукт успешно добавлен.', null, null, true);
+            this.clearProduct();
+          } else {
+            this.baseService.popup.open('Ошибка! продукт не добавлен.', null, null, true);
+          }
+        },
+        err => {
+          this.baseService.popup.open('Приносим извенения, серверная ошибка.', null, null, true);
+        }
+      );
+    }
+  }
+
+  clearProduct() {
+    this.prepareForCreating();
   }
 
   ngOnDestroy() {

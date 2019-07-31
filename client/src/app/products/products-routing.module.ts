@@ -4,6 +4,7 @@ import { ProductListComponent } from './containers/product-list/product-list.com
 import { ProductCardComponent } from './containers/product-card/product-card.component';
 
 const routes: Routes = [
+  {path: 'create', component: ProductCardComponent, data: {create: true}},
   {path: ':id', component: ProductCardComponent},
   {path: ':sex/:type', component: ProductListComponent, pathMatch: 'full'},
   {path: '', redirectTo: 'all/all'}
