@@ -24,7 +24,7 @@
         (delete)="baseService.popup.open('Вы точно хотите удалить?','deleteCurrentVariant', this)"
       >
         <app-color-picker
-          *ngIf="isVisibleColorPicker | async"
+          *ngIf="isVisibleColorPicker$ | async"
           [photo]="newPhoto"
           (colorChoosed)="handleChoosedColor($event)"
         >
@@ -73,20 +73,20 @@
           ></app-options>
         </section>
 
-          <section class="buttons">
-            <app-btn (clickEvent)='addToCart()' *ngIf="!webStorageService.isAdmin">
-              {{webStorageService.lang === 'ru' ? 'В корзину' : 'Add to cart' }}
-            </app-btn>
-            
-            <app-btn (clickEvent)='updateProduct()' *ngIf="webStorageService.isAdmin">
-              {{webStorageService.lang === 'ru' ? 'Обновить' : 'Update' }}
-            </app-btn>
-      
-            <app-btn 
-              (clickEvent)='baseService.popup.open("Вы точно хотите удалить товар?","deleteProduct", this)()'
-              *ngIf="webStorageService.isAdmin">
-              {{webStorageService.lang === 'ru' ? 'Удалить' : 'Delete' }}
-            </app-btn>
+        <section class="buttons">
+          <app-btn (clickEvent)='addToCart()' *ngIf="!webStorageService.isAdmin">
+            {{webStorageService.lang === 'ru' ? 'В корзину' : 'Add to cart' }}
+          </app-btn>
+          
+          <app-btn (clickEvent)='updateProduct()' *ngIf="webStorageService.isAdmin">
+            {{webStorageService.lang === 'ru' ? 'Обновить' : 'Update' }}
+          </app-btn>
+    
+          <app-btn 
+            (clickEvent)='baseService.popup.open("Вы точно хотите удалить товар?","deleteProduct", this)()'
+            *ngIf="webStorageService.isAdmin">
+            {{webStorageService.lang === 'ru' ? 'Удалить' : 'Delete' }}
+          </app-btn>
         </section>
       </app-product-info>
     </main>

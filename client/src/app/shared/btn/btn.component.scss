@@ -4,6 +4,10 @@
     flex-flow: column;
     justify-content: flex-end;
     padding: 0 2px;
+
+    &:only-child {
+        width: 100%;
+    }
 }
 
 .btn {
