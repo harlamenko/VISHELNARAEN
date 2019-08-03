@@ -16,7 +16,10 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     data: {create: true}
   },
-  {path: ':id', component: ProductCardComponent},
+  {
+    path: ':id',
+    component: ProductCardComponent
+  },
   {
     path: ':sex/:type',
     component: ProductListComponent,

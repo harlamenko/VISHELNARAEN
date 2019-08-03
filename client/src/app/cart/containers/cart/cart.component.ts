@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IProduct } from 'src/app/models/Product';
 import { WebStorageService } from 'src/app/main/web-storage.service';
-import { ProductService } from 'src/app/products/product.service';
+import { ProductService } from 'src/app/products/services/product.service';
 import { Router } from '@angular/router';
 
 @Component({

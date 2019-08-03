@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BaseService } from '../main/base.service';
-import { Product, ProductValidation, ProductFormGroupModel } from '../models/Product';
+import { BaseService } from '../../main/base.service';
+import { Product, ProductValidation, ProductFormGroupModel } from '../../models/Product';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { FormGroup, FormBuilder, FormArray, FormControl, AbstractControl } from '@angular/forms';
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService } from 'src/app/products/product.service';
+import { ProductService } from 'src/app/products/services/product.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProductParams } from 'src/app/models/ProductParams';
 import { WebStorageService } from 'src/app/main/web-storage.service';

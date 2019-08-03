@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { ProductService } from 'src/app/products/product.service';
+import { ProductService } from 'src/app/products/services/product.service';
 import { IProduct } from 'src/app/models/Product';
 import { ProductParams } from 'src/app/models/ProductParams';
 import { ActivatedRoute } from '@angular/router';

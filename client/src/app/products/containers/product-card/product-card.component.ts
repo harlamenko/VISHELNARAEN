@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { takeUntil, pluck, map, tap, take, switchMap, flatMap, switchMapTo, catchError } from 'rxjs/operators';
-import { ProductService } from 'src/app/products/product.service';
+import { ProductService } from 'src/app/products/services/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Product, IProduct, ProductFormGroupModel } from 'src/app/models/Product';
 import { WebStorageService } from 'src/app/main/web-storage.service';
@@ -73,9 +73,8 @@ export class ProductCardComponent implements OnInit, OnDestroy {
     } else {
       this._route.paramMap.pipe(
         takeUntil(this.alive),
-        pluck('params', 'id'),
-        map(id => +id)
-      ).subscribe(id => {
+      ).subscribe(params => {
+        const id = +params.get('id');
         // происходит отписка при ошибке на бэке, поэтому нельзя через switchMap
         this._getMainProduct(id).subscribe();
       });
