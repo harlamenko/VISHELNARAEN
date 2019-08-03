@@ -136,10 +136,10 @@ export class WelcomePageComponent implements OnInit {
   }
 
   guest() {
-    this.webStorageService.isAdmin = false;
+    this._authService.guest();
   }
 
   admin() {
-    this.webStorageService.isAdmin = true;
+    this._authService.admin();
   }
 }
