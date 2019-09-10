@@ -14,7 +14,6 @@ import { SizesComponent } from './components/sizes/sizes.component';
 import { ColorsComponent } from './components/colors/colors.component';
 import { DescriptionComponent } from './components/description/description.component';
 import { PhotoComponent } from './components/photo/photo.component';
-import { ProductInfoComponent } from './containers/product-info/product-info.component';
 import { ContainerWithCaptionComponent } from './containers/container-with-caption/container-with-caption.component';
 import { OptionsComponent } from './components/options/options.component';
 import { ColorPickerComponent } from './components/color-picker/color-picker.component';
@@ -39,7 +38,6 @@ import { ColorPickerComponent } from './components/color-picker/color-picker.com
     ColorsComponent,
     DescriptionComponent,
     PhotoComponent,
-    ProductInfoComponent,
     OptionsComponent,
     ColorPickerComponent
   ]

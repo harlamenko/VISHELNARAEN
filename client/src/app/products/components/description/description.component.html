@@ -1,31 +1,26 @@
 <span class="label">Описание:</span>
 <ul
   class='description'
-  [formGroup]="group"
->
+  [formGroup]="group">
   <li
     class='description__line__wrapper'
-    *ngIf="isAdmin"
-  >
+    *ngIf="isAdmin">
     <input
       autofocus
       #newLineInput
       (keydown.enter)="addNewDescrLine(newLineInput.value);resetFocus()"
       (blur)="addNewDescrLine(newLineInput.value)"
-      class="description__line"
-    >
+      class="description__line">
   </li>
 
   <li
     class='description__line__wrapper'
     *ngFor="let line of description; index as i"
-    formArrayName="rus_descr"
-  >
+    formArrayName="rus_descr">
     <input
       [formControlName]="i"
       (keydown.enter)="deleteIfEmpty(i)"
       (blur)="deleteIfEmpty(i)"
-      class="description__line"
-    >
+      class="description__line">
   </li>
 </ul>

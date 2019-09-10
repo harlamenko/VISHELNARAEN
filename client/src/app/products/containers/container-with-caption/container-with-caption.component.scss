@@ -3,40 +3,42 @@
 .container {
     width: 300px;
     position: relative;
-    
-    &__caption {
-        display: flex;        
-        flex-flow: column;
+}
 
-        &__name{
-            font-size: 1.2rem;
-            max-width: 98%;
-            max-height: 70px;
-            resize: none;
+.caption {
+    display: flex;        
+    flex-flow: column;
 
-            @include disabled;
-            &:disabled {
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                height: 30px;
-            }
-        }
-        &__short-desc{
-            color: #a1a1a1;
-            margin: 8px 0;
-            font-size: 0.78rem;
-            
-            @include disabled;
-            &:disabled {
-                border: none;
-            }
-        }
-        &__price{
-            font-size: 0.78rem;
+    &__name{
+        font-size: 1.2rem;
+        max-width: 98%;
+        max-height: 70px;
+        resize: none;
 
-            @include disabled;
+        @include disabled;
+        &:disabled {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            height: 30px;
         }
+    }
+    &__short-desc{
+        color: #a1a1a1;
+        margin: 8px 0;
+        font-size: 0.78rem;
+        display: flex;
+        
+        @include disabled;
+        &:disabled {
+            border: none;
+        }
+    }
+    &__price{
+        font-size: 0.78rem;
+        display: flex;
+
+        @include disabled;
     }
 }
 

@@ -35,7 +35,7 @@
         ></app-photo>
       </app-container-with-caption>
   
-      <app-product-info>
+      <section class="main-section__current-product-info">
         <app-colors
           [allColors]="allColors"
           [currentVariant]="currentVariant"
@@ -59,8 +59,7 @@
         
         <section
           *ngIf="isAdmin"
-          class="options"
-        >
+          class="options">
           <app-options
             [opts]="sexesTypes?.types"
             [name]="'type'"
@@ -97,10 +96,8 @@
             *ngIf="isCreating">
             Очистить
           </app-btn>
-
-            
         </section>
-      </app-product-info>
+      </section>
     </main>
   
     <app-sibling-product

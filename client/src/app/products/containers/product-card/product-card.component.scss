@@ -13,6 +13,13 @@
 
     &__current-product {
         display: flex;
+
+        &-info {
+            display: flex;
+            flex-flow: column;
+            justify-content: space-between;
+            padding-left: 15px;
+        }
     }
 }
 

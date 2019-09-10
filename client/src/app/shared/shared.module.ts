@@ -7,29 +7,34 @@ import { HeaderBreadcrumbsComponent } from './header-breadcrumbs/header-breadcru
 import { RouterModule } from "@angular/router";
 import { BackBtnComponent } from './back-btn/back-btn.component';
 import { BtnComponent } from './btn/btn.component';
+import { InputComponent } from './components/input/input.component';
+
+
+const COMPONENTS = [
+    AdditionalInfoComponent,
+    InputComponent,
+    HeaderComponent,
+    HeaderBreadcrumbsComponent,
+    BackBtnComponent,
+    BtnComponent,
+];
+
+const MODULES = [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+];
 
 @NgModule({
     imports: [
-        CommonModule,
-        FormsModule,
-        RouterModule
+        ...MODULES
     ],
     declarations: [
-        AdditionalInfoComponent,
-        HeaderComponent,
-        HeaderBreadcrumbsComponent,
-        BackBtnComponent,
-        BtnComponent,
+        ...COMPONENTS,
     ],
     exports: [
-        AdditionalInfoComponent,
-        HeaderComponent,
-        HeaderBreadcrumbsComponent,
-        CommonModule,
-        FormsModule,
-        BtnComponent,
-        RouterModule,
-        BackBtnComponent
+        ...COMPONENTS,
+        ...MODULES
     ]
 })
 export class SharedModule { }

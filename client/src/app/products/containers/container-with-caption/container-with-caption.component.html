@@ -1,41 +1,34 @@
 <figure class="container" [formGroup]="group">
-  <button
+  <button 
     *ngIf="webStorageService.isAdmin"
-    class="controller controller__add"
-  >
+    class="controller controller__add">
     <input type="file" accept="image/*" (change)="selectPhoto($event)">
   </button>
   
   <button 
     class="controller controller__del"
     *ngIf="webStorageService.isAdmin && group.get('variants').value.length > 1"
-    (click)="deleteCurrentVariant()"
-  ></button>
+    (click)="deleteCurrentVariant()"></button>
  
   <ng-content></ng-content>
 
-  <figcaption class="container__caption">
+  <figcaption class="caption">
     <textarea 
       formControlName="rus_name"
       placeholder="{{webStorageService.lang === 'ru' ? 'Название' : 'Name'}}"
-      class="container__caption__name"
-    ></textarea>
+      class="caption__name"></textarea>
 
-    <input
+    <custom-input
       formControlName="rus_title"
-      placeholder="{{webStorageService.lang === 'ru' ?  'Краткое описание' : 'Short description'}}"
-      type="text"
-      class="container__caption__short-desc"
-    >
+      [placeholder]="webStorageService.lang === 'ru' ? 'Краткое описание' : 'Short description'"
+      class="caption__short-desc"
+    ></custom-input>
 
-    <input
+    <custom-input
       formControlName="price"
-      #price
-      placeholder="Цена"
-      type="number"
-      max="999999999"
-      (keyup)="priceChanged(price.valueAsNumber)"
-      class="container__caption__price"
-    >
+      [placeholder]="'Цена'"
+      [type]="'number'"
+      class="caption__price"
+    ></custom-input>
   </figcaption>
 </figure>
