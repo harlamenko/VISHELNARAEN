@@ -8,7 +8,7 @@ import { WebStorageService } from 'src/app/main/web-storage.service';
   styleUrls: ['./product.component.scss']
 })
 export class ProductComponent implements OnInit {
-  @Input() product: IProduct;
+  @Input() product: IProduct | string;
   constructor(public webStorageService: WebStorageService) { }
 
   ngOnInit() {

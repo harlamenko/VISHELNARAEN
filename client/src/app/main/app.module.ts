@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './containers/app/app.component';
 import { NotFoundComponent } from './containers/not-found/not-found.component';
-import { AboutComponent } from '../about/containers/about/about.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PopupComponent } from './components/popup/popup.component';
 import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators';
@@ -23,7 +22,6 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     NotFoundComponent,
-    AboutComponent,
     PopupComponent,
   ],
   imports: [

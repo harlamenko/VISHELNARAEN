@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class BaseService {
-  private _host = environment.url;
+  private _host = 'http://127.0.0.1:8000/';
   public popup = {
     isOpen: false,
     message: '',
