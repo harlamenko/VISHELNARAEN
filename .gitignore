@@ -1,6 +1,6 @@
 # compiled output
 /client/dist
-/client/pubilc
+/client/public
 /client/tmp
 /client/out-tsc
 
