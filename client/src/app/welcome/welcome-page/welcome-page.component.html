@@ -2,7 +2,7 @@
   <header>    
     <a href="#" class='header-action' routerLink="about">{{ webStorageService.lang === 'ru' ? 'О нас' : 'About us' }}</a> 
     
-    <app-additional-info [showAdditionalInfo]="showAdditionalInfo" (close)="showAdditionalInfo = false"></app-additional-info>
+    <app-additional-info></app-additional-info>
     
     <span class='header-action' *ngIf="!webStorageService?.username?.length; else in" [ngClass]="{'mb-35': auth || reg}">
       <div class="header-action__controls__wrapper" *ngIf="auth || reg">

@@ -10,12 +10,11 @@ import { WebStorageService } from 'src/app/main/web-storage.service';
   styleUrls: ['./additional-info.component.scss']
 })
 export class AdditionalInfoComponent implements OnInit {
-  @Input() showAdditionalInfo;
-  @Output() close = new EventEmitter();
-
-  private params: ProductParams;
+  public showAdditionalInfo = false;
   public types;
   public sexes;
+  
+  private params: ProductParams;
 
   constructor(
     public productService: ProductService,
@@ -56,4 +55,8 @@ export class AdditionalInfoComponent implements OnInit {
     this._router.navigateByUrl(`/products/${this.params.sex}/${this.params.type}`);
   }
 
+  close() {
+    this.showAdditionalInfo = false;
+  }
+  
 }
