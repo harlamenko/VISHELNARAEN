@@ -39,7 +39,7 @@ export class ProductCardComponent implements OnInit, OnDestroy {
 
   get currentVariantFormGroup() {
     const variants = this.mainProductFG.get('variants') as FormArray;
-    return variants.length ? variants.controls[this.currentVariant] : null;
+    return variants.length ? <FormGroup>variants.controls[this.currentVariant] : null;
   }
 
   get description() {
@@ -75,16 +75,31 @@ export class ProductCardComponent implements OnInit, OnDestroy {
         takeUntil(this.alive),
       ).subscribe(params => {
         const id = +params.get('id');
-        // происходит отписка при ошибке на бэке, поэтому нельзя через switchMap
-        this._getMainProduct(id).subscribe();
+        this._getMainProduct(id)
+          .pipe(takeUntil(this.alive))
+          .subscribe(this._getSiblingProducts.bind(this));
       });
     }
+  }
+  
+  private _getSiblingProducts({next_id: nextId, prev_id: prevId}) {
+    this._getSiblingProduct(nextId)
+      .pipe(takeUntil(this.alive))
+      .subscribe(
+        nextProduct => this.nextProduct = nextProduct
+      );
+    this._getSiblingProduct(prevId)
+      .pipe(takeUntil(this.alive))
+      .subscribe(
+        prevProduct => this.prevProduct = prevProduct
+      );
   }
 
   prepareForCreating() {
     this.mainProductFG = <FormGroup>new ProductFormGroupModel(new Product);
     this.isCreating = true;
   }
+
 
   private _getSiblingProduct(id: number): Observable<IProduct> {
     if (!isNull(id)) {
@@ -104,15 +119,7 @@ export class ProductCardComponent implements OnInit, OnDestroy {
           this.isProductNotFound = true;
         }
         return of(e);
-      }),
-      tap(({next_id: nextId, prev_id: prevId}) => {
-        this.nextProduct = <IProduct>{id: nextId};
-        this.prevProduct = <IProduct>{id: prevId};
-      }),
-      switchMap(() => this._getSiblingProduct(this.nextProduct.id)),
-      tap(nextProduct => this.nextProduct = nextProduct),
-      switchMap(() => this._getSiblingProduct(this.prevProduct.id)),
-      tap(prevProduct => this.prevProduct = prevProduct)
+      })
     )
   }
 
@@ -187,30 +194,28 @@ export class ProductCardComponent implements OnInit, OnDestroy {
   }
 
   deleteCurrentVariant() {
-    debugger;
     this.variants.removeAt(this.currentVariant);
     this.currentVariant = 0;
   }
-
   toggleSize(size, i) {
     const sizes = (<any>this.mainProductFG.get('variants')).controls[this.currentVariant].controls["sizes"];
-    const idx = sizes.value.indexOf(size);
+    const idx = i ? i : sizes.value.indexOf(size);
 
     if (idx !== -1){
       sizes.removeAt(idx);
     } else {
       sizes.push(this.fb.control(size));
     }
-    this.choosedSizeId = i;
+    this.choosedSizeId = idx;
   }
 
-  findPos(obj){
+  findPos(obj) {
     let current_left = 0, current_top = 0;
-    if (obj.offsetParent){
-        do{
+    if (obj.offsetParent) {
+        do {
             current_left += obj.offsetLeft;
             current_top += obj.offsetTop;
-        }while(obj = obj.offsetParent);
+        } while (obj = obj.offsetParent);
         return {x: current_left, y: current_top};
     }
     return undefined;

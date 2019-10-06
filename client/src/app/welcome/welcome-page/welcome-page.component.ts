@@ -42,37 +42,34 @@ export class WelcomePageComponent implements OnInit {
       const pattern  = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return pattern .test(String(email).toLowerCase());
   }
-
   signin() {
-    let valid = true;
-
-    valid = !!this.login.length &&
+    const isFieldsFilled = !!this.login.length &&
     !!this.pwd.length &&
     !!this.mail.length &&
     !!this.repeatpwd.length;
 
-    if (!valid) {
+    if (!isFieldsFilled) {
       this.baseService.popup.open('Не все поля заполнены!', null, null, true);
       return;
     }
 
-    valid = this.validateEmail(this.mail);
+    const isEmailValid = this.validateEmail(this.mail);
 
-    if (!valid) {
+    if (!isEmailValid) {
       this.baseService.popup.open('Почта введена не правильно!', null, null, true);
       return;
     }
 
-    valid = this.pwd.length < 6;
+    const isPasswordLengthValid = this.pwd.length < 6;
 
-    if (!valid) {
+    if (!isPasswordLengthValid) {
       this.baseService.popup.open('Пароль должен быть больше 5 символов!', null, null, true);
       return;
     }
 
-    valid = this.pwd === this.repeatpwd;
+    const arePasswordsEqual = this.pwd === this.repeatpwd;
 
-    if (!valid) {
+    if (!arePasswordsEqual) {
       this.baseService.popup.open('Пароли не совпадают!', null, null, true);
       return;
     }

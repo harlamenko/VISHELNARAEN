@@ -21,18 +21,11 @@ export class CartComponent implements OnInit {
 
   ngOnInit() {
     this.webStorageService.cartLength.subscribe(
-      res => {
+      _ => {
         this.products = this.webStorageService.getFromLocalStorage('cart');
-        this._countSum();
+        this.sum = this.products.reduce((accum, product) => accum += product.price, 0);
       }
     )
-  }
-
-  private _countSum(){
-    this.sum = 0;
-    this.products.forEach(el => this.sum += el.price)
-
-    return this.sum;
   }
 
   public buy() {
