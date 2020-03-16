@@ -18,17 +18,17 @@
       placeholder="{{webStorageService.lang === 'ru' ? 'Название' : 'Name'}}"
       class="caption__name"></textarea>
 
-    <custom-input
+    <app-custom-input
       formControlName="rus_title"
       [placeholder]="webStorageService.lang === 'ru' ? 'Краткое описание' : 'Short description'"
       class="caption__short-desc"
-    ></custom-input>
+    ></app-custom-input>
 
-    <custom-input
+    <app-custom-input
       formControlName="price"
       [placeholder]="'Цена'"
       [type]="'number'"
       class="caption__price"
-    ></custom-input>
+    ></app-custom-input>
   </figcaption>
 </figure>

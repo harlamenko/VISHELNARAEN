@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewChild, ElementRef, Renderer2, forwardRef 
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
-  selector: 'custom-input',
+  selector: 'app-custom-input',
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss'],
   providers: [
