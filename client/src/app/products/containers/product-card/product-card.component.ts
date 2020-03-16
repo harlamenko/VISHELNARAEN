@@ -15,6 +15,8 @@ import { isNull } from 'util';
   styleUrls: ['./product-card.component.scss']
 })
 export class ProductCardComponent implements OnInit, OnDestroy {
+  private alive = new Subject();
+
   nextProduct: IProduct;
   prevProduct: IProduct;
   isCreating = false;
@@ -23,8 +25,6 @@ export class ProductCardComponent implements OnInit, OnDestroy {
   choosedSizeId = 0;
   allSizes: string[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
   mainProductFG: FormGroup;
-
-  private alive: Subject<void> = new Subject();
   isProductNotFound: boolean;
   isVisibleColorPicker$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   newPhoto: string;
@@ -81,7 +81,7 @@ export class ProductCardComponent implements OnInit, OnDestroy {
       });
     }
   }
-  
+
   private _getSiblingProducts({next_id: nextId, prev_id: prevId}) {
     this._getSiblingProduct(nextId)
       .pipe(takeUntil(this.alive))
@@ -139,6 +139,19 @@ export class ProductCardComponent implements OnInit, OnDestroy {
     this.description.controls.forEach(control => {
       control.disable();
     });
+  }
+
+  private _normalizeProductInfo() {
+    const {en_name, en_title, price} = this.mainProductFG.controls;
+    if (!en_name.value) {
+      en_name.setValue('no name');
+    }
+    if (!en_title.value) {
+      en_title.setValue('no title');
+    }
+    if (price.value) {
+      price.setValue(+price.value);
+    }
   }
 
   selectColorOfVariant(variantIndex: number): void {
@@ -271,12 +284,14 @@ export class ProductCardComponent implements OnInit, OnDestroy {
         }
       },
       err => {
-        this.baseService.popup.open('Приносим извенения, серверная ошибка.', null, null, true);
+        this.baseService.popup.open('Приносим извинения, серверная ошибка.', null, null, true);
       }
     );
   }
 
   addProduct() {
+    this._normalizeProductInfo();
+
     if (this.isVisibleColorPicker$.getValue()) {
       this.baseService.popup.open('Редактирование не окончено!', null, null, true);
     } else if (!this.mainProductFG.valid) {
