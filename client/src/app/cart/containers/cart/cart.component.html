@@ -1,14 +1,21 @@
-<h2 class="gradient-element">{{webStorageService.lang === 'ru' ? 'Ваша корзина' : 'Your cart' }}:</h2>
-<section class="cart__clotheses">
-    <div *ngIf="products.length; else empty">
-        <app-cart-clothes 
-            *ngFor="let product of products" 
-            [product]="product">
-        </app-cart-clothes>
-    </div>
-    <ng-template #empty>
-        {{ webStorageService.lang === 'ru' ? 'Пустота' : 'Empty' }}
-    </ng-template>
-</section>
-<p class="cart__price">{{ webStorageService.lang === 'ru' ? 'Итого' : 'Summary' }}: {{ webStorageService.lang === 'ru' ? sum + '₽' : (sum / 65 | number:'1.0-0') + '$'}}</p>
-<button class="btn gradient-border in cart__btn" (click)="buy()">{{ webStorageService.lang === 'ru' ? 'Заказать' : 'Buy' }}</button>
+<app-header></app-header>
+<main class="cart">
+    <h2 class="gradient-element">{{webStorageService.lang === 'ru' ? 'Ваша корзина' : 'Your cart' }}:</h2>
+    <section class="cart__clotheses">
+        <div *ngIf="products.length; else empty">
+            <app-cart-clothes 
+                *ngFor="let product of products" 
+                [product]="product">
+            </app-cart-clothes>
+        </div>
+        <ng-template #empty>
+            {{ webStorageService.lang === 'ru' ? 'Пустота' : 'Empty' }}
+        </ng-template>
+    </section>
+    <p class="cart__price">{{ webStorageService.lang === 'ru' ? 'Итого' : 'Summary' }}: {{ webStorageService.lang === 'ru' ? sum + '₽' : (sum / 65 | number:'1.0-0') + '$'}}</p>
+    <button *ngIf="products && products.length"
+        class="btn gradient-border in cart__btn"
+        (click)="buy()">
+        {{ webStorageService.lang === 'ru' ? 'Заказать' : 'Buy' }}
+    </button>
+</main>

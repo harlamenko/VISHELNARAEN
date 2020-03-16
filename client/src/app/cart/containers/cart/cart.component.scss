@@ -5,6 +5,9 @@
     width: 170px;
 }
 .cart {
+    width: 1270px;
+    margin: 0 135px;
+
     &__btn {
         text-transform: uppercase;
         margin-left: auto;
@@ -13,7 +16,8 @@
         padding: 25px;
         margin-top: 10px;
         font-size: 1rem;
-        font-family: 'Travels DemiBold'
+        font-family: 'Travels DemiBold';
+        margin-right: 0;
     }
     &__price {
         text-align: right;

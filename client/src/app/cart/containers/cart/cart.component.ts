@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { IProduct } from 'src/app/models/Product';
 import { WebStorageService } from 'src/app/main/web-storage.service';
 import { ProductService } from 'src/app/products/services/product.service';
 import { Router } from '@angular/router';
+import { ICartProduct } from 'src/app/models/CartProduct';
 
 @Component({
   selector: 'app-cart',
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent implements OnInit {
-  public products: IProduct[];
+  public products: ICartProduct[];
   public sum: number;
 
   constructor(
@@ -25,13 +25,13 @@ export class CartComponent implements OnInit {
         this.products = this.webStorageService.getFromLocalStorage('cart');
         this.sum = this.products.reduce((accum, product) => accum += product.price, 0);
       }
-    )
+    );
   }
 
   public buy() {
     const ids = [];
     this.products.forEach(p => ids.push(p.id));
-    this.productService.buyProducts({ids: ids}).subscribe(res => console.log(res), err => console.log(err));
+    this.productService.buyProducts({ ids: ids }).subscribe(res => console.log(res), err => console.log(err));
     window.localStorage.setItem('cart', '[]');
     this.webStorageService.cartLength.next(0);
     this._router.navigateByUrl(`/products/all/all`);
