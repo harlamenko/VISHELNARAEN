@@ -1,0 +1,22 @@
+@mixin disabled {
+    &:disabled {	
+        background: none;	
+        color: initial;	
+        border: none;	
+    }
+}
+
+@mixin container {	
+    margin: 0 135px;	
+}
+
+@mixin gradient-underline {
+    display: block;	
+
+    &::after {	
+        display: block;	
+        margin-left: 100%;	
+        content: '';	
+        background-image: linear-gradient(69deg, #a7e9f6, #f8eb9f, #ed96b0);	
+    }
+}

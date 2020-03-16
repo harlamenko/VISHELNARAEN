@@ -1,2 +1,2 @@
-START runClientSide.bat
 START runServerSide.bat
+START runClientSide.bat
