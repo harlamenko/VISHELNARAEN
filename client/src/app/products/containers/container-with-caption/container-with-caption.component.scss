@@ -22,23 +22,17 @@
             text-overflow: ellipsis;
             height: 30px;
         }
+
     }
-    &__short-desc{
+    &__short-desc {
         color: #a1a1a1;
         margin: 8px 0;
         font-size: 0.78rem;
         display: flex;
-        
-        @include disabled;
-        &:disabled {
-            border: none;
-        }
     }
-    &__price{
+    &__price {
         font-size: 0.78rem;
         display: flex;
-
-        @include disabled;
     }
 }
 

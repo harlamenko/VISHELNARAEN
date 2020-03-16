@@ -1,7 +1,11 @@
+@import '../../../../assets/styles/mixins.scss';
+
+
 :host {
     display: flex;
 }
 
 input {
     width: 100%;
+    @include disabled;
 }

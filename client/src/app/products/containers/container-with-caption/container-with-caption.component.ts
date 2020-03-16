@@ -11,7 +11,7 @@ import { map } from 'rxjs/operators';
 })
 export class ContainerWithCaptionComponent implements OnInit {
   @Input() group: FormGroup;
-  @Output() newPhotoSelected: EventEmitter<WindowBase64> = new EventEmitter();
+  @Output() newPhotoSelected: EventEmitter<string> = new EventEmitter();
   @Output() delete: EventEmitter<void> = new EventEmitter();
 
   maxPrice = 999999999;

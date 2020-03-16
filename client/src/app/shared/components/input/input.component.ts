@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, Renderer2, forwardRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, Renderer2, forwardRef, ViewEncapsulation } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -11,16 +11,17 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       useExisting: forwardRef(() => InputComponent),
       multi: true,
     }
-  ]
+  ],
+  encapsulation: ViewEncapsulation.None
 })
 export class InputComponent implements ControlValueAccessor {
-  public value: string = '';
-  @Input() type: string = 'text';
-  @Input() id: string = '';
-  @Input() placeholder: string = '';
+  public value = '';
+  @Input() type = 'text';
+  @Input() id = '';
+  @Input() placeholder = '';
 
   @ViewChild('inputElement') private _inputElement: ElementRef;
-  get inputElement():ElementRef {
+  get inputElement(): ElementRef {
     return this._inputElement;
   }
 
