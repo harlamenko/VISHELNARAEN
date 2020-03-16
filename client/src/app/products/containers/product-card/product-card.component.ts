@@ -27,7 +27,7 @@ export class ProductCardComponent implements OnInit, OnDestroy {
   private alive: Subject<void> = new Subject();
   isProductNotFound: boolean;
   isVisibleColorPicker$: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  newPhoto: WindowBase64;
+  newPhoto: string;
 
   constructor(
     private _productService: ProductService,
@@ -188,7 +188,7 @@ export class ProductCardComponent implements OnInit, OnDestroy {
     this.isVisibleColorPicker$.next(false);
   }
 
-  handleNewPhoto(base64: WindowBase64) {
+  handleNewPhoto(base64: string) {
     this.isVisibleColorPicker$.next(true);
     this.newPhoto = base64;
   }

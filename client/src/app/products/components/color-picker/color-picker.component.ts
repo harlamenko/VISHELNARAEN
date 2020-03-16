@@ -7,7 +7,7 @@ import { fromEvent } from 'rxjs';
   styleUrls: ['./color-picker.component.scss']
 })
 export class ColorPickerComponent implements OnInit {
-  @Input() photo: WindowBase64;
+  @Input() photo: string;
   @Output() colorChoosed: EventEmitter<string> = new EventEmitter;
   @ViewChild('canvasForPhoto') canvasForPhoto: ElementRef;
 
