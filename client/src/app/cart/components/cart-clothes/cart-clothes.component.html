@@ -1,5 +1,5 @@
 <figure *ngIf="product" class="cart-clothes">
-  <img [src]="product.photo" class="cart-clothes__photo" routerLink="/products/{{product.id}}" [alt]="product.name">
+  <img [src]="product.photo" class="cart-clothes__photo" routerLink="/products/{{product.id}}" [alt]="product.en_name">
 
   <figcaption class="cart-clothes__description" routerLink="/products/{{product.id}}">
     <p class="cart-clothes__description__elem cart-clothes__description__name">{{ webStorageService.lang === 'ru' ? product.rus_name : product.en_name}}</p>

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IProduct } from 'src/app/models/Product';
 import { WebStorageService } from 'src/app/main/web-storage.service';
+import { ICartProduct } from 'src/app/models/CartProduct';
 
 @Component({
   selector: 'app-cart-clothes',
@@ -8,7 +8,7 @@ import { WebStorageService } from 'src/app/main/web-storage.service';
   styleUrls: ['./cart-clothes.component.scss']
 })
 export class CartClothesComponent implements OnInit {
-  @Input() product: IProduct;
+  @Input() product: ICartProduct;
   constructor(
     public webStorageService: WebStorageService
   ) { }
@@ -16,7 +16,7 @@ export class CartClothesComponent implements OnInit {
   ngOnInit() {
   }
 
-  removeFromCart(id){
+  removeFromCart(id) {
     this.webStorageService.removeFromLocalStorage('cart', id);
     delete this.product;
   }

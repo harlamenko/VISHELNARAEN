@@ -28,7 +28,7 @@ export interface IProduct {
     updated_at: Date;
 }
 
-export class Product {
+export class Product implements IProduct {
     constructor(
         public cat: string = '',
         public en_descr: string[] = [],
@@ -123,7 +123,7 @@ export class ProductFormGroupModel {
         return _fb.group(this);
     }
 
-    static makeVariantFG(photo: WindowBase64, color: string, sizes: string[]): FormGroup {
+    static makeVariantFG(photo: string, color: string, sizes: string[]): FormGroup {
         const _fb = new FormBuilder;
         const productValidation = new ProductValidation;
 
