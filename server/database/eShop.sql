@@ -1,4 +1,4 @@
-DROP DATABASE `eShop`;
+DROP DATABASE IF EXISTS `eShop`;
 CREATE DATABASE `eShop`;
 
 -- phpMyAdmin SQL Dump
